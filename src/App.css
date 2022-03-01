@@ -1,31 +1,53 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
 .App-link {
   color: #61dafb;
+}
+.warning{
+  color: #0085FF !important;
+  font-weight: 600;
+  font-size: 20px;
+  font-family : "Poppins";
+  line-height: 30px;
+  text-align: right;
+}
+.warning2{
+  color: #E2A705 !important;
+  font-weight: 600;
+  font-size: 20px;
+  font-family : "Poppins";
+  line-height: 30px;
+  text-align: right;
+}
+.warning3{
+  color : #00B824 !important;
+  font-weight: 600;
+  font-size: 20px;
+  font-family : "Poppins";
+  line-height: 30px;
+  text-align: right;
+}
+.warning4{
+  font-family: Poppins !important;
+font-style: normal !important;
+font-weight: 600 !important;
+font-size: 16px !important;
+line-height: 30px !important;
+
+
+color: #0085FF !important;
+
+}
+.variantClass{
+  font-family: Poppins !important;
+font-style: normal !important;
+font-weight: 600 !important;
+font-size: 16px !important;
+line-height: 30px !important;
+
+
+color: #000 !important;
+
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +57,27 @@
   to {
     transform: rotate(360deg);
   }
+}
+.dx-header-row{
+  color: #3B3B3B !important;
+}
+.dx-datagrid-rowsview .dx-selection.dx-row > td, .dx-datagrid-rowsview .dx-selection.dx-row:hover > td {  
+  background-color: transparent !important;  
+} 
+.pieClass{
+  border-radius: 50px !important;
+}
+ /* .dx-datagrid-rowsview .dx-row:nth-child(2n + 2) , .dx-datagrid-rowsview .dx-row > tr:nth-child(2n + 2){
+  background-color: #E1F1FF !important;
+}
+ .dx-datagrid .dx-row-alt:nth-child(2n + 2), .dx-datagrid .dx-row-alt > tr:nth-child(2n + 2) {
+  background-color: #E1F1FF !important;
+} */
+.dx-datagrid-checkbox-size.dx-checkbox-checked .dx-checkbox-icon {  
+ color: #fff !important;
+ background-color: #0085FF !important;
+ width: 20px;
+ height : 20px;
+ border-radius: 5px;
+ outline: none;
 }
