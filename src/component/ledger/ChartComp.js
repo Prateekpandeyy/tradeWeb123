@@ -130,7 +130,7 @@ else if (e.data.data == "Balance") {
                    
                 
             
-            return name + ", area: " + text;
+            return name 
         
    
    

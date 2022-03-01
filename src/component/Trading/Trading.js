@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Layout from '../Layout/Layout';
 import {Box, Select, MenuItem, Typography, Button, Grid} from "@mui/material";
 import MyContainer from '../commonFunction/MyContainer';
@@ -9,10 +9,9 @@ import { AiFillPrinter } from 'react-icons/ai';
 import { GrDocumentText} from 'react-icons/gr';
 import {AiFillFilePdf} from 'react-icons/ai';
 import htmlImg from '../../images/PngImages/html.png';
-import {
-    DataGrid, Column,Summary, TotalItem, RequiredRule, ColumnFixing, FilterRow, SearchPanel, Export, Toolbar,
-    Item, GroupPanel, Selection, Grouping
-} from 'devextreme-react/data-grid';
+import { DataGrid, Column,Summary, TotalItem } from 'devextreme-react/data-grid';
+import { baseUrl } from '../baseUrl/BaseUrl';
+import axios from 'axios';
 const data2 = [
     {
         id : 1,
@@ -113,14 +112,7 @@ const MyData =  styled(Box)({
     padding: "5px 10px",
     boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)"
 })
-const MySelect = styled(Select)({
-   position : "static",
-    width: "250px",
-    height: "36px",
-    borderRadius: "10px",
-    border: "1px solid #EBEBEB",
-    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)"
-})
+
 const MyButton = styled(Button)({
     borderRadius: "5px",
     backgroundColor: "#0364BE", 
@@ -130,16 +122,28 @@ const MyButton = styled(Button)({
 })
 const Trading = () => {
     const [selectValue, setSelectValue] = useState(1);
+    const [exchange, setExchange] = useState()
     const classes = useStyle()
-    const TemplateNameCell = () => {
-   let kt = data3.map((i) => {
-      return(
-        <p key={i.order}>{i.order}</p>
-      )
-    })
-    return kt
-    
-  }
+    const token = localStorage.getItem("token")
+    useEffect((i) => {
+      getExchange()
+    }, [])
+    const getExchange = () => {
+      console.log("done") 
+      const myConfig = {
+        headers: {
+           Authorization: "Bearer " + token
+        }
+     }
+     axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
+.then((res) => {
+setExchange(res.data)
+   console.log("res", res.data)
+})
+
+
+    }
+   
     const onRowPre =(e) => {  
         
         if(e.rowType == "header"){
@@ -258,7 +262,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          </TopBox>
          <MyContainer>
              <Grid container>
-             <Grid sm={12} style={{padding: "20px"}}>
+             <Grid style={{padding: "20px"}}>
              <DataGrid 
              dataSource = {data2}
              onRowPrepared={onRowPre}
@@ -293,10 +297,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                    dataField="buy"
                    caption="Buy">
                    </Column>
-                   <Column 
-                   dataField="sell"
-                   caption="Sell">
-                   </Column>
+                
                    <Column 
                    dataField="market"
                    caption="Market Rate"></Column>
@@ -328,7 +329,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          </MyContainer>
          <MyContainer>
              <Grid container>
-             <Grid sm={12} style={{padding: "20px"}}>
+             <Grid  style={{padding: "20px"}}>
              <DataGrid 
              dataSource = {data3}
              onRowPrepared={onRowPre2}
