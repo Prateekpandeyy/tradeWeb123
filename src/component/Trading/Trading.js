@@ -9,23 +9,22 @@ import { AiFillPrinter } from 'react-icons/ai';
 import { GrDocumentText} from 'react-icons/gr';
 import {AiFillFilePdf} from 'react-icons/ai';
 import htmlImg from '../../images/PngImages/html.png';
-import { DataGrid, Column,Summary, TotalItem } from 'devextreme-react/data-grid';
+import { DataGrid, Column,Summary, TotalItem, Paging, Pager } from 'devextreme-react/data-grid';
 import { baseUrl } from '../baseUrl/BaseUrl';
 import axios from 'axios';
 const data2 = [
     {
-        id : 1,
-        order : "1",
-        trade : "2342000",
-        time : "20:12:20",
-        security : "29292929",
-        buy : "2992",
-        sell : "2929",
-        market : "1919",
-        brokerage : "29292992",
-        buy2 : 12929,
-        sell : "292929",
-        net : "2929292"
+      OrderID : 1,
+      TradeID : "1",
+      TradeTime : "2342000",
+      Stlmnt : "20:12:20",
+      Buy : "29292929",
+        MarketRate : "2992",
+        Brokerage : "2929",
+        BuyValue : "1919",
+        SellValue : "29292992",
+        ScripCode : "2020",
+        NetValue : ""
     }
 ]
 const data3 = [
@@ -122,27 +121,52 @@ const MyButton = styled(Button)({
 })
 const Trading = () => {
     const [selectValue, setSelectValue] = useState(1);
-    const [exchange, setExchange] = useState()
-    const classes = useStyle()
+    const [exchange, setExchange] = useState([])
+    const [showSetlmentType, setShowSetlmentType] = useState(false)
+   const [stlType, setStlType] = useState([])
+    const [stlfieldType, setStlFieldType] = useState("")
+    const [exchangeValue, setExchangeValue] = useState("")
+    const [data, setData] = useState(data2)
+    const [data22, setData2] = useState(data3)
     const token = localStorage.getItem("token")
-    useEffect((i) => {
-      getExchange()
-    }, [])
-    const getExchange = () => {
-      console.log("done") 
-      const myConfig = {
-        headers: {
-           Authorization: "Bearer " + token
-        }
-     }
-     axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
-.then((res) => {
-setExchange(res.data)
-   console.log("res", res.data)
-})
+    const allowedPageSizes = [5, 10, 15]
+    const checkedValueTo = ["2020"]
+//     useEffect((i) => {
+//       getExchange()
+//     }, [])
+//     const getExchange = () => {
+//       console.log("done") 
+//       const myConfig = {
+//         headers: {
+//            Authorization: "Bearer " + token
+//         }
+//      }
+//      axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
+// .then((res) => {
+// setExchange(res.data)
+//    console.log("res", res.data)
+// })
 
 
-    }
+//     }
+useEffect(()=>{
+  getExchange()
+} ,[])
+const getExchange = () => {
+  const myConfig = {
+            headers: {
+               Authorization: "Bearer " + token
+            }
+         }
+ 
+  axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
+    .then((res) => {
+      setExchange(res.data)
+     
+    });
+};
+
+
    
     const onRowPre =(e) => {  
         
@@ -196,24 +220,67 @@ setExchange(res.data)
   }    
     let a ;
     const calculateSelectedRow = (options) => {
-   
-        if (options.name === 'SelectedRowsSummary') {
+      if (options.name === 'SelectedRowsSummaryBuy') {
              
-          if (options.summaryProcess === 'start') {
-          
-            options.totalValue = 0;
-          } else if (options.summaryProcess === 'calculate') {
-           
-            options.totalValue = options.totalValue
-            if (options.component.isRowSelected(options.value.id)) {
+        if (options.summaryProcess === 'start') {
+          options.totalValue = 0;
+        } else if (options.summaryProcess === 'calculate') {
+          if (options.component.isRowSelected(options.value.ScripCode)) {
+            options.totalValue += options.value.SellValue;
             
-              options.totalValue = Number(a) + Number(options.value.net);
-              a = options.totalValue;
-            }
           }
         }
       }
-      
+      }
+      // exchange option function
+      const exchangeFunction = (e) => {
+        console.log("eee", e.target.value)
+     setExchangeValue(e.target.value)
+        if(e.target.value === "C"){
+          setShowSetlmentType(true)
+        }
+        else{
+          setShowSetlmentType(false)
+        }
+        const myConfig = {
+          headers: {
+             Authorization: "Bearer " + token
+          }
+       }
+
+axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value}`, myConfig)
+  .then((res) => {
+    console.log("res", res)
+   setStlType(res.data)
+  });
+      }
+
+
+
+      const showData = () => {
+           const myConfig = {
+          headers: {
+             Authorization: "Bearer " + token
+          }
+       }
+
+
+axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=NN&dt=20210624`, myConfig)
+  .then((res) => {
+  
+ setData(res.data)
+ console.log("yt", res.data)
+ res.data.map((i) => {
+   setData2(res.data)
+ })
+  })
+
+      }
+
+      const stymtType = (e) => {
+        setStlFieldType(e.target.value)
+      }
+      const classes = useStyle()
     return(
         <Layout subLink = "Bills">
         
@@ -222,29 +289,41 @@ setExchange(res.data)
             <Typography variant="body1" mr={2}>
             Exchange : 
         </Typography>
-        <select className={classes.MySelect}>
-                <option>NSE Cash</option>
-                <option> BSE Cash</option>
-                <option>IDE Cash</option>
+        <select className={classes.MySelect} onChange={(e) => exchangeFunction(e)}>
+               {
+                 exchange?.map((i, e) => {
+                   return(
+                     <option key={e} value ={i.CESCd[1]}>{i.exchange + " " + i.segment}</option>
+                   )
+                 })
+               }
+             
             </select>
             </Box>
+         
             <Box className={classes.boxRoot}>
             <Typography variant="body1" mr={2}>
            Stlmnt Type : 
         </Typography>
-        <select className={classes.MySelect}>
-                <option>All</option>
-                <option> Single</option>
-                <option>Both</option>
-            </select>
-            </Box>
+    
+          <select className={classes.MySelect} onChange= {(e) => stymtType(e)}>
+        {
+          stlType.map((i) => {
+            return(
+              <option key={i.type} value={i.type}>{i.description} </option>
+            )
+          })
+        }
+     </select>
+      
+            </Box> 
             <Box className={classes.boxRoot}>
        <MyData>
            02/06/2021
        </MyData>
             </Box>
             <Box className={classes.boxRoot}>
-            <MyButton variant="contained">Show</MyButton>
+            <MyButton variant="contained" onClick = {(e)=> showData(e)}>Show</MyButton>
             </Box>
             <Box className={classes.boxRoot}>
             <FaFileCsv style={{color: "#80BB55", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
@@ -264,63 +343,80 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
              <Grid container>
              <Grid style={{padding: "20px"}}>
              <DataGrid 
-             dataSource = {data2}
+             dataSource = {data}
              onRowPrepared={onRowPre}
             
               showRowLines={false}
               showCheckBoxesMode={true}
               showBorders = {true}
               columnAutoWidth={true}
-            
+              defaultSelectedRowKeys = {checkedValueTo}
               showColumnLines = {false}
-             keyExpr="id"
+             keyExpr="ScripCode"
           noDataText=""
-               alignment="center">
+               alignment="center"
+           >
+                <Paging enabled={true}  defaultPageSize={3}/>
+          <Pager 
+           visible={true}
+           allowedPageSizes = {allowedPageSizes}
+           displayMode = "full"
+         
+           showInfo={true}
+           showNavigationButtons = {true} />
                    <Column 
-                   dataField="order"
-                   caption="Charges"
+                   dataField="OrderID"
+                   caption="Order"
                    alignment="center">
                    </Column>
                    <Column 
-                   dataField="trade"
+                   dataField="TradeID"
                    caption="Trade">
                    </Column>
                    <Column 
-                   dataField="time"
+                   dataField="TradeTime"
                    caption= "Time">
                    </Column>
                    <Column 
-                   dataField="security"
+                   dataField="Stlmnt"
                    caption="Security">
                    </Column>
                    <Column 
-                   dataField="buy"
+                   dataField="Buy"
                    caption="Buy">
                    </Column>
                 
                    <Column 
-                   dataField="market"
+                   dataField="MarketRate"
                    caption="Market Rate"></Column>
                 <Column
-                dataField="brokerage"
+                dataField="Brokerage"
                 caption="Brokerage"></Column>
                 <Column 
-                dataField="buy2"
+                dataField="BuyValue"
                 caption="Buy Value">
                 </Column>
                 <Column 
-                dataField="sell"
+                dataField="SellValue"
                 caption="Sell Value">
                 </Column>
                 <Column 
-                dataField = "net"
-                dataField="Net Value"></Column>
+                dataField = "NetValue"
+                caption="Net Value"></Column>
                     
                     <Summary calculateCustomSummary={calculateSelectedRow}>
                     <TotalItem
               cssClass={"variantClass"}
               displayFormat="Net Item Amount (Sale - Buy)"
-              showInColumn="order" />
+              showInColumn="OrderID" />
+                <TotalItem
+              name="SelectedRowsSummaryBuy"
+              summaryType="custom"
+            
+              displayFormat="{0}"
+              cssClass={"warning4"}
+            
+              showInColumn="NetValue" />
               </Summary>
 </DataGrid>
              </Grid>
@@ -331,7 +427,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
              <Grid container>
              <Grid  style={{padding: "20px"}}>
              <DataGrid 
-             dataSource = {data3}
+             dataSource = {data22}
              onRowPrepared={onRowPre2}
             
               showRowLines={false}

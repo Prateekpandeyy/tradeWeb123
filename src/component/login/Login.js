@@ -108,7 +108,7 @@ var data3 = JSON.stringify({
          .then((res2) => {
             
             console.log(res2)
-            if(res2.status){
+            if(res2.data.status === true){
                 
                 localStorage.setItem("token", res2.data.token)  
              Swal.fire({
@@ -117,6 +117,13 @@ var data3 = JSON.stringify({
                  icon : "success"
              })
              history("/tradeweb/lodger")
+            }
+            else{
+                Swal.fire({
+                    title : "error",
+                    html : `${res2.data.error_message}`,
+                    icon : "error"
+                })
             }
          })       
         

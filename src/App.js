@@ -6,7 +6,7 @@ import NewPassword from './component/login/NewPassword';
 import Trading from './component/Trading/Trading';
 import Transaction from './component/Transaction/Transaction';
 import 'devextreme/dist/css/dx.light.css';
-function App() {
+const App = () => {
   return (
     <>
     <BrowserRouter>
