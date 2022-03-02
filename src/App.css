@@ -49,7 +49,9 @@ line-height: 30px !important;
 color: #000 !important;
 
 }
-
+.myMenuActive{
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(165deg) brightness(104%) contrast(97%) !important;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

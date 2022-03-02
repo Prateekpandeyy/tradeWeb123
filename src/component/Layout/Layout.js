@@ -5,6 +5,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import { styled } from '@mui/styles';
 import { style } from '@mui/system';
 const Layout = (props) => {
+    const {mainLink, noBreadcrumb, subLink} = props;
     const MySidebar = styled(Box)({
        
         display: "flex",
@@ -38,9 +39,9 @@ const Layout = (props) => {
         </MySidebar>
        <MainBox>
        <MyHeader>
-            <Header mainLink = {props.mainLink} 
-            noBreadcrumb = {props.noBreadcrumb}
-            subLink = {props.subLink} />
+            <Header mainLink = {mainLink} 
+            noBreadcrumb = {noBreadcrumb}
+            subLink = {subLink} />
         </MyHeader>
         <MainContent>
             {props.children}

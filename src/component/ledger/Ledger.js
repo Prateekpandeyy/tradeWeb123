@@ -464,7 +464,7 @@ import 'devextreme/dist/css/dx.light.css';
     padding: "20px"
 })
 const Ledger = () => {
-         const [selectValue, setSelectValue] = useState(1);
+         const [selectValue, setSelectValue] = useState([]);
          const [date, setDate] = useState([])
          const [debit, setDebit] = useState(67)
          const [creadit, setCreadit] = useState(9);

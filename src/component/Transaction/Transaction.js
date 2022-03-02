@@ -149,9 +149,13 @@ const Transaction = () => {
     const onSelectionChanged = (e)  => {
        
         e.component.refresh(true);
+    
       }
     
-
+const myStyel = (e) => {
+  // console.log("eee", e.currentTarget)
+  // e.currentTarget.style.backgroundColor = "red"
+}
    
     const onRowPre =(e) => {  
         
@@ -198,7 +202,7 @@ const Transaction = () => {
          <TopBox>
          <Box className={classes.boxRoot}>
      
-            <select className={classes.MySelect}>
+            <select className={classes.MySelect} onMouseEnter={(e) => myStyel(e)}>
                 <option>Trades</option>
                 <option> Deliveries</option>
                 <option>Receipts</option>

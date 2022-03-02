@@ -9,15 +9,17 @@ import 'devextreme/dist/css/dx.light.css';
 const App = () => {
   return (
     <>
-    <BrowserRouter>
+   <div>
+   <BrowserRouter>
     <Routes>
       <Route exact path = "/" element={<Login />} />
-      <Route exact path='/new-password' element={<NewPassword />} />
-      <Route exact path = "/tradeweb/lodger" element={<Ledger />} />
-      <Route exact path = "/tradeweb/trading" element={<Trading />} />
-      <Route exact path = "/tradeweb/transaction" element={<Transaction />} />
+      <Route  path='/new-password' element={<NewPassword />} />
+      <Route  path = "/tradeweb/lodger" element={<Ledger />} />
+      <Route  path = "/tradeweb/trading" element={<Trading />} />
+      <Route  path = "/tradeweb/transaction" element={<Transaction />} />
       </Routes>
       </BrowserRouter>
+   </div>
       </>
   );
 }
