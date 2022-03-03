@@ -3,11 +3,21 @@ import { Container, Paper, Typography , Select, MenuItem, Box,  Grid } from '@mu
 import { styled, makeStyles } from '@mui/styles';
 import axios from 'axios';
 import {
-  Pager, Paging,  DataGrid, Column, RequiredRule } from 'devextreme-react/data-grid';
+  Pager, Paging,  DataGrid, Column, RequiredRule, Export,
+  Toolbar,
+  Item, } from 'devextreme-react/data-grid';
 import MyContainer from '../commonFunction/MyContainer';
 import BottomData from './BottomData.js';
+import 'devextreme/dist/css/dx.light.css';
+import Button from 'devextreme-react/button'
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 
 const BottomLedger = ({ledgerReport}) => {
+  const dataGridRef = React.createRef();
+
     const onRowPre =(e) => {  
       
         e.rowElement.style.backgroundColor = '#E1F1FF';
@@ -31,7 +41,17 @@ const BottomLedger = ({ledgerReport}) => {
             e.cellElement.style.color = "#E2A705"
         }
      }
-
+     const exportGrid = React.useCallback(() => {
+      const doc = new jsPDF();
+      const dataGrid = dataGridRef.current.instance;
+  
+      exportDataGridToPdf({
+        jsPDFDocument: doc,
+        component: dataGrid,
+      }).then(() => {
+        doc.save('Customers.pdf');
+      });
+    });
 
     return(
         <>
@@ -113,6 +133,23 @@ const BottomLedger = ({ledgerReport}) => {
         alignment="center">
                <RequiredRule />
         </Column>
+        <Export enabled={true} />
+        <Toolbar>
+          <Item name="searchPanel" />
+          <Item name="exportButton" />
+          <Item name="groupPanel" location="before" />
+        </Toolbar>
+        {/* <Toolbar>
+        <Item name="groupPanel" />
+        <Item location="after">
+          <Button
+            icon='exportpdf'
+            text='Export to PDF'
+            onClick={exportGrid}
+          />
+        </Item>
+        <Item name="searchPanel" />
+      </Toolbar> */}
          </DataGrid>
           </Grid>
 

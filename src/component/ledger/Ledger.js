@@ -5,7 +5,7 @@ import { styled, makeStyles } from '@mui/styles';
 
 import {
     DataGrid, Column, 
-    Summary, TotalItem, Selection, Grouping
+    Summary, TotalItem, Selection, Grouping, Export
 } from 'devextreme-react/data-grid';
 import BottomLedger from './BottomLedger';
 import ChartComp from './ChartComp';
@@ -439,6 +439,7 @@ const Ledger = () => {
                >
                    
                 </Column>
+              
                 <Summary calculateCustomSummary={calculateSelectedRow}>
                 <TotalItem
                    cssClass={"warning"}
