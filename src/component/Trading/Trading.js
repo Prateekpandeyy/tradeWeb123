@@ -245,9 +245,9 @@ const getExchange = () => {
       }
       // exchange option function
       const exchangeFunction = (e) => {
-      
+      console.log("eee", e.target.value)
      setExchangeValue(e.target.value)
-        if(e.target.value === "C"){
+        if(e.target.value[1] === "C"){
           setShowSetlmentType(true)
         }
         else{
@@ -259,7 +259,7 @@ const getExchange = () => {
           }
        }
 
-axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value}`, myConfig)
+axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value[1]}`, myConfig)
   .then((res) => {
    
    setStlType(res.data)
@@ -362,7 +362,7 @@ else if (i.ScripName === "Due To Us :"){
                    return(
                    <>
                     
-                     <option key={e} value ={i.CESCd[1]}>{i.exchange + " " + i.segment}</option>
+                     <option key={e} value ={i.CESCd}>{i.exchange + " " + i.segment}</option>
                    </>
                    )
                  })

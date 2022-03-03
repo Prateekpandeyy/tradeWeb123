@@ -67,7 +67,7 @@ const Ledger = () => {
          const [balance, setBalance] = useState()
          const [tradeValue, setTradeValue] = useState(1)
          const [detData, setDetData] = useState()
-         const [checkValue, setCheckValue] = useState(null)
+         const [checkValue, setCheckValue] = useState([])
          const classes = useStyle()  
          let checkedValueTo = ["NSE-F&O       ", "BSE-Cash      ", "NSE-Cash      ", "NSE-FX        ", "MCX-Comm", "NCDEX-Comm"]
       
@@ -152,14 +152,16 @@ const Ledger = () => {
                            <select className={classes.MySelect} value={tradeValue} 
                            onChange={(e) => tradeFun(e)}>
                            <option value={1}>Trading</option>
-                           <option value={2}> NetTrade</option>
+                           <option value={2}> Commodity </option>
                        </select>
                        )
                    }
                    const TemplateNameCell = (e) => {
+
                    
                     let aka
-                    if(checkValue == e.rowIndex){
+                
+                    if(checkValue.includes(e.rowIndex)){
                      
                      
                       aka = true
@@ -168,6 +170,7 @@ const Ledger = () => {
                      
                       aka = false
                     }
+                  
                              return(
                                   <>
                                   {aka === true ?
@@ -180,13 +183,14 @@ const Ledger = () => {
                                   </>  )
                          }
                          const valueFun = (e) => {
-                         
-                           setCheckValue(e)
+                           let pp = [...checkValue]
+                         pp.push(e)
+                           setCheckValue(pp)
                            
                          }
                          const tradeFun = (e) => {
                            setTradeValue(e.target.value)
-                          
+                          setCheckValue([])
                             axios.get(`${baseUrl}/TradeWeb/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`, myConfig)
                             .then((res) => {
                             
@@ -224,6 +228,12 @@ const Ledger = () => {
            
               }
           }      
+          const TemplateNameCellCreadit = (e) => {
+            console.log("eeee", e.data.Credit)
+          let a = e.data.Credit;
+        let b =  Math.abs(a)
+        return b;
+          } 
           const myBuyAmount = (e) => {
     
             let k = parseFloat(e.value).toFixed(2)
@@ -294,7 +304,7 @@ const Ledger = () => {
                                        options.totalValue = 0;
                                      } else if (options.summaryProcess === 'calculate') {
                                        if (options.component.isRowSelected(options.value.ExchSeg)) {
-                                         options.totalValue += options.value.Credit;
+                                         options.totalValue += Math.abs(options.value.Credit);
                                         
                                        }
                                      }
@@ -317,7 +327,7 @@ const Ledger = () => {
                                      }
                                    }  
                                
-                               
+                              
                                                                                       }
   return(
    <>
@@ -397,35 +407,36 @@ const Ledger = () => {
                 <Column
                 dataField="ExchSeg"
                 caption="ExchSeg"
-                alignment="center">
+               >
                    
                 </Column>
              
                 <Column
                 dataField="OpeningBalance"
                caption="Opening Balance"
-                alignment="center">
+                >
                    
                 </Column>
              
                 <Column
                 dataField="Debit"
                 caption="Debit"
-                alignment="center">
+               >
                    
                 </Column>
              
                 <Column
                 dataField="Credit"
                 caption = "Creadit"
-                alignment="center">
+                cellRender={TemplateNameCellCreadit}
+               >
                    
              </Column>
              
                 <Column
                 dataField="Balance"
                 caption= "Balance"
-                alignment="center">
+               >
                    
                 </Column>
                 <Summary calculateCustomSummary={calculateSelectedRow}>

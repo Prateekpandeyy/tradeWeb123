@@ -109,7 +109,9 @@ var data3 = JSON.stringify({
             
          
             if(res2.data.status === true){
-                
+                let a = JSON.parse(res2.data.data)
+                console.log('res', a[0].ClientName)
+                localStorage.setItem("userName", a[0].ClientName)
                 localStorage.setItem("token", res2.data.token)  
              Swal.fire({
                  title: "succews",
