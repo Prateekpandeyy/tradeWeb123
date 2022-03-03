@@ -3,7 +3,7 @@ import { Container, Paper, Typography , Select, MenuItem, Box,  Grid } from '@mu
 import { styled, makeStyles } from '@mui/styles';
 import axios from 'axios';
 import {
-    DataGrid, Column, RequiredRule } from 'devextreme-react/data-grid';
+  Pager, Paging,  DataGrid, Column, RequiredRule } from 'devextreme-react/data-grid';
 import MyContainer from '../commonFunction/MyContainer';
 import BottomData from './BottomData.js';
 
@@ -31,13 +31,14 @@ const BottomLedger = ({ledgerReport}) => {
             e.cellElement.style.color = "#E2A705"
         }
      }
-    
+
+
     return(
         <>
   <MyContainer>
      <Grid container>
           <Grid item sm={12}>
-         <DataGrid
+         {/* <DataGrid
          dataSource= {ledgerReport}
          id = "id"
              onCellPrepared={onCellPre}
@@ -50,25 +51,47 @@ const BottomLedger = ({ledgerReport}) => {
              columnResizingMode="nextColumn"
            
              noDataText=''
-             showBorders={true}>
-            
+             showBorders={true}> */}
+               
+               <DataGrid 
+                  id="dataGrid"
+                 
+                  dataSource={ledgerReport}
+                  
+                  onCellPrepared={onCellPre}
+                  onRowPrepared={onRowPre}
+                 
+                  columnMinWidth={100}
+                
+                showColumnLines={false}
+                  
+                  
+                  noDataText='' >
+          <Paging enabled={true}  defaultPageSize={4}/>
+          <Pager 
+           visible={true}
+          
+           displayMode = "full"
+         
+           showInfo={true}
+           showNavigationButtons = {true} />
         <Column 
-         dataField="data"
+         dataField="Date"
         caption="Date"
-        alignment="center">
+      >
                <RequiredRule />
         </Column>
         <Column 
-        dataField="exchange"
+        dataField="ExchSeg"
         caption="Exchange"
         
-        alignment="center">
+      >
                <RequiredRule />
         </Column>
         <Column
-        dataField="particulaes"
+        dataField="Particular"
         caption="Particulaes"
-        alignment="center">
+      >
                <RequiredRule />
         </Column>
         <Column 
@@ -85,7 +108,7 @@ const BottomLedger = ({ledgerReport}) => {
                <RequiredRule />
         </Column>
         <Column 
-        dataField="balance"
+        dataField="Amount"
         caption="Balance"
         alignment="center">
                <RequiredRule />

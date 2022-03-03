@@ -21,36 +21,7 @@ const data = [
   { country: 'USA', area: 7 },
   
 ];
-const MySeries = styled(Box)({
-  display: "flex", 
-  width: "100%",
-  justifyContent : "flex-start",
-  flexDirection: "column"
-})
-const RedBox = styled(Box)({
-  display: "flex", 
-  width: "10px",
-  height: "10px", 
-  borderRadius: "50%",
-  backgroundColor: "red",
-  margin: "10px"
-})
-const GreenBox = styled(Box)({
-  display: "flex", 
-  width: "10px",
-  height: "10px", 
-  borderRadius: "50%",
-  backgroundColor: "green",
-  margin: "10px"
-})
-const BlueBox = styled(Box)({
-  display: "flex", 
-  width: "10px",
-  height: "10px", 
-  borderRadius: "50%",
-  backgroundColor: "blue",
-  margin: "10px"
-})
+
 const kk = (e) => {
  
   if (e.data.data == "Creadit") {
@@ -83,9 +54,7 @@ else if (e.data.data == "Balance") {
     this.state = {
       
     
-        creadit : "",
-        debit : "",
-        balance : ""
+     data33 : this.props.chartData
       
     };
   }
@@ -110,7 +79,7 @@ else if (e.data.data == "Balance") {
     })
   }
  myText = (e) => {
-    console.log("myY", this.props.chartData)
+  
     var name = e.pointName;
            let text;
            
@@ -130,21 +99,21 @@ else if (e.data.data == "Balance") {
                    
                 
             
-            return name 
+            return name  ;
         
    
    
   }
 
   render() {
-  
+
 
     return (
       <Paper>
        <Box style={{padding: "10px 20px"}}>
        <PieChart 
        type="doughnut"
-        dataSource={this.props.chartData}
+        dataSource={this.state.data33}
         innerRadius={0.65}
        diameter={0.5}
         customizePoint = {kk}
@@ -152,8 +121,8 @@ else if (e.data.data == "Balance") {
        
       >
           <Size
-                    height={200}
-                    width={200}
+                    height={350}
+                    width={300}
                 />
         <Legend
           orientation="horizontal"

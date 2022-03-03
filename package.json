@@ -26,6 +26,7 @@
     "devextreme-react": "21.2.5",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
+    "jquey": "0.0.1-security",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",

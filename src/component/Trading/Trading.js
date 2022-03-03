@@ -29,37 +29,37 @@ const data2 = [
 ]
 const data3 = [
   {
-      id : 1,
+      ScripCode : 1,
       order : "Central GST @9 %",
       trade : "2.13",
       
   },
   {
-    id : 2,
+    ScripCode : 2,
     order : "SEBI FEES",
     trade : "0.02",
     
 },
 {
-  id : 3,
+  ScripCode : 3,
   order : "Stamp Duty",
   trade : "4.0",
   
 }
 ,  {
-  id : 4,
+  ScripCode : 4,
   order : "State GST @9 &",
   trade : "2.13",
   
 },
 {
-  id : 4,
+  ScripCode : 4,
   order : "Transaction Charges [Special]",
   trade : "23.00",
   
 },
 {
-  id : 4,
+  ScripCode : 4,
   order : "Due To Us",
   trade : "23.48",
   
@@ -124,7 +124,7 @@ const Trading = () => {
     const [exchange, setExchange] = useState([])
     const [showSetlmentType, setShowSetlmentType] = useState(false)
    const [stlType, setStlType] = useState([])
-    const [stlfieldType, setStlFieldType] = useState("")
+    const [stlfieldType , setStlFieldType] = useState("")
     const [exchangeValue, setExchangeValue] = useState("")
     const [data, setData] = useState(data2)
     const [data22, setData2] = useState(data3)
@@ -135,7 +135,7 @@ const Trading = () => {
 //       getExchange()
 //     }, [])
 //     const getExchange = () => {
-//       console.log("done") 
+//       
 //       const myConfig = {
 //         headers: {
 //            Authorization: "Bearer " + token
@@ -144,7 +144,7 @@ const Trading = () => {
 //      axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
 // .then((res) => {
 // setExchange(res.data)
-//    console.log("res", res.data)
+//   
 // })
 
 
@@ -231,10 +231,21 @@ const getExchange = () => {
           }
         }
       }
+      if (options.name === 'SelectedRowsSummarybottom') {
+             
+        if (options.summaryProcess === 'start') {
+          options.totalValue = 0;
+        } else if (options.summaryProcess === 'calculate') {
+          if (options.component.isRowSelected(options.value.ScripCode)) {
+            options.totalValue += options.value.trade;
+            
+          }
+        }
+      }
       }
       // exchange option function
       const exchangeFunction = (e) => {
-        console.log("eee", e.target.value)
+      
      setExchangeValue(e.target.value)
         if(e.target.value === "C"){
           setShowSetlmentType(true)
@@ -250,7 +261,7 @@ const getExchange = () => {
 
 axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value}`, myConfig)
   .then((res) => {
-    console.log("res", res)
+   
    setStlType(res.data)
   });
       }
@@ -258,6 +269,7 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value}`, m
 
 
       const showData = () => {
+        let pp = []
            const myConfig = {
           headers: {
              Authorization: "Bearer " + token
@@ -269,11 +281,64 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=NN&dt=20210624`, m
   .then((res) => {
   
  setData(res.data)
- console.log("yt", res.data)
+ 
  res.data.map((i) => {
-   setData2(res.data)
+ if(i.ScripName === "Central GST @ 9%"){
+   let a = {
+     ScripCode : i.ScripCode,
+     order : i.ScripName, 
+     trade : i.BuyValue
+   }
+   pp.push(a)
+ }
+
+ else if(i.ScripName === "SEBI FEES"){
+  let a = {
+    ScripCode : i.ScripCode,
+    order : i.ScripName, 
+    trade : i.BuyValue
+  }
+  pp.push(a)
+}
+
+else if(i.ScripName === "Stamp Duty"){
+  let a = {
+    ScripCode : i.ScripCode,
+    order : i.ScripName, 
+    trade : i.BuyValue
+  }
+  pp.push(a)
+}
+
+else if(i.ScripName === "State GST @ 9%"){
+  let a = {
+    ScripCode : i.ScripCode,
+    order : i.ScripName, 
+    trade : i.BuyValue
+  }
+  pp.push(a)
+}
+
+else if (i.ScripName === "ransaction Charges [Normal]") {
+  let a = {
+    ScripCode : i.ScripCode,
+    order : i.ScripName, 
+    trade : i.BuyValue
+  }
+  pp.push(a)
+}
+
+else if (i.ScripName === "Due To Us :"){
+  let a = {
+    ScripCode : i.ScripCode,
+    order : i.ScripName, 
+    trade : i.NetValue
+  }
+  pp.push(a)
+}
  })
   })
+  setData2(pp)
 
       }
 
@@ -289,11 +354,16 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=NN&dt=20210624`, m
             <Typography variant="body1" mr={2}>
             Exchange : 
         </Typography>
-        <select className={classes.MySelect} onChange={(e) => exchangeFunction(e)}>
+        <select className={classes.MySelect} onChange={(e) => exchangeFunction(e)}
+        value = {exchangeValue}>
+           <option key={0}> select </option>
                {
                  exchange?.map((i, e) => {
                    return(
+                   <>
+                    
                      <option key={e} value ={i.CESCd[1]}>{i.exchange + " " + i.segment}</option>
+                   </>
                    )
                  })
                }
@@ -306,7 +376,9 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=NN&dt=20210624`, m
            Stlmnt Type : 
         </Typography>
     
-          <select className={classes.MySelect} onChange= {(e) => stymtType(e)}>
+          <select className={classes.MySelect} onChange= {(e) => stymtType(e)}
+          value={stlfieldType}>
+                    <option key={1}> select </option>
         {
           stlType.map((i) => {
             return(
@@ -436,7 +508,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
               columnAutoWidth={true}
             
               showColumnLines = {false}
-             keyExpr="id"
+              keyExpr="ScripCode"
           noDataText=""
          
              >
@@ -458,7 +530,17 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
               cssClass={"warning"}
               displayFormat="Sub Total"
               showInColumn="order" />
+                 <TotalItem
+              name="SelectedRowsSummarybottom"
+              summaryType="custom"
+            
+              displayFormat="{0}"
+              cssClass={"warning4"}
+            
+              showInColumn="trade" />
               </Summary>
+           
+             
 </DataGrid>
              </Grid>
              </Grid>

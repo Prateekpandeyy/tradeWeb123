@@ -315,7 +315,7 @@ export default Ledger;
 //         e.component.refresh(true);
 //       }
 //        const classes = useStyle()
-//    console.log("dage", date) 
+//  
 //     return(
 //         <>
 //        {date.length > 0 ? 
@@ -712,8 +712,7 @@ const Ledger = () => {
                                      }
                                    } 
                                    if (options.name === 'Balance') {
-                                     console.log("summary", options.summaryProcess)
-                                     if (options.summaryProcess === 'start') {
+                                      if (options.summaryProcess === 'start') {
                                        options.totalValue = 0;
                                      } else if (options.summaryProcess === 'calculate') {
                                        if (options.component.isRowSelected(options.value.ExchSeg)) {
@@ -1124,7 +1123,7 @@ export default Ledger;
 //         e.component.refresh(true);
 //       }
 //        const classes = useStyle()
-//    console.log("dage", date) 
+//  
 //     return(
 //         <>
 //        {date.length > 0 ? 

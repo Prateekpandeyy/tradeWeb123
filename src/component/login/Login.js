@@ -107,7 +107,7 @@ var data3 = JSON.stringify({
          })
          .then((res2) => {
             
-            console.log(res2)
+         
             if(res2.data.status === true){
                 
                 localStorage.setItem("token", res2.data.token)  
@@ -165,7 +165,7 @@ var data3 = JSON.stringify({
             let a = JSON.parse(res.data.data)
            let bb = a[0].Mobile
            setMonumber(bb)
-           console.log("aa", res.data.type )
+
            var data2 = JSON.stringify({
             "phoneno": "91" + bb
           });
@@ -178,7 +178,7 @@ var data3 = JSON.stringify({
                 data: data2
             })
             .then((res) => {
-                console.log(res)
+
                 if(res.data.type === "success"){
                     setShotOpt(true)
                 }
@@ -207,7 +207,7 @@ var data3 = JSON.stringify({
             data: data2
         })
         .then((res) => {
-            console.log(res)
+
             if(res.data.type === "success"){
               Swal.fire({
                   title : "success",

@@ -75,7 +75,7 @@ const NewPassword = () => {
   });
 let history = useNavigate()
    const onSubmit = (value) => {
-     console.log(userId)
+   
     
     var data4 = JSON.stringify({
       "userId" : userId,
@@ -93,7 +93,7 @@ let history = useNavigate()
       data : data4
   })
   .then((res) => {
-    console.log("res", res.data.status)
+   
     if(res.data.status === true){
      Swal.fire({
        title : "success", 

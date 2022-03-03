@@ -94,6 +94,7 @@ const Transaction = () => {
     const [checkBoxesMode, setCheckBoxMode] = useState('Always')
     const [transactionData, setTransationData] = useState()
     const startupSelectedKeys = [1, 4];
+    const [test, setTest] = useState(false)
     const userId = localStorage.getItem("userId")
     const token = localStorage.getItem("token")
     const classes = useStyle()
@@ -152,10 +153,7 @@ const Transaction = () => {
     
       }
     
-const myStyel = (e) => {
-  // console.log("eee", e.currentTarget)
-  // e.currentTarget.style.backgroundColor = "red"
-}
+
    
     const onRowPre =(e) => {  
         
@@ -194,6 +192,9 @@ const myStyel = (e) => {
       let k = parseFloat(e.value).toFixed(2)
       return k
     }
+    const mySel = (e) => {
+     setTest(!test)
+    }
     const showCheckBoxesMode = ['none', 'onClick', 'onLongTap', 'always'];
     const selectAllModes = ['allPages', 'page']    
     return(
@@ -202,7 +203,7 @@ const myStyel = (e) => {
          <TopBox>
          <Box className={classes.boxRoot}>
      
-            <select className={classes.MySelect} onMouseEnter={(e) => myStyel(e)}>
+            <select className={classes.MySelect} onChange = {(e) => mySel(e)}>
                 <option>Trades</option>
                 <option> Deliveries</option>
                 <option>Receipts</option>

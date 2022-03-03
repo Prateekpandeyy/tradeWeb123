@@ -43,7 +43,7 @@ const Sidebar = () => {
     const { pathname } = location;
 
     const splitLocation = pathname.split("/");
-    console.log(splitLocation[1])
+   
     return(
         <ul className={classes.mainMenu}>
             <li className={splitLocation[1] === "" ? "myMenuActive" : ""}>
@@ -53,7 +53,7 @@ const Sidebar = () => {
                 </li>
                 
                 <li>
-                  <Link to = "/">
+                  <Link to = "/tradeweb/trading">
                   <img src={homeImg} className={classes.myNav} />
                   </Link>
                 </li>
@@ -63,7 +63,7 @@ const Sidebar = () => {
                 </Link>
                 </li>
                 <li>
-                   <Link to = "/">
+                   <Link to = "/tradeweb/trading">
                    <img src={documentImg} className={classes.myNav} />
                    </Link>
                     </li>
