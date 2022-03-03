@@ -82,7 +82,7 @@ else if (e.data.data == "Balance") {
   
     var name = e.pointName;
            let text;
-           
+           console.log("eee", e)
               
                     
                    this.props.chartData.map((i) => {

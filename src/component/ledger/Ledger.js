@@ -66,6 +66,7 @@ const Ledger = () => {
          const [creadit, setCreadit] = useState();
          const [balance, setBalance] = useState()
          const [detData, setDetData] = useState()
+         const [checkValue, setCheckValue] = useState(null)
          const classes = useStyle()  
          let checkedValueTo = ["NSE-F&O       ", "BSE-Cash      ", "NSE-Cash      ", "NSE-FX        "]
       
@@ -153,12 +154,34 @@ const Ledger = () => {
                        </select>
                        )
                    }
-                   const TemplateNameCell = () => {
-                              return(
-                                <input type="checkbox"  style={{display: "flex", width: "20px"
-                                , height: "20px", margin: "auto"}} className = "checked" ></input>
-                              )
-                          }
+                   const TemplateNameCell = (e) => {
+                   
+                    let aka
+                    if(checkValue == e.rowIndex){
+                     
+                     
+                      aka = true
+                    }
+                    else {
+                     
+                      aka = false
+                    }
+                             return(
+                                  <>
+                                  {aka === true ?
+                                                                  <input type="checkbox" onChange = {() => valueFun(e.rowIndex)} style={{display: "flex", width: "20px"
+                                                                  , height: "20px", margin: "auto"}} checked={true} className = "checked" ></input>
+                                                              :
+                                                              <input type="checkbox" onChange = {() => valueFun(e.rowIndex)} style={{display: "flex", width: "20px"
+                                                              , height: "20px", margin: "auto"}} checked={false} className = "checked" ></input>
+                                                          }
+                                  </>  )
+                         }
+                         const valueFun = (e) => {
+                         
+                           setCheckValue(e)
+                           
+                         }
             const onRowPre =(e) => {  
        
               if(e.rowType == "header"){
@@ -344,7 +367,7 @@ const Ledger = () => {
                  <Selection
             mode="multiple"
          allowSelectAll={false}
-            showCheckBoxesMode= "always"
+            showCheckBoxesMode= "none"
           />
                      
                      <Column
