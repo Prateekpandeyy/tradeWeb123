@@ -65,10 +65,11 @@ const Ledger = () => {
          const [debit, setDebit] = useState(67)
          const [creadit, setCreadit] = useState();
          const [balance, setBalance] = useState()
+         const [tradeValue, setTradeValue] = useState(1)
          const [detData, setDetData] = useState()
          const [checkValue, setCheckValue] = useState(null)
          const classes = useStyle()  
-         let checkedValueTo = ["NSE-F&O       ", "BSE-Cash      ", "NSE-Cash      ", "NSE-FX        "]
+         let checkedValueTo = ["NSE-F&O       ", "BSE-Cash      ", "NSE-Cash      ", "NSE-FX        ", "MCX-Comm", "NCDEX-Comm"]
       
         let cread = 0;
          const [searchDate, setSearchDate] = useState({
@@ -148,9 +149,10 @@ const Ledger = () => {
                                           }
          const RenderTitleHeader = () => {
                        return(
-                           <select className={classes.MySelect}>
-                           <option>Trading</option>
-                           <option> Trading</option>
+                           <select className={classes.MySelect} value={tradeValue} 
+                           onChange={(e) => tradeFun(e)}>
+                           <option value={1}>Trading</option>
+                           <option value={2}> NetTrade</option>
                        </select>
                        )
                    }
@@ -182,6 +184,21 @@ const Ledger = () => {
                            setCheckValue(e)
                            
                          }
+                         const tradeFun = (e) => {
+                           setTradeValue(e.target.value)
+                          
+                            axios.get(`${baseUrl}/TradeWeb/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`, myConfig)
+                            .then((res) => {
+                            
+                        if(res.status === 200){
+                        
+                        
+                          setDate(res.data)
+                         
+                        }
+                            })
+                         }
+                         
             const onRowPre =(e) => {  
        
               if(e.rowType == "header"){

@@ -79,30 +79,35 @@ else if (e.data.data == "Balance") {
     })
   }
  myText = (e) => {
-  
+ 
+ 
+ 
     var name = e.pointName;
-           let text;
-           console.log("eee", e)
-              
-                    
+           let text1, text2, text3;
                    this.props.chartData.map((i) => {
                     if(i.data === "Creadit"){
-                     text = i.value
+                     text1 = i.value
                     }
                    else if(i.data === "Debit"){
-                      text = i.value
+                      text2 = i.value
                     }
                     else if(i.data === "Balance"){
                   
-                      text = i.value                    }
+                      text3 = i.value                    }
                   })
-                   
-                
-            
-            return name  ;
-        
-   
-   
+ 
+            if(e.pointIndex == 0){
+              name = name + " " + " " + " " + " " + " " +
+              " " + " " + " " + " " + " " + " " + text1
+            }
+            else  if(e.pointIndex == 1){
+              name = name +
+           "        " + text2     }
+            else  if(e.pointIndex == 2){
+              name = name + " " + " " +
+                text3            }
+           
+            return name
   }
 
   render() {
@@ -130,15 +135,19 @@ else if (e.data.data == "Balance") {
           horizontalAlignment="left"
           verticalAlignment="bottom"
          columnItemSpacing={200}
+         itemTextPosition = "right"
       customizeText = {this.myText}
+    
        
-          /> 
+          > 
+            <Font size={18} weight={500} />
+          </Legend>
         
          
        
         <Series argumentField="data"  valueField="value">
     <Label customizeText={this.mylabelText} />
-            <Font size={16} weight={1000} />
+          
         
          {/* <Border visible={true} solid color="green"/> */}
         </Series>
