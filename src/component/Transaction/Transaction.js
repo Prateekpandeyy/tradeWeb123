@@ -92,6 +92,7 @@ const Transaction = () => {
     const [selectValue, setSelectValue] = useState(1);
     const [allMode, selectAllMode] = useState("allPages");
     const [checkBoxesMode, setCheckBoxMode] = useState('Always')
+    const [showTime, setShowTime] = useState(true)
     const [transactionData, setTransationData] = useState()
     const startupSelectedKeys = [1, 4];
     const [test, setTest] = useState(false)
@@ -193,7 +194,15 @@ const Transaction = () => {
       return k
     }
     const mySel = (e) => {
-     setTest(!test)
+     setTest(e.target.value)
+     console.log("done", e.target.value == "1")
+     if(e.target.value == 1 || e.target.value == 2){
+      
+       setShowTime(true)
+     }
+     else{
+       setShowTime(false)
+     }
     }
     const showCheckBoxesMode = ['none', 'onClick', 'onLongTap', 'always'];
     const selectAllModes = ['allPages', 'page']    
@@ -203,24 +212,27 @@ const Transaction = () => {
          <TopBox>
          <Box className={classes.boxRoot}>
      
-            <select className={classes.MySelect} onChange = {(e) => mySel(e)}>
-                <option>Trades</option>
-                <option> Deliveries</option>
-                <option>Receipts</option>
-                <option>Payments</option>
-                <option>Journals</option>
-                <option>Bills</option>
-                <option>AGTS</option>
-                <option>Mutual Funds</option>
+            <select className={classes.MySelect} value={test} onChange = {(e) => mySel(e)}>
+                <option value={1}>Trades</option>
+                <option value={2}> Deliveries</option>
+                <option value={3}>Receipts</option>
+                <option value={4}>Payments</option>
+                <option value = {5}>Journals</option>
+                <option value = {6}>Bills</option>
+                <option value = {7}>AGTS</option>
+                <option value = {8}>Mutual Funds</option>
             </select>
             </Box>
-            <Box className={classes.boxRoot}>
+           {
+             showTime === true ?
+             <Box className={classes.boxRoot}>
            
-            <select className={classes.MySelect}>
-                <option>Item Wise</option>
-                <option> Date Wise</option>
-            </select>
-            </Box>
+             <select className={classes.MySelect}>
+                 <option>Item Wise</option>
+                 <option> Date Wise</option>
+             </select>
+             </Box> : ""
+           }
             <Box className={classes.boxRoot}>
           
                         <select className={classes.MySelect2}>
