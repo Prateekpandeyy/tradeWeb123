@@ -5,20 +5,16 @@ import { styled, makeStyles } from '@mui/styles';
 
 import {
     DataGrid, Column, 
-    Summary, TotalItem, Selection, Grouping
+    Summary, TotalItem, Selection, Grouping, Export
 } from 'devextreme-react/data-grid';
 import BottomLedger from './BottomLedger';
 import ChartComp from './ChartComp';
-import { FaFileCsv } from 'react-icons/fa';
-import { RiFileExcel2Fill } from 'react-icons/ri';
-import { AiFillPrinter } from 'react-icons/ai';
-import { GrDocumentText} from 'react-icons/gr';
-import {AiFillFilePdf} from 'react-icons/ai';
+
 import { baseUrl } from '../baseUrl/BaseUrl';
 import axios from 'axios';
 import Layout from '../Layout/Layout';
 import MyContainer from '../commonFunction/MyContainer';
-import htmlImg from '../../images/PngImages/html.png';
+
 import 'devextreme/dist/css/dx.light.css';
  const useStyle = (makeStyles)({
     boxRoot: {
@@ -67,7 +63,7 @@ const Ledger = () => {
          const [balance, setBalance] = useState()
          const [tradeValue, setTradeValue] = useState(1)
          const [detData, setDetData] = useState()
-         const [checkValue, setCheckValue] = useState(null)
+         const [checkValue, setCheckValue] = useState([])
          const classes = useStyle()  
          let checkedValueTo = ["NSE-F&O       ", "BSE-Cash      ", "NSE-Cash      ", "NSE-FX        ", "MCX-Comm", "NCDEX-Comm"]
       
@@ -152,14 +148,16 @@ const Ledger = () => {
                            <select className={classes.MySelect} value={tradeValue} 
                            onChange={(e) => tradeFun(e)}>
                            <option value={1}>Trading</option>
-                           <option value={2}> NetTrade</option>
+                           <option value={2}> Commodity </option>
                        </select>
                        )
                    }
                    const TemplateNameCell = (e) => {
+
                    
                     let aka
-                    if(checkValue == e.rowIndex){
+                
+                    if(checkValue.includes(e.rowIndex)){
                      
                      
                       aka = true
@@ -168,6 +166,7 @@ const Ledger = () => {
                      
                       aka = false
                     }
+                  
                              return(
                                   <>
                                   {aka === true ?
@@ -180,13 +179,14 @@ const Ledger = () => {
                                   </>  )
                          }
                          const valueFun = (e) => {
-                         
-                           setCheckValue(e)
+                           let pp = [...checkValue]
+                         pp.push(e)
+                           setCheckValue(pp)
                            
                          }
                          const tradeFun = (e) => {
                            setTradeValue(e.target.value)
-                          
+                          setCheckValue([])
                             axios.get(`${baseUrl}/TradeWeb/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`, myConfig)
                             .then((res) => {
                             
@@ -224,6 +224,12 @@ const Ledger = () => {
            
               }
           }      
+          const TemplateNameCellCreadit = (e) => {
+          
+          let a = e.data.Credit;
+        let b =  Math.abs(a)
+        return b;
+          } 
           const myBuyAmount = (e) => {
     
             let k = parseFloat(e.value).toFixed(2)
@@ -294,7 +300,7 @@ const Ledger = () => {
                                        options.totalValue = 0;
                                      } else if (options.summaryProcess === 'calculate') {
                                        if (options.component.isRowSelected(options.value.ExchSeg)) {
-                                         options.totalValue += options.value.Credit;
+                                         options.totalValue += Math.abs(options.value.Credit);
                                         
                                        }
                                      }
@@ -317,7 +323,7 @@ const Ledger = () => {
                                      }
                                    }  
                                
-                               
+                              
                                                                                       }
   return(
    <>
@@ -371,7 +377,7 @@ const Ledger = () => {
           showRowLines = {true}
           onRowPrepared={onRowPre}
           columnAutoWidth={true}
-          columnMinWidth={80}
+          columnMinWidth={50}
           showColumnLines = {false}
           columnHidingEnabled={true}
           allowColumnResizing={true}
@@ -397,37 +403,39 @@ const Ledger = () => {
                 <Column
                 dataField="ExchSeg"
                 caption="ExchSeg"
-                alignment="center">
+               >
                    
                 </Column>
              
                 <Column
                 dataField="OpeningBalance"
                caption="Opening Balance"
-                alignment="center">
+                >
                    
                 </Column>
              
                 <Column
                 dataField="Debit"
                 caption="Debit"
-                alignment="center">
+               >
                    
                 </Column>
              
                 <Column
                 dataField="Credit"
                 caption = "Creadit"
-                alignment="center">
+                cellRender={TemplateNameCellCreadit}
+               >
                    
              </Column>
              
                 <Column
                 dataField="Balance"
                 caption= "Balance"
-                alignment="center">
+               >
                    
                 </Column>
+              
                 <Summary calculateCustomSummary={calculateSelectedRow}>
                 <TotalItem
                    cssClass={"warning"}
@@ -469,18 +477,7 @@ const Ledger = () => {
    </MyContainer>
    <Grid container>
             <Grid item sm = {12} style={{padding: "0px 20px"}}>
-                <Box sx={{textAlign: "right"}} p={2}>
-<FaFileCsv style={{color: "#80BB55", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<img src={htmlImg} style={{margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",  borderRadius : "10px", padding: "5px", maxWidth : "40px", maxHeight : "40px" }} />
-<RiFileExcel2Fill style={{color: "#107C41", margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<AiFillPrinter style={{color: "#424343", margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<GrDocumentText style={{color: "#696D6E", margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-                </Box>
+          
              <BottomLedger ledgerReport = {detData} 
              />
             </Grid>

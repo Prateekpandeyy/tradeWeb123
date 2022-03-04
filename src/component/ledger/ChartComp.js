@@ -97,12 +97,11 @@ else if (e.data.data == "Balance") {
                   })
  
             if(e.pointIndex == 0){
-              name = name + " " + " " + " " + " " + " " +
-              " " + " " + " " + " " + " " + " " + text1
+              name = name + " " + " " + " " + " " + text1
             }
             else  if(e.pointIndex == 1){
               name = name +
-           "        " + text2     }
+           "      " + text2     }
             else  if(e.pointIndex == 2){
               name = name + " " + " " +
                 text3            }
@@ -115,7 +114,7 @@ else if (e.data.data == "Balance") {
 
     return (
       <Paper>
-       <Box style={{padding: "10px 20px"}}>
+       <Box>
        <PieChart 
        type="doughnut"
         dataSource={this.state.data33}
@@ -126,8 +125,8 @@ else if (e.data.data == "Balance") {
        
       >
           <Size
-                    height={350}
-                    width={300}
+                    height={200}
+                    width={250}
                 />
         <Legend
           orientation="horizontal"

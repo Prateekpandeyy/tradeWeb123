@@ -35,6 +35,7 @@ root: {
 }
 })
 const Header  = (props) => {
+    const userName = localStorage.getItem("userName")
     return(
       <MainContainer>
           <NameProfile>
@@ -69,7 +70,7 @@ const Header  = (props) => {
           <img src={notificatonImg} style={{width: "28px", height: "28px", margin: "0 10px",  backgroundColor: "#E3F0FF"}} />
          <img src={profileImg} style={{width : "28px", height: "28px", margin: "0 10px"}} />
          <Typography variant="subtitle1">
-             Jhon P. Baxter
+           {userName}
              </Typography>
              <ExpandMoreIcon />
           </ProfileInfo>

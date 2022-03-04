@@ -12,6 +12,17 @@ import htmlImg from '../../images/PngImages/html.png';
 import { DataGrid, Column,Summary, TotalItem, Paging, Pager } from 'devextreme-react/data-grid';
 import { baseUrl } from '../baseUrl/BaseUrl';
 import axios from 'axios';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import locale from 'antd/lib/locale/zh_CN';
+import { DatePicker,  Space } from 'antd';
+import 'antd/dist/antd.css';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 const data2 = [
     {
       OrderID : 1,
@@ -31,37 +42,37 @@ const data3 = [
   {
       ScripCode : 1,
       order : "Central GST @9 %",
-      trade : "2.13",
+      trade : 2.13,
       
   },
   {
     ScripCode : 2,
     order : "SEBI FEES",
-    trade : "0.02",
+    trade : 0.02,
     
 },
 {
   ScripCode : 3,
   order : "Stamp Duty",
-  trade : "4.0",
+  trade : 4.0,
   
 }
 ,  {
   ScripCode : 4,
   order : "State GST @9 &",
-  trade : "2.13",
+  trade : 2.13,
   
 },
 {
   ScripCode : 4,
   order : "Transaction Charges [Special]",
-  trade : "23.00",
+  trade : 23.00,
   
 },
 {
   ScripCode : 4,
   order : "Due To Us",
-  trade : "23.48",
+  trade : 23.48,
   
 }
 ]
@@ -80,7 +91,8 @@ const useStyle = (makeStyles)({
       }, 
       MySelect: {
           display:"flex",
-          width: "250px",
+          maxWidth: "200px",
+          
     height: "40px",
     background: "#ffffff",
     border: "1px solid #EBEBEB",
@@ -92,7 +104,7 @@ const useStyle = (makeStyles)({
       } ,
       MySelect2: {
         display:"flex",
-        width: "300px",
+        maxWidth: "300px",
   height: "40px",
   background: "#ffffff",
   border: "1px solid #EBEBEB",
@@ -122,7 +134,7 @@ const MyButton = styled(Button)({
 const Trading = () => {
     const [selectValue, setSelectValue] = useState(1);
     const [exchange, setExchange] = useState([])
-    const [showSetlmentType, setShowSetlmentType] = useState(false)
+    const [showSetlmentType, setShowSetlmentType] = useState(true)
    const [stlType, setStlType] = useState([])
     const [stlfieldType , setStlFieldType] = useState("")
     const [exchangeValue, setExchangeValue] = useState("")
@@ -131,24 +143,9 @@ const Trading = () => {
     const token = localStorage.getItem("token")
     const allowedPageSizes = [5, 10, 15]
     const checkedValueTo = ["2020"]
-//     useEffect((i) => {
-//       getExchange()
-//     }, [])
-//     const getExchange = () => {
-//       
-//       const myConfig = {
-//         headers: {
-//            Authorization: "Bearer " + token
-//         }
-//      }
-//      axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
-// .then((res) => {
-// setExchange(res.data)
-//   
-// })
-
-
-//     }
+    const [getFirstValue, setFirstValue] = useState();
+    const [getScrondValue, setSecondValue] = useState()
+    const dataGridRef = React.createRef();
 useEffect(()=>{
   getExchange()
 } ,[])
@@ -165,7 +162,11 @@ const getExchange = () => {
      
     });
 };
-
+const myBuyAmount = (e) => {
+    
+  let k = parseFloat(e.value).toFixed(2)
+  return k
+}   
 
    
     const onRowPre =(e) => {  
@@ -245,9 +246,12 @@ const getExchange = () => {
       }
       // exchange option function
       const exchangeFunction = (e) => {
-      
+      console.log("eee", e.target.value.slice(0, 2))
+      setStlFieldType([])
+      setFirstValue(e.target.value[1])
+      let a = e.target.value.slice(0, 2)
      setExchangeValue(e.target.value)
-        if(e.target.value === "C"){
+        if(a === "AB"){
           setShowSetlmentType(true)
         }
         else{
@@ -259,7 +263,7 @@ const getExchange = () => {
           }
        }
 
-axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value}`, myConfig)
+axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value[1]}`, myConfig)
   .then((res) => {
    
    setStlType(res.data)
@@ -275,9 +279,9 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value}`, m
              Authorization: "Bearer " + token
           }
        }
+console.log("kdkd", stlfieldType, getFirstValue )
 
-
-axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=NN&dt=20210624`, myConfig)
+axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&dt=20210624`, myConfig)
   .then((res) => {
   
  setData(res.data)
@@ -345,6 +349,68 @@ else if (i.ScripName === "Due To Us :"){
       const stymtType = (e) => {
         setStlFieldType(e.target.value)
       }
+      const handleDateChange = (e) => {
+        console.log("done")
+      }
+      const exportGrid = React.useCallback(() => {
+        const doc = new jsPDF();
+        const dataGrid = dataGridRef.current.instance;
+    
+        exportDataGridToPdf({
+          jsPDFDocument: doc,
+          component: dataGrid,
+        }).then(() => {
+          doc.save('Customers.pdf');
+        });
+      });
+      const onExporting = (e) => {
+        const workbook = new Workbook();
+        const worksheet = workbook.addWorksheet('Main sheet');
+        const dataGrid = dataGridRef.current.instance;
+        exportDataGrid({
+            component: dataGrid,
+            worksheet: worksheet,
+            customizeCell: function(options) {
+                const excelCell = options;
+                excelCell.font = { name: 'Arial', size: 12 };
+                excelCell.alignment = { horizontal: 'left' };
+            } 
+        }).then(function() {
+            workbook.xlsx.writeBuffer()
+                .then(function(buffer) {
+                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.xlsx');
+                });
+        });
+        e.cancel = true;
+    }
+    
+    const onPirnt = (e) => {
+      console.log("print")
+      const dataGrid = dataGridRef.current.instance;
+    //  window.print()
+    window.print(dataGrid)
+    
+    }
+    const onExportingCsv = (e) => {
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet('Main sheet');
+      const dataGrid = dataGridRef.current.instance;
+      exportDataGrid({
+          component: dataGrid,
+          worksheet: worksheet,
+          customizeCell: function(options) {
+              const excelCell = options;
+              excelCell.font = { name: 'Arial', size: 12 };
+              excelCell.alignment = { horizontal: 'left' };
+          } 
+      }).then(function() {
+          workbook.csv.writeBuffer()
+              .then(function(buffer) {
+                  saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.csv');
+              });
+      });
+      e.cancel = true;
+  }
       const classes = useStyle()
     return(
         <Layout subLink = "Bills">
@@ -355,14 +421,14 @@ else if (i.ScripName === "Due To Us :"){
             Exchange : 
         </Typography>
         <select className={classes.MySelect} onChange={(e) => exchangeFunction(e)}
-        value = {exchangeValue}>
+        value = {exchangeValue} multiple={false}>
            <option key={0}> select </option>
                {
                  exchange?.map((i, e) => {
                    return(
                    <>
                     
-                     <option key={e} value ={i.CESCd[1]}>{i.exchange + " " + i.segment}</option>
+                     <option key={e} value ={i.CESCd}>{i.exchange + " " + i.segment}</option>
                    </>
                    )
                  })
@@ -370,45 +436,67 @@ else if (i.ScripName === "Due To Us :"){
              
             </select>
             </Box>
+         {showSetlmentType === true ?
          
-            <Box className={classes.boxRoot}>
-            <Typography variant="body1" mr={2}>
-           Stlmnt Type : 
-        </Typography>
-    
-          <select className={classes.MySelect} onChange= {(e) => stymtType(e)}
-          value={stlfieldType}>
-                    <option key={1}> select </option>
-        {
-          stlType.map((i) => {
-            return(
-              <option key={i.type} value={i.type}>{i.description} </option>
-            )
-          })
-        }
-     </select>
-      
-            </Box> 
+         <Box className={classes.boxRoot}>
+         <Typography variant="body1" mr={2}>
+        Stlmnt Type : 
+     </Typography>
+ 
+       <select className={classes.MySelect2} onChange= {(e) => stymtType(e)}
+       value={stlfieldType} multiple = {false}>
+                 <option key={1}> select </option>
+     {
+       stlType.map((i) => {
+         return(
+           <option key={i.type} value={i.type}>{i.description} </option>
+         )
+       })
+     }
+  </select>
+   
+         </Box>  : ""}
             <Box className={classes.boxRoot}>
        <MyData>
-           02/06/2021
+       <DatePicker
+          defaultValue={moment(new Date(), 'DD MMM, YYYY')}
+          defaultPickerValue={moment(new Date(), 'DD MMM, YYYY')}
+          format={'DD/MM/YYYY'}
+          onChange={handleDateChange}
+          bordered={false}
+          allowClear={false}
+          suffixIcon
+          style={{
+            height: "auto",
+            width: "auto",
+            border: "none",
+            borderRadius: "0px",
+            cursor: "pointer",
+            fontSize: "17px",
+            margin: "0px",
+            padding: "0px"
+          }}
+        />
        </MyData>
+    
+
             </Box>
             <Box className={classes.boxRoot}>
             <MyButton variant="contained" onClick = {(e)=> showData(e)}>Show</MyButton>
             </Box>
             <Box className={classes.boxRoot}>
-            <FaFileCsv style={{color: "#80BB55", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
+            <Box sx={{textAlign: "right"}} p={2}>
+<FaFileCsv title="Csv File" onClick={onExportingCsv} style={{color: "#80BB55", cursor : "pointer", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<img alt="html Image" src={htmlImg} style={{margin : "2px 8px", border : "1px solid #EBEBEB",
+<img src={htmlImg} title="html" style={{margin : "2px 8px", cursor : "pointer", border : "1px solid #EBEBEB",
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",  borderRadius : "10px", padding: "5px", maxWidth : "40px", maxHeight : "40px" }} />
-<AiFillFilePdf style={{color: "#107C41", margin : "2px 8px", border : "1px solid #EBEBEB",
+<RiFileExcel2Fill title="Excel" onClick={onExporting} style={{color: "#107C41", cursor : "pointer", margin : "2px 8px", border : "1px solid #EBEBEB",
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<AiFillPrinter style={{color: "#424343", margin : "2px 8px", border : "1px solid #EBEBEB",
+<AiFillPrinter title="Print" onClick={onPirnt} style={{color: "#424343", cursor : "pointer", margin : "2px 8px", border : "1px solid #EBEBEB",
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<GrDocumentText style={{color: "#696D6E", margin : "2px 8px", border : "1px solid #EBEBEB",
+<GrDocumentText title="pdf" onClick={exportGrid} style={{color: "#696D6E", cursor : "pointer", margin : "2px 8px", border : "1px solid #EBEBEB",
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-
+                </Box>
             </Box>
          </TopBox>
          <MyContainer>
@@ -417,7 +505,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
              <DataGrid 
              dataSource = {data}
              onRowPrepared={onRowPre}
-            
+             ref={dataGridRef}
               showRowLines={false}
               showCheckBoxesMode={true}
               showBorders = {true}
@@ -525,18 +613,18 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                   >
                    </Column>
                     
-                    <Summary calculateCustomSummary={calculateSelectedRow}>
+                    <Summary>
                     <TotalItem
               cssClass={"warning"}
               displayFormat="Sub Total"
               showInColumn="order" />
                  <TotalItem
-              name="SelectedRowsSummarybottom"
-              summaryType="custom"
-            
+           
+              summaryType="sum"
+              column="trade"
               displayFormat="{0}"
               cssClass={"warning4"}
-            
+            customizeText = {myBuyAmount}
               showInColumn="trade" />
               </Summary>
            
