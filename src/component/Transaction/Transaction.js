@@ -18,6 +18,21 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { baseUrl } from '../baseUrl/BaseUrl';
 import "./NewFile.scss";
+import 'antd/dist/antd.css';
+
+import { DatePicker, Space } from 'antd';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
+
+const dateFormat = 'YYYY/MM/DD';
+const weekFormat = 'MM/DD';
+const monthFormat = 'YYYY/MM';
+
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
+
+const customFormat = value => `custom format: ${value.format(dateFormat)}`;
+
 const TopBox = styled(Box)({
     display: "flex",
     alignItems: "center",
@@ -102,6 +117,10 @@ const Transaction = () => {
     let a = 0;
     let checkedValueTo =  ["532628", "524208", "543210", "523204"]
     const allowedPageSizes = [5, 10, 15]
+    const customWeekStartEndFormat = value =>
+  `${moment(value).startOf('week').format(weekFormat)} ~ ${moment(value)
+    .endOf('week')
+    .format(weekFormat)}`;
     useEffect(() => {
         getTransationData()
     }, [])
@@ -206,6 +225,9 @@ const Transaction = () => {
     }
     const showCheckBoxesMode = ['none', 'onClick', 'onLongTap', 'always'];
     const selectAllModes = ['allPages', 'page']    
+    const getValue = (e) => {
+      console.log("eee", e.target.value)
+    }
     return(
         <Layout mainLink = "Transaction" noBreadcrumb = {true} >
         
@@ -235,10 +257,15 @@ const Transaction = () => {
            }
             <Box className={classes.boxRoot}>
           
-                        <select className={classes.MySelect2}>
-                            <option>From   -02/06/2021 TO - 02/06/2021</option>
-               
-            </select>
+            <Space direction="vertical" size={12}>
+    <RangePicker
+      defaultValue={[moment('2015/01/01', dateFormat), 
+      moment('2015/01/01', dateFormat)]}
+      format={dateFormat}
+      onChange={getValue}
+    />
+  
+  </Space>
             </Box>
             <Box className={classes.boxRoot}>
             <MyButton variant="contained">Show</MyButton>

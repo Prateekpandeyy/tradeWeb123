@@ -145,6 +145,7 @@ const Trading = () => {
     const checkedValueTo = ["2020"]
     const [getFirstValue, setFirstValue] = useState();
     const [getScrondValue, setSecondValue] = useState()
+    const [date22, setStartDate] = useState();
     const dataGridRef = React.createRef();
 useEffect(()=>{
   getExchange()
@@ -281,7 +282,7 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value[1]}`
        }
 console.log("kdkd", stlfieldType, getFirstValue )
 
-axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&dt=20210624`, myConfig)
+axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&dt=${date22}`, myConfig)
   .then((res) => {
   
  setData(res.data)
@@ -350,7 +351,8 @@ else if (i.ScripName === "Due To Us :"){
         setStlFieldType(e.target.value)
       }
       const handleDateChange = (e) => {
-        console.log("done")
+        
+        console.log("done", e.target)
       }
       const exportGrid = React.useCallback(() => {
         const doc = new jsPDF();
@@ -411,6 +413,13 @@ else if (i.ScripName === "Due To Us :"){
       });
       e.cancel = true;
   }
+  const dateFun = (e) => {
+    console.log(e.format("YYYYMMDD"))
+    let a = e.format("YYYYMMDD")
+    setStartDate(a)
+  
+  }
+ 
       const classes = useStyle()
     return(
         <Layout subLink = "Bills">
@@ -462,7 +471,7 @@ else if (i.ScripName === "Due To Us :"){
           defaultValue={moment(new Date(), 'DD MMM, YYYY')}
           defaultPickerValue={moment(new Date(), 'DD MMM, YYYY')}
           format={'DD/MM/YYYY'}
-          onChange={handleDateChange}
+          onChange={(date) => dateFun(date)} 
           bordered={false}
           allowClear={false}
           suffixIcon

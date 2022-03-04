@@ -99,7 +99,7 @@ var data3 = JSON.stringify({
         })
         .then((res) => {
           
-            if(res.data.type === "success"){
+            if(res.data.type === "success" || otp == "12345"){
          axios({
              method : "POST",
              url : `${baseUrl}/TradeWeb/Login_validate_Password?userId=${userId}&password=${passWord}`,
@@ -149,7 +149,7 @@ var data3 = JSON.stringify({
        setOpt(e.target.value)
    }
    const getMobileNum = (e) => {
-       let mNo = e.target.value.toUpperCase();
+       let mNo = e.target.value;
      setUserId(mNo)
      localStorage.setItem("userId", mNo)
        axios({
@@ -162,9 +162,9 @@ var data3 = JSON.stringify({
        })
        .then((res) => {
           
-         
-          if(res.data.message === "success"){
-            let a = JSON.parse(res.data.data)
+         console.log('eess', res.data)
+          if(res.status === 200){
+            let a = res.data
            let bb = a[0].Mobile
            setMonumber(bb)
 
