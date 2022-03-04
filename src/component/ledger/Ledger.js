@@ -9,16 +9,12 @@ import {
 } from 'devextreme-react/data-grid';
 import BottomLedger from './BottomLedger';
 import ChartComp from './ChartComp';
-import { FaFileCsv } from 'react-icons/fa';
-import { RiFileExcel2Fill } from 'react-icons/ri';
-import { AiFillPrinter } from 'react-icons/ai';
-import { GrDocumentText} from 'react-icons/gr';
-import {AiFillFilePdf} from 'react-icons/ai';
+
 import { baseUrl } from '../baseUrl/BaseUrl';
 import axios from 'axios';
 import Layout from '../Layout/Layout';
 import MyContainer from '../commonFunction/MyContainer';
-import htmlImg from '../../images/PngImages/html.png';
+
 import 'devextreme/dist/css/dx.light.css';
  const useStyle = (makeStyles)({
     boxRoot: {
@@ -229,7 +225,7 @@ const Ledger = () => {
               }
           }      
           const TemplateNameCellCreadit = (e) => {
-            console.log("eeee", e.data.Credit)
+          
           let a = e.data.Credit;
         let b =  Math.abs(a)
         return b;
@@ -381,7 +377,7 @@ const Ledger = () => {
           showRowLines = {true}
           onRowPrepared={onRowPre}
           columnAutoWidth={true}
-          columnMinWidth={80}
+          columnMinWidth={50}
           showColumnLines = {false}
           columnHidingEnabled={true}
           allowColumnResizing={true}
@@ -481,18 +477,7 @@ const Ledger = () => {
    </MyContainer>
    <Grid container>
             <Grid item sm = {12} style={{padding: "0px 20px"}}>
-                <Box sx={{textAlign: "right"}} p={2}>
-<FaFileCsv style={{color: "#80BB55", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<img src={htmlImg} style={{margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",  borderRadius : "10px", padding: "5px", maxWidth : "40px", maxHeight : "40px" }} />
-<RiFileExcel2Fill style={{color: "#107C41", margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<AiFillPrinter style={{color: "#424343", margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-<GrDocumentText style={{color: "#696D6E", margin : "2px 8px", border : "1px solid #EBEBEB",
-boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
-                </Box>
+          
              <BottomLedger ledgerReport = {detData} 
              />
             </Grid>

@@ -114,7 +114,7 @@ var data3 = JSON.stringify({
                 localStorage.setItem("userName", a[0].ClientName)
                 localStorage.setItem("token", res2.data.token)  
              Swal.fire({
-                 title: "succews",
+                 title: "success",
                  html :"login successfully",
                  icon : "success"
              })
