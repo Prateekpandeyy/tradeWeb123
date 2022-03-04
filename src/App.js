@@ -6,20 +6,18 @@ import NewPassword from './component/login/NewPassword';
 import Trading from './component/Trading/Trading';
 import Transaction from './component/Transaction/Transaction';
 import 'devextreme/dist/css/dx.light.css';
-const App = () => {
+function App() {
   return (
     <>
-   <div>
-   <BrowserRouter>
+    <BrowserRouter>
     <Routes>
       <Route exact path = "/" element={<Login />} />
-      <Route  path='/new-password' element={<NewPassword />} />
-      <Route  path = "/tradeweb/lodger" element={<Ledger />} />
-      <Route  path = "/tradeweb/trading" element={<Trading />} />
-      <Route  path = "/tradeweb/transaction" element={<Transaction />} />
+      <Route exact path='/new-password' element={<NewPassword />} />
+      <Route exact path = "/tradeweb/lodger" element={<Ledger />} />
+      <Route exact path = "/tradeweb/trading" element={<Trading />} />
+      <Route exact path = "/tradeweb/transaction" element={<Transaction />} />
       </Routes>
       </BrowserRouter>
-   </div>
       </>
   );
 }
