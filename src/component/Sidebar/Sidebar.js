@@ -67,8 +67,8 @@ const Sidebar = () => {
                    <img src={documentImg} className={classes.myNav} />
                    </Link>
                     </li>
-                    <li className={splitLocation[2] === "lodger" ? "myMenuActive" : ""}>
-                       <Link to ="/tradeweb/lodger">
+                    <li className={splitLocation[2] === "ledger" ? "myMenuActive" : ""}>
+                       <Link to ="/tradeweb/ledger">
                        <img src={bookImg} className={classes.myNav} />
                        </Link>
                     </li>

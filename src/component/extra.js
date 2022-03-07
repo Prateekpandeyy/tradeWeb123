@@ -1797,7 +1797,7 @@ const Ledger = () => {
            }
        ]  
        const customUpdateRow = (e) => {
-        console.log("eee", e)
+    
       }                                         
         
        const getSelectData = (e) => {

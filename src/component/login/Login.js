@@ -110,7 +110,7 @@ var data3 = JSON.stringify({
          
             if(res2.data.status === true){
                 let a = JSON.parse(res2.data.data)
-                console.log('res', a[0].ClientName)
+             
                 localStorage.setItem("userName", a[0].ClientName)
                 localStorage.setItem("token", res2.data.token)  
              Swal.fire({
@@ -118,7 +118,7 @@ var data3 = JSON.stringify({
                  html :"login successfully",
                  icon : "success"
              })
-             history("/tradeweb/lodger")
+             history("/tradeweb/ledger")
             }
             else{
                 Swal.fire({
@@ -162,7 +162,7 @@ var data3 = JSON.stringify({
        })
        .then((res) => {
           
-         console.log('eess', res.data)
+     
           if(res.status === 200){
             let a = res.data
            let bb = a[0].Mobile

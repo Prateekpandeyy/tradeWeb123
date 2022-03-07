@@ -13,7 +13,7 @@ function App() {
     <Routes>
       <Route exact path = "/" element={<Login />} />
       <Route exact path='/new-password' element={<NewPassword />} />
-      <Route exact path = "/tradeweb/lodger" element={<Ledger />} />
+      <Route exact path = "/tradeweb/ledger" element={<Ledger />} />
       <Route exact path = "/tradeweb/trading" element={<Trading />} />
       <Route exact path = "/tradeweb/transaction" element={<Transaction />} />
       </Routes>

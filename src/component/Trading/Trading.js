@@ -247,7 +247,7 @@ const myBuyAmount = (e) => {
       }
       // exchange option function
       const exchangeFunction = (e) => {
-      console.log("eee", e.target.value.slice(0, 2))
+    
       setStlFieldType([])
       setFirstValue(e.target.value[1])
       let a = e.target.value.slice(0, 2)
@@ -280,7 +280,7 @@ axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value[1]}`
              Authorization: "Bearer " + token
           }
        }
-console.log("kdkd", stlfieldType, getFirstValue )
+
 
 axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&dt=${date22}`, myConfig)
   .then((res) => {
@@ -352,7 +352,7 @@ else if (i.ScripName === "Due To Us :"){
       }
       const handleDateChange = (e) => {
         
-        console.log("done", e.target)
+       
       }
       const exportGrid = React.useCallback(() => {
         const doc = new jsPDF();
@@ -387,7 +387,7 @@ else if (i.ScripName === "Due To Us :"){
     }
     
     const onPirnt = (e) => {
-      console.log("print")
+
       const dataGrid = dataGridRef.current.instance;
     //  window.print()
     window.print(dataGrid)
@@ -414,7 +414,7 @@ else if (i.ScripName === "Due To Us :"){
       e.cancel = true;
   }
   const dateFun = (e) => {
-    console.log(e.format("YYYYMMDD"))
+
     let a = e.format("YYYYMMDD")
     setStartDate(a)
   

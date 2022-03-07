@@ -7,7 +7,7 @@ import PieChart, {
   Label,
   Size,
   Font,
-  Connector,
+  Margin,
   Border,
 } from 'devextreme-react/pie-chart';
 import { Animation } from
@@ -15,6 +15,7 @@ import { Animation } from
 
 import {Box} from "@mui/material";
 import { styled } from '@mui/styles';
+
 const data = [
   { country: 'Russia', area: 12 },
   { country: 'Canada', area: 1 },
@@ -129,22 +130,23 @@ else if (e.data.data == "Balance") {
                     width={250}
                 />
         <Legend
-          orientation="horizontal"
-          itemTextPosition="right"
-          horizontalAlignment="left"
-          verticalAlignment="bottom"
-         columnItemSpacing={200}
-         itemTextPosition = "right"
-      customizeText = {this.myText}
-    
+           
+           orientation="vertical"
+           horizontalAlignment="center"
+           verticalAlignment="bottom"
+        rowItemSpacing = {10}
+        columnItemSpacing={60}
+       
+       customizeText = {this.myText}
        
           > 
+          <Margin left = {20} />
             <Font size={18} weight={500} />
           </Legend>
         
          
        
-        <Series argumentField="data"  valueField="value">
+        <Series argumentField="data"  valueField="value" theme="material.orange.light">
     <Label customizeText={this.mylabelText} />
           
         

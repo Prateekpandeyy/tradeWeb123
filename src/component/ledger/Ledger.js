@@ -62,7 +62,7 @@ const Ledger = () => {
          const [creadit, setCreadit] = useState();
          const [balance, setBalance] = useState()
          const [tradeValue, setTradeValue] = useState(1)
-         const [detData, setDetData] = useState()
+         const [detData, setDetData] = useState([])
          const [checkValue, setCheckValue] = useState([])
          const classes = useStyle()  
          let checkedValueTo = ["NSE-F&O       ", "BSE-Cash      ", "NSE-Cash      ", "NSE-FX        ", "MCX-Comm", "NCDEX-Comm"]
@@ -84,22 +84,19 @@ const Ledger = () => {
                data : "Balance" , value : balance
            }
        ]  
-       const customUpdateRow = (e) => {
-        console.log("eee", e)
-      }                                         
+                                           
         
        const getSelectData = (e) => {
-
-
+console.log("selectedDAtaa", e)
  
           const details = {
               fromDate: searchDate.fromDate,
               toDate: searchDate.toDate,
               type_exchseg : [
                   {
-                      type:  e.row.data.Type,
+                      type:  e.data.Type,
                       exchseg : [
-                          e.row.data.CESCD
+                          e.data.CESCD
                       ]
                   }
               ]
@@ -118,8 +115,10 @@ const Ledger = () => {
                 
               })    } 
               const getledData = (e) => {
-               
+               let kk = []
+               kk.push(e)
                     setDetData(e)
+              
               }
                         const finincialYear = (e) => {
                                               setSelectValue(e.target.value);
@@ -153,7 +152,7 @@ const Ledger = () => {
                        )
                    }
                    const TemplateNameCell = (e) => {
-
+console.log("cellTemplate", e.row)
                    
                     let aka
                 
@@ -170,18 +169,19 @@ const Ledger = () => {
                              return(
                                   <>
                                   {aka === true ?
-                                                                  <input type="checkbox" onChange = {() => valueFun(e.rowIndex)} style={{display: "flex", width: "20px"
+                                                                  <input type="checkbox" onChange = {() => valueFun(e.row)} style={{display: "flex", width: "20px"
                                                                   , height: "20px", margin: "auto"}} checked={true} className = "checked" ></input>
                                                               :
-                                                              <input type="checkbox" onChange = {() => valueFun(e.rowIndex)} style={{display: "flex", width: "20px"
+                                                              <input type="checkbox" onChange = {() => valueFun(e.row)} style={{display: "flex", width: "20px"
                                                               , height: "20px", margin: "auto"}} checked={false} className = "checked" ></input>
                                                           }
                                   </>  )
                          }
                          const valueFun = (e) => {
                            let pp = [...checkValue]
-                         pp.push(e)
+                         pp.push(e.rowIndex)
                            setCheckValue(pp)
+                           getSelectData(e)
                            
                          }
                          const tradeFun = (e) => {
@@ -384,7 +384,7 @@ const Ledger = () => {
           allowColumnReordering={true}
           columnResizingMode="nextColumn"
          
-          onFocusedCellChanged = {getSelectData}
+         
           noDataText=''
           showBorders={true}>
                  <Selection

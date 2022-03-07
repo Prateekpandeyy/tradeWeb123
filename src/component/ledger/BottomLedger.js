@@ -61,7 +61,7 @@ e.rowElement.style.lineHeight = "35px"
     }
 }        
      const onCellPre = (e) => {
-      console.log("eeee", e)
+
          if (e.columnIndex === 4) {
           
             e.cellElement.style.backgroundColor = "#E1F1FF"
@@ -128,7 +128,7 @@ const onExportingCsv = (e) => {
   e.cancel = true;
 }
 const onPirnt = (e) => {
-  console.log("print")
+  
   const dataGrid = dataGridRef.current.instance;
 //  window.print()
 window.print(dataGrid)

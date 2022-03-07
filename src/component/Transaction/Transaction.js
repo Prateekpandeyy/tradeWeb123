@@ -4,7 +4,7 @@ import {Box, Select, MenuItem, Typography, Button, Grid} from "@mui/material";
 import MyContainer from '../commonFunction/MyContainer';
 import {styled, makeStyles} from "@mui/styles";
 import { FaFileCsv } from 'react-icons/fa';
-import { RiFileExcel2Fill } from 'react-icons/ri';
+import { RiFileExcel2Fill, RiTimeLine } from 'react-icons/ri';
 import { AiFillPrinter } from 'react-icons/ai';
 import { GrDocumentText} from 'react-icons/gr';
 import {AiFillFilePdf} from 'react-icons/ai';
@@ -48,7 +48,7 @@ const useStyle = (makeStyles)({
       }, 
       MySelect: {
           display:"flex",
-          width: "180px",
+          maxWidth: "180px",
     height: "40px",
     background: "#ffffff",
     border: "1px solid #EBEBEB",
@@ -60,7 +60,7 @@ const useStyle = (makeStyles)({
       } ,
       MySelect2: {
         display:"flex",
-        width: "300px",
+        maxWidth: "300px",
   height: "40px",
   background: "#ffffff",
   border: "1px solid #EBEBEB",
@@ -86,14 +86,7 @@ const MyData =  styled(Box)({
     fontSize: "18px",
     boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)"
 })
-const MySelect = styled(Select)({
- 
-    width: "180px",
-    height: "40px",
-    borderRadius: "10px",
-    border: "1px solid #EBEBEB",
-    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)"
-}) 
+
 
 const MyButton = styled(Button)({
     borderRadius: "5px",
@@ -110,12 +103,20 @@ const Transaction = () => {
     const [showTime, setShowTime] = useState(true)
     const [transactionData, setTransationData] = useState()
     const startupSelectedKeys = [1, 4];
-    const [test, setTest] = useState(false)
+    const [test, setTest] = useState(1)
+    const [timeVal, setTimeVal] = useState(1)
+    const [toDate, setDate] = useState("20210401");
+    const [fromDate, setFromDate] = useState("20220331")
+    const [agts, setShowagts] = useState(false)
+    const [agtsTransaction, setAgtsTransaction] = useState([])
+    const [transactionAccount, setTransactionAccount] = useState([])
+    const [agtsVal, setAgtsVal] = useState()
     const userId = localStorage.getItem("userId")
     const token = localStorage.getItem("token")
     const classes = useStyle()
     let a = 0;
     let checkedValueTo =  ["532628", "524208", "543210", "523204"]
+    let checkedValueAccount = [4876, 	4595, 	4525, 4539]
     const allowedPageSizes = [5, 10, 15]
     const customWeekStartEndFormat = value =>
   `${moment(value).startOf('week').format(weekFormat)} ~ ${moment(value)
@@ -124,6 +125,69 @@ const Transaction = () => {
     useEffect(() => {
         getTransationData()
     }, [])
+    const getTransationShow = () => {
+     
+     if(test == 1 || test == 2){ 
+      const details =
+      {
+          fromDate: fromDate,
+          toDate: toDate,
+         type : 2,
+      }
+      const myConfig = {
+          headers: {
+             Authorization: "Bearer " + token
+          }
+       }
+       axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Summary?tradeType=${test}&selectType=${timeVal}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
+  .then((res) => {
+
+      setTransationData(res.data)
+  })
+     }
+     else if(test == 3 || test == 4 || test == 5 || test == 6){
+
+        const details =
+        {
+            fromDate: fromDate,
+            toDate: toDate,
+           type : 2,
+        }
+        const myConfig = {
+            headers: {
+               Authorization: "Bearer " + token
+            }
+         }
+         axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Accounts?type=${test}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
+    .then((res) => {
+  
+        setTransactionAccount(res.data)
+    })
+       
+     }
+  
+     else if(test == 7){
+
+      const details =
+      {
+          fromDate: fromDate,
+          toDate: toDate,
+         type : 2,
+      }
+      const myConfig = {
+          headers: {
+             Authorization: "Bearer " + token
+          }
+       }
+       axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_AGTS?segment=${agtsVal}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
+  .then((res) => {
+
+      setAgtsTransaction(res.data)
+  })
+     
+   }
+
+    }
     const getTransationData = () => {
         const details =
             {
@@ -136,7 +200,7 @@ const Transaction = () => {
                    Authorization: "Bearer " + token
                 }
              }
-             axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Summary?type=Commodity&fromDate=20210401&toDate=20220331`, myConfig)
+             axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Summary?tradeType=${test}&selectType=${timeVal}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
         .then((res) => {
       
             setTransationData(res.data)
@@ -162,6 +226,26 @@ const Transaction = () => {
           } else if (options.summaryProcess === 'calculate') {
             if (options.component.isRowSelected(options.value.ScripCode)) {
               options.totalValue += options.value.BuyAmount;
+            }
+          }
+        }
+        if (options.name === 'Credit3') {
+             
+          if (options.summaryProcess === 'start') {
+            options.totalValue = 0;
+          } else if (options.summaryProcess === 'calculate') {
+            if (options.component.isRowSelected(options.value.DocumentNo)) {
+              options.totalValue += options.value.Credit;
+            }
+          }
+        }
+        if (options.name === 'Debit3') {
+             
+          if (options.summaryProcess === 'start') {
+            options.totalValue = 0;
+          } else if (options.summaryProcess === 'calculate') {
+            if (options.component.isRowSelected(options.value.DocumentNo)) {
+              options.totalValue += options.value.Debit;
             }
           }
         }
@@ -214,19 +298,26 @@ const Transaction = () => {
     }
     const mySel = (e) => {
      setTest(e.target.value)
-     console.log("done", e.target.value == "1")
+    
      if(e.target.value == 1 || e.target.value == 2){
       
        setShowTime(true)
+       setShowagts(false)
+     }
+     else if(e.target.value == 7){
+       setShowagts(true)
      }
      else{
        setShowTime(false)
      }
+
     }
     const showCheckBoxesMode = ['none', 'onClick', 'onLongTap', 'always'];
     const selectAllModes = ['allPages', 'page']    
     const getValue = (e) => {
-      console.log("eee", e.target.value)
+   
+      setDate(e[0].format("YYYYMMDD"))
+      setFromDate(e[1].format("YYYYMMDD"))
     }
     return(
         <Layout mainLink = "Transaction" noBreadcrumb = {true} >
@@ -246,12 +337,25 @@ const Transaction = () => {
             </select>
             </Box>
            {
-             showTime === true ?
+             showTime === true || agts === true?
              <Box className={classes.boxRoot}>
            
-             <select className={classes.MySelect}>
+             <select className={classes.MySelect} value={RiTimeLine}
+             onChange={(e) => setTimeVal(e.target.value)}>
                  <option>Item Wise</option>
                  <option> Date Wise</option>
+             </select>
+             </Box> : ""
+           }
+           {
+             agts === true ?
+             <Box className={classes.boxRoot}>
+           
+             <select className={classes.MySelect} value = {agtsVal} onChange={(e) => setAgtsVal(e.target.value)}>
+                 <option value="C">Cash</option>
+                 <option value = "F"> Comm</option>
+                 <option value = "K">F &#38; O</option>
+                 <option value = "X"> FX</option>
              </select>
              </Box> : ""
            }
@@ -259,8 +363,8 @@ const Transaction = () => {
           
             <Space direction="vertical" size={12}>
     <RangePicker
-      defaultValue={[moment('2015/01/01', dateFormat), 
-      moment('2015/01/01', dateFormat)]}
+      defaultValue={[moment(`From - ${fromDate}`, dateFormat), 
+      moment(`To - ${toDate}`, dateFormat)]}
       format={dateFormat}
       onChange={getValue}
     />
@@ -268,7 +372,7 @@ const Transaction = () => {
   </Space>
             </Box>
             <Box className={classes.boxRoot}>
-            <MyButton variant="contained">Show</MyButton>
+            <MyButton variant="contained" onClick={getTransationShow}>Show</MyButton>
             </Box>
             <Box className={classes.boxRoot}>
             <FaFileCsv style={{color: "#80BB55", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
@@ -289,103 +393,294 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          <MyContainer>
              <Grid container  style={{padding: "20px"}}>
              <Grid>
-             <DataGrid
-          id="gridContainer"
-          defaultSelectedRowKeys = {checkedValueTo}
-          onSelectionChanged={onSelectionChanged}
-          dataSource={transactionData}
-          keyExpr="ScripCode"
-          showRowLines = {true}
-          onRowPrepared={onRowPre}
-          columnAutoWidth={true}
-          columnMinWidth={80}
-          showColumnLines = {false}
-          columnHidingEnabled={true}
-          columnResizingMode="nextColumn"
+{
+  showTime === true && agts === false ?
+  <DataGrid
+  id="gridContainer"
+  defaultSelectedRowKeys = {checkedValueTo}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={transactionData}
+  keyExpr="ScripCode"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={true}>
+    
+  <Paging enabled={true}  defaultPageSize={5}/>
+  <Pager 
+   visible={true}
+   allowedPageSizes = {allowedPageSizes}
+   displayMode = "full"
+ 
+   showInfo={true}
+   showNavigationButtons = {true} />
+  <Selection
+    mode="multiple"
+    selectAllMode= "allPages"
+    showCheckBoxesMode= "always"
+  />
+        
          
-          noDataText=''
-          showBorders={true}>
-            
-          <Paging enabled={true}  defaultPageSize={5}/>
-          <Pager 
-           visible={true}
-           allowedPageSizes = {allowedPageSizes}
-           displayMode = "full"
+         <Column 
+           dataField="ScripCode"
+           caption="Script Code"
+           />
+          
+           <Column 
+           dataField="ScripName"
+           caption="Name" />
          
-           showInfo={true}
-           showNavigationButtons = {true} />
-          <Selection
-            mode="multiple"
-            selectAllMode= "allPages"
-            showCheckBoxesMode= "always"
-          />
-                
-                 
-                 <Column 
-                   dataField="ScripCode"
-                   caption="Script Code"
-                   />
-                  
+         <Column 
+           dataField="Buy"
+           caption="Buy Qty"
+           />
+         
+           <Column 
+           dataField="BuyAmount"
+           caption="Buy Amount"
+           />
+          
+         <Column
+         dataField="Sell"
+         caption = "Sales Qty"
+         />
+          <Column
+         dataField="SellAmount"
+         caption = "Sell Amount"
+         />
+          <Column
+         dataField="Net"
+         caption = "Net Qty"
+         />
+          <Column
+         dataField="NetAmount"
+         caption = "Net Amount"
+         />
+        <Column
+        dataField="AvgRate"
+        caption="Avg.Rate" 
+       />
+       
+        
+        <Summary calculateCustomSummary={calculateSelectedRow}>
+    <TotalItem
+      name="SelectedRowsSummary"
+      summaryType="custom"
+       id="myDataGrid"
+      displayFormat="{0}"
+      customizeText={myNetAmount}
+      cssClass={"warning4"}
+      showInColumn="NetAmount" />
+       <TotalItem
+      name="SelectedRowsSummaryBuy"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"warning4"}
+      customizeText={myBuyAmount}
+      showInColumn="BuyAmount" />
+         <TotalItem
+      cssClass={"warning4"}
+      displayFormat="Total"
+      showInColumn="ScripCode" />
+  </Summary>
+     
+</DataGrid> : ""
+}
+{
+  showTime === false && agts === false ?
+  <DataGrid
+  id="gridContainer"
+  defaultSelectedRowKeys = {checkedValueAccount}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={transactionAccount}
+  keyExpr="DocumentNo"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={true}>
+    
+  <Paging enabled={true}  defaultPageSize={5}/>
+  <Pager 
+   visible={true}
+   allowedPageSizes = {allowedPageSizes}
+   displayMode = "full"
+ 
+   showInfo={true}
+   showNavigationButtons = {true} />
+  <Selection
+    mode="multiple"
+    selectAllMode= "allPages"
+    showCheckBoxesMode= "always"
+  />
+        
+         
+         <Column 
+           dataField="Type"
+           caption="Type"
+           />
+          
+           <Column 
+           dataField="DocumentNo"
+           caption="Document" />
+         
+         <Column 
+           dataField="Date"
+           caption="Date"
+           />
+         
+           <Column 
+           dataField="Particular"
+           caption="Particular"
+           />
+          
+         <Column
+         dataField="Debit"
+         caption = "Debit"
+         />
+          <Column
+         dataField="Credit"
+         caption = "Credit"
+         />
+        
+        
+        <Summary calculateCustomSummary={calculateSelectedRow}>
+        <TotalItem
+      name="Debit3"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"warning4"}
+     
+      showInColumn="Credit" />
+       <TotalItem
+      name="Debit3"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"warning4"}
+     
+      showInColumn="Debit" />
+         <TotalItem
+      cssClass={"warning4"}
+      displayFormat="Total"
+      showInColumn="DocumentNo" />
+  </Summary>
+     
+</DataGrid> : ""
+}
+{
+  agts === true ?
+  <DataGrid
+  id="gridContainer"
+  defaultSelectedRowKeys = {checkedValueTo}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={agtsTransaction}
+  keyExpr="Brokerage"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={true}>
+    
+  <Paging enabled={true}  defaultPageSize={5}/>
+  <Pager 
+   visible={true}
+   allowedPageSizes = {allowedPageSizes}
+   displayMode = "full"
+ 
+   showInfo={true}
+   showNavigationButtons = {true} />
+  <Selection
+    mode="multiple"
+    selectAllMode= "allPages"
+    showCheckBoxesMode= "always"
+  />
+        
+         
+         <Column 
+           dataField="Date"
+           caption="Date"
+           />
                    <Column 
-                   dataField="ScripName"
-                   caption="Name" />
-                 
-                 <Column 
-                   dataField="Buy"
-                   caption="Buy Qty"
-                   />
-                 
-                   <Column 
-                   dataField="BuyAmount"
-                   caption="Buy Amount"
-                   />
-                  
-                 <Column
-                 dataField="Sell"
-                 caption = "Sales Qty"
-                 />
-                  <Column
-                 dataField="SellAmount"
-                 caption = "Sell Amount"
-                 />
-                  <Column
-                 dataField="Net"
-                 caption = "Net Qty"
-                 />
-                  <Column
-                 dataField="NetAmount"
-                 caption = "Net Amount"
-                 />
-                <Column
-                dataField="AvgRate"
-                caption="Avg.Rate" 
-               />
-               
-                
-                <Summary calculateCustomSummary={calculateSelectedRow}>
-            <TotalItem
-              name="SelectedRowsSummary"
-              summaryType="custom"
-               id="myDataGrid"
-              displayFormat="{0}"
-              customizeText={myNetAmount}
-              cssClass={"warning4"}
-              showInColumn="NetAmount" />
-               <TotalItem
-              name="SelectedRowsSummaryBuy"
-              summaryType="custom"
-            
-              displayFormat="{0}"
-              cssClass={"warning4"}
-              customizeText={myBuyAmount}
-              showInColumn="BuyAmount" />
-                 <TotalItem
-              cssClass={"warning4"}
-              displayFormat="Total"
-              showInColumn="ScripCode" />
-          </Summary>
-             
-</DataGrid>
+           dataField="Exchange"
+           caption="Exch"
+           />
+           <Column 
+           dataField="ExchTRX_Chrg"
+           caption="Exchange Charge" />
+         
+
+         
+           <Column 
+           dataField="BSFlag"
+           caption="Bs"
+           />
+          
+         <Column
+         dataField="Sell"
+         caption = "Sales Qty"
+         />
+          <Column
+         dataField="SellAmount"
+         caption = "Sell Amount"
+         />
+          <Column
+         dataField="Net"
+         caption = "Net Qty"
+         />
+          <Column
+         dataField="NetAmount"
+         caption = "Net Amount"
+         />
+        <Column
+        dataField="AvgRate"
+        caption="Avg.Rate" 
+       />
+       
+        
+        <Summary calculateCustomSummary={calculateSelectedRow}>
+    <TotalItem
+      name="SelectedRowsSummary"
+      summaryType="custom"
+       id="myDataGrid"
+      displayFormat="{0}"
+      customizeText={myNetAmount}
+      cssClass={"warning4"}
+      showInColumn="NetAmount" />
+       <TotalItem
+      name="SelectedRowsSummaryBuy"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"warning4"}
+      customizeText={myBuyAmount}
+      showInColumn="BuyAmount" />
+         <TotalItem
+      cssClass={"warning4"}
+      displayFormat="Total"
+      showInColumn="ScripCode" />
+  </Summary>
+     
+</DataGrid> : ""
+}
              </Grid>
              </Grid>
             
