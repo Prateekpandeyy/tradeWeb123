@@ -69,8 +69,8 @@ const Ledger = () => {
       
         let cread = 0;
          const [searchDate, setSearchDate] = useState({
-             fromDate : "20200401",
-             toDate : "20210331"
+             fromDate : "20210401",
+             toDate : "20220331"
          })
         
          const chartData = [

@@ -126,7 +126,7 @@ else if (e.data.data == "Balance") {
        
       >
           <Size
-                    height={200}
+                    height={300}
                     width={250}
                 />
         <Legend
