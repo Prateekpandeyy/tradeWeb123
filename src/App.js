@@ -6,6 +6,7 @@ import NewPassword from './component/login/NewPassword';
 import Trading from './component/Trading/Trading';
 import Transaction from './component/Transaction/Transaction';
 import 'devextreme/dist/css/dx.light.css';
+import Holding from './component/holding/Holding';
 function App() {
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
       <Route exact path = "/tradeweb/ledger" element={<Ledger />} />
       <Route exact path = "/tradeweb/trading" element={<Trading />} />
       <Route exact path = "/tradeweb/transaction" element={<Transaction />} />
+      <Route exact path = "/tradeweb/holding" element = {<Holding />} />
       </Routes>
       </BrowserRouter>
       </>

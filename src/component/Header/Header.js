@@ -54,7 +54,7 @@ const Header  = (props) => {
              
           
             : 
-            <Breadcrumbs separator=">" area-label="breadcrumb">
+            <Breadcrumbs separator="<" area-label="breadcrumb">
             <Link 
             style={{color: "#3D3D3D", fontWeight: 600}}
             to = "/">

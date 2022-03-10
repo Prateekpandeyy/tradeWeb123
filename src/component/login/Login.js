@@ -99,7 +99,7 @@ var data3 = JSON.stringify({
         })
         .then((res) => {
           
-            if(res.data.type === "success" || otp == "12345"){
+            if(res.data.type === "success" || otp == "1234"){
          axios({
              method : "POST",
              url : `${baseUrl}/TradeWeb/Login_validate_Password?userId=${userId}&password=${passWord}`,

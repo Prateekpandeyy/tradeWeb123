@@ -592,7 +592,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   showRowLines = {true}
   onRowPrepared={onRowPre}
   columnAutoWidth={true}
-  columnMinWidth={80}
+  columnMinWidth={30}
   showColumnLines = {false}
   columnHidingEnabled={true}
   columnResizingMode="nextColumn"
@@ -625,7 +625,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
            />
            <Column 
            dataField="ExchTRX_Chrg"
-           caption="Exchange Charge" />
+           caption="Charge" />
          
 
          
@@ -635,25 +635,39 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
            />
           
          <Column
-         dataField="Sell"
-         caption = "Sales Qty"
+         dataField="Quantity"
+         caption = "Qty"
          />
           <Column
-         dataField="SellAmount"
-         caption = "Sell Amount"
+         dataField="NetRate"
+         caption = "Rate"
          />
           <Column
-         dataField="Net"
-         caption = "Net Qty"
+         dataField="Brokerage"
+         caption = "Brokerage"
          />
-          <Column
-         dataField="NetAmount"
-         caption = "Net Amount"
-         />
+       
         <Column
-        dataField="AvgRate"
-        caption="Avg.Rate" 
+        dataField="StampDuty"
+        caption="Stamp Duty" 
        />
+       <Column
+        dataField="SEBITO"
+        caption="SEBI TO" 
+       />
+       <Column
+        dataField="Others"
+        caption="Others" 
+       />
+       <Column
+        dataField="STT"
+        caption="STT" 
+       />
+       <Column
+        dataField="GST"
+        caption="GST" 
+       />
+     
        
         
         <Summary calculateCustomSummary={calculateSelectedRow}>

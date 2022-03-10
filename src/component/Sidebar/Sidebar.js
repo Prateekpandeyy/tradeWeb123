@@ -57,12 +57,12 @@ const Sidebar = () => {
                   <img src={homeImg} className={classes.myNav} />
                   </Link>
                 </li>
-                <li className={splitLocation[2] === "trading" ? "myMenuActive" : ""}>
-                <Link to ="/tradeweb/trading">
+                <li className={splitLocation[2] === "holding" ? "myMenuActive" : ""}>
+                <Link to ="/tradeweb/holding">
                 <img src={cameraImg} className={classes.myNav} />
                 </Link>
                 </li>
-                <li>
+                <li className={splitLocation[2] === "trading" ? "myMenuActive" : ""}>
                    <Link to = "/tradeweb/trading">
                    <img src={documentImg} className={classes.myNav} />
                    </Link>
