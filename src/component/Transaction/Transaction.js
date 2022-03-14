@@ -11,7 +11,7 @@ import {AiFillFilePdf} from 'react-icons/ai';
 import htmlImg from '../../images/PngImages/html.png';
 import 'devextreme/dist/css/dx.light.css';
 import {
-    DataGrid, Column, Selection, Paging, Summary, TotalItem, MasterDetail, Scrolling, Pager,
+    DataGrid, Grouping, GroupPanel, Column, Selection, Paging, Summary, TotalItem, MasterDetail, Scrolling, Pager,
 } from 'devextreme-react/data-grid';
 import themes from 'devextreme/ui/themes';
 import {Link} from 'react-router-dom';
@@ -420,6 +420,10 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
  
    showInfo={true}
    showNavigationButtons = {true} />
+     
+     <Grouping contextMenuEnabled={true} />
+
+<GroupPanel visible="auto" allowColumnDragging={true} />
   <Selection
     mode="multiple"
     selectAllMode= "allPages"

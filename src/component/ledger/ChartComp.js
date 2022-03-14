@@ -25,7 +25,7 @@ const data = [
 
 const kk = (e) => {
  
-  if (e.data.data == "Creadit") {
+  if (e.data.data == "Credit") {
     return {
         color: "#0054A2",
         
@@ -35,14 +35,14 @@ const kk = (e) => {
 else if (e.data.data == "Debit") {
   return {
       color: "#E6AA0A",
-      border : "2px solid black"
+     
       
   }
 }
 else if (e.data.data == "Balance") {
   return {
       color: "#00B824",
-      border : "2px solid black"
+     
       
   }
 }
@@ -67,7 +67,7 @@ else if (e.data.data == "Balance") {
     
     this.props.chartData.map((i) => {
     
-      if(i.data === "Creadit"){
+      if(i.data === "Credit"){
         this.setState({creadit : i.value})
       }
       if(i.data === "Debit"){
@@ -86,8 +86,10 @@ else if (e.data.data == "Balance") {
     var name = e.pointName;
            let text1, text2, text3;
                    this.props.chartData.map((i) => {
-                    if(i.data === "Creadit"){
-                     text1 = i.value
+                    if(i.data === "Credit"){
+                
+                     text1 =    
+                     i.value 
                     }
                    else if(i.data === "Debit"){
                       text2 = i.value
@@ -107,7 +109,7 @@ else if (e.data.data == "Balance") {
               name = name + " " + " " +
                 text3            }
            
-            return name
+         return name;
   }
 
   render() {

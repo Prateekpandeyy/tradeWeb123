@@ -150,50 +150,52 @@ var data3 = JSON.stringify({
    }
    const getMobileNum = (e) => {
        let mNo = e.target.value;
-     setUserId(mNo)
-     localStorage.setItem("userId", mNo)
-       axios({
-           method : "POST", 
-           url : `${baseUrl}/TradeWeb/Login_validate_USER?userId=${mNo}`, 
-           headers: { 
-            'Content-Type': 'application/json'
-          },
-           data : mNo
-       })
-       .then((res) => {
-          
-     
-          if(res.status === 200){
-            let a = res.data
-           let bb = a[0].Mobile
-           setMonumber(bb)
+   if(mNo.length > 0){
+    setUserId(mNo)
+    localStorage.setItem("userId", mNo)
+      axios({
+          method : "POST", 
+          url : `${baseUrl}/TradeWeb/Login_validate_USER?userId=${mNo}`, 
+          headers: { 
+           'Content-Type': 'application/json'
+         },
+          data : mNo
+      })
+      .then((res) => {
+         
+    
+         if(res.status === 200){
+           let a = res.data
+          let bb = a[0].Mobile
+          setMonumber(bb)
 
-           var data2 = JSON.stringify({
-            "phoneno": "91" + bb
-          });
-            axios({
-                method: "POST",
-                url : `https://prod-00.centralindia.logic.azure.com/workflows/a7d7a088db2d41e985861b0509977c77/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=5Xl1exEMOMVsctxYVZdHTOhIsQEi5fpWrhQB5dgqUFY`,
-                headers: { 
-                    'Content-Type': 'application/json'
-                  },
-                data: data2
-            })
-            .then((res) => {
+          var data2 = JSON.stringify({
+           "phoneno": "91" + bb
+         });
+           axios({
+               method: "POST",
+               url : `https://prod-00.centralindia.logic.azure.com/workflows/a7d7a088db2d41e985861b0509977c77/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=5Xl1exEMOMVsctxYVZdHTOhIsQEi5fpWrhQB5dgqUFY`,
+               headers: { 
+                   'Content-Type': 'application/json'
+                 },
+               data: data2
+           })
+           .then((res) => {
 
-                if(res.data.type === "success"){
-                    setShotOpt(true)
-                }
-            })
-           }
-           else{
-               Swal.fire({
-                   title : "error", 
-                   html : "Incorrect user id",
-                   icon : "error"
-               })
-           }
-       })
+               if(res.data.type === "success"){
+                   setShotOpt(true)
+               }
+           })
+          }
+          else{
+              Swal.fire({
+                  title : "error", 
+                  html : "Incorrect user id",
+                  icon : "error"
+              })
+          }
+      })
+   }
    }
    const resendOtp = (e) => {
        e.preventDefault()
@@ -266,7 +268,9 @@ var data3 = JSON.stringify({
             <Grid item sm = {12}>
                 
               <MyLabel>User Id</MyLabel>
-          <input className="form-control"  type="text" placeholder='Enter your user id' onBlur={(e) => getMobileNum(e)} />
+          <input className="form-control"  
+          type="text" placeholder='Enter your user id'
+           onBlur={(e) => getMobileNum(e)} />
               </Grid>
               <Grid item sm = {12} pt = {2} pb={2}>
                 

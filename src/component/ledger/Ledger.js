@@ -1,21 +1,19 @@
-
 import React, {useState, useEffect} from 'react';
 import { Container, Paper, Box, Typography , Select, MenuItem, Grid } from '@mui/material';
 import { styled, makeStyles } from '@mui/styles';
-
 import {
     DataGrid, Column, 
-    Summary, TotalItem, Selection, Grouping, Export
+    Summary, TotalItem, Selection,   Grouping, GroupPanel, SearchPanel
+    , FilterRow,  Export
 } from 'devextreme-react/data-grid';
 import BottomLedger from './BottomLedger';
 import ChartComp from './ChartComp';
-
 import { baseUrl } from '../baseUrl/BaseUrl';
 import axios from 'axios';
 import Layout from '../Layout/Layout';
 import MyContainer from '../commonFunction/MyContainer';
-
 import 'devextreme/dist/css/dx.light.css';
+import * as AspNetData from 'devextreme-aspnet-data-nojquery';
  const useStyle = (makeStyles)({
     boxRoot: {
         display : "flex", 
@@ -55,6 +53,7 @@ import 'devextreme/dist/css/dx.light.css';
     justifyContent: "space-between",
     padding: "20px"
 })
+
 const Ledger = () => {
          const [selectValue , setSelectValue] = useState();
          const [date, setDate] = useState([])
@@ -75,7 +74,7 @@ const Ledger = () => {
         
          const chartData = [
            {
-               data : "Creadit", value : creadit
+               data : "Credit", value : creadit
            },
            {
                data : "Debit",  value  : debit
@@ -87,7 +86,7 @@ const Ledger = () => {
                                            
         
        const getSelectData = (e) => {
-console.log("selectedDAtaa", e)
+
  
           const details = {
               fromDate: searchDate.fromDate,
@@ -120,6 +119,7 @@ console.log("selectedDAtaa", e)
                     setDetData(e)
               
               }
+            
                         const finincialYear = (e) => {
                                               setSelectValue(e.target.value);
                                               if(e.target.value === "1"){
@@ -152,7 +152,7 @@ console.log("selectedDAtaa", e)
                        )
                    }
                    const TemplateNameCell = (e) => {
-console.log("cellTemplate", e.row)
+
                    
                     let aka
                 
@@ -224,6 +224,9 @@ console.log("cellTemplate", e.row)
            
               }
           }      
+           const calculateSortValue = (rowData) => {
+            console.log("rowData", rowData)
+        }
           const TemplateNameCellCreadit = (e) => {
           
           let a = e.data.Credit;
@@ -257,11 +260,39 @@ console.log("cellTemplate", e.row)
                      }
                          })
                        }
+                      const TemplateNameCell2 = (e) => {
+                      
+                        return parseFloat(e.Debit).toFixed(2)
+                      }
+                      const TemplateNameCredit = (e) => {
+                      
+                        return parseFloat(e.Credit).toFixed(2)
+                      }
+                      const TemplateNameBalance = (e) => {
+                      
+                        return parseFloat(e.Balance).toFixed(2)
+                      }
+                      const TemplateNameOpeningBalance = (e) => {
+                      
+                        return parseFloat(e.OpeningBalance).toFixed(2)
+                      }
                        const onSelectionChanged = (e)  => {
-   
-                                 e.component.refresh(true);
-                              
+                               e.component.refresh(true);    
                                }
+                               const onCellPre = (e) => {
+
+                                if (e.columnIndex === 4) {
+                                    e.cellElement.style.textAlign = "right"
+                                   
+                               }
+                               if(e.columnIndex === 3){
+                                 e.cellElement.style.textAlign = "right"
+                                  
+                               }
+                               if(e.columnIndex === 5){
+                                 e.cellElement.style.textAlign = "right"
+                               }
+                            }
                                const calculateSelectedRow = (options) => {
  
      
@@ -340,9 +371,9 @@ console.log("cellTemplate", e.row)
      
             <select className={classes.MySelect2} 
              onChange={(e) => finincialYear(e)} value = {selectValue}>
-                <option value = "1">2022-2021</option>
-                <option value="2">2021-2020</option>
-                <option value = "3">2020-2019</option>
+                <option value = "1">2021-2022</option>
+                <option value="2">2020-2021</option>
+                <option value = "3">2019-2020</option>
             </select>
             </Box>
        </TopBox>
@@ -383,20 +414,24 @@ console.log("cellTemplate", e.row)
           allowColumnResizing={true}
           allowColumnReordering={true}
           columnResizingMode="nextColumn"
-         
-         
+          onCellPrepared={onCellPre}
+          wordWrapEnabled={true}
           noDataText=''
-          showBorders={true}>
+          showBorders={true} 
+        >
                  <Selection
             mode="multiple"
          allowSelectAll={false}
             showCheckBoxesMode= "none"
           />
-                     
+                    {/* <FilterRow visible={true} /> */}
+         
+          <Grouping contextMenuEnabled={true} />
+
+          <GroupPanel visible="auto" allowColumnDragging={true} />
                      <Column
             headerCellRender={RenderTitleHeader}
-            cellRender={TemplateNameCell}
-          >
+            cellRender={TemplateNameCell}>
               
             </Column>
              
@@ -410,6 +445,7 @@ console.log("cellTemplate", e.row)
                 <Column
                 dataField="OpeningBalance"
                caption="Opening Balance"
+               calculateCellValue={TemplateNameOpeningBalance}
                 >
                    
                 </Column>
@@ -417,14 +453,17 @@ console.log("cellTemplate", e.row)
                 <Column
                 dataField="Debit"
                 caption="Debit"
+                calculateCellValue={TemplateNameCell2}
+                defaultSortOrder="asc" 
+               
                >
                    
                 </Column>
              
                 <Column
                 dataField="Credit"
-                caption = "Creadit"
-                cellRender={TemplateNameCellCreadit}
+                caption = "Credit"
+                calculateCellValue={TemplateNameCredit}
                >
                    
              </Column>
@@ -432,6 +471,7 @@ console.log("cellTemplate", e.row)
                 <Column
                 dataField="Balance"
                 caption= "Balance"
+                calculateCellValue={TemplateNameBalance}
                >
                    
                 </Column>
@@ -461,7 +501,7 @@ console.log("cellTemplate", e.row)
                    customizeText={myBuyAmount}
                    displayFormat="{0}"
                    cssClass={"warning"}
-                   showInColumn="Creadit" />
+                   showInColumn="Credit" />
                      <TotalItem
                    name="Balance"
                    summaryType="custom"

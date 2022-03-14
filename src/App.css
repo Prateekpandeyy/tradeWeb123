@@ -83,3 +83,6 @@ color: #000 !important;
  border-radius: 5px;
  outline: none;
 }
+.myVal{
+  fill:  green;
+}
