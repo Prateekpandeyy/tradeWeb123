@@ -37,9 +37,9 @@ const LedgetTopTable = () => {
         <Select 
         value={selectValue}
         onChange={(e) => finincialYear(e)}>
-            <MenuItem value={1}>2021-2022</MenuItem>
-            <MenuItem value={2}>2020-2021</MenuItem>
-            <MenuItem value={3}>2019-2018</MenuItem>
+            <MenuItem value={1}>2022-2021</MenuItem>
+            <MenuItem value={2}>2021-2020</MenuItem>
+            <MenuItem value={3}>2020-2019</MenuItem>
             </Select>
             </Box>
            

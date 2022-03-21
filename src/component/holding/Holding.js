@@ -7,16 +7,6 @@ import MyContainer from '../commonFunction/MyContainer';
 import {
     DataGrid, Column, Selection, Paging, Summary, TotalItem, MasterDetail, Scrolling, Pager,
 } from 'devextreme-react/data-grid';
-import {
-    Chart,
-    Series,
-    ArgumentAxis,
-    CommonSeriesSettings,
-    Export,
-    Legend,
-    Margin,
-  } from 'devextreme-react/chart';
-  
 const TopBox = styled(Box)({
     display: "flex",
     alignItems: "center",
@@ -65,50 +55,7 @@ const MyButton = styled(Button)({
     height: "40px"
 })
 const Holding = () => {
-    const onRowPre =(e) => {  
-       
-        if(e.rowType == "header"){
-          e.rowElement.style.backgroundColor = '#E1F1FF';
-    e.rowElement.style.fontFamily = 'Poppins';
-    e.rowElement.style.fontStyle = "normal";
-    e.rowElement.style.fontSize = "16px";
-    e.rowElement.style.color = "#3D3D3D";
-    e.rowElement.style.fontWeight = 600;
-  
-    e.rowElement.style.lineHeight = "35px"
-
-                 }  
-        if(e.rowType == "data"){
-          e.rowElement.style.borderBottom = "1px solid #F0F0F0";
-          e.rowElement.style.margin = "10px";
-          e.rowElement.style.fontFamily = 'Poppins';
-        e.rowElement.style.fontStyle = "normal";
-        e.rowElement.style.fontSize = "16px";
-        e.rowElement.style.color = "#3D3D3D";
-        e.rowElement.style.fontWeight = 500;
-        e.rowElement.style.lineHeight = "35px"
-     
-        }
-      
-    } 
-    const TemplateNameCell = (e) => {
-        console.log("templateNameCell", e.value)
-        return(
-            <Chart
-          palette="Harmony Light"
-       
-          dataSource={HoldingData}
-         
-        >
-         
-          <Series type="area" valueField="id"  argumentField="graph"></Series>
-          
-        </Chart>
-       
-        )
-    }
     const classes = useStyle()
-
     return(
         <Layout subLink = "Holding">
         <TopBox>
@@ -144,20 +91,17 @@ const Holding = () => {
              <Grid style={{padding: "20px"}}>
              <DataGrid 
              dataSource = {HoldingData}
+            
               showRowLines={false}
               showCheckBoxesMode={true}
               showBorders = {true}
               columnAutoWidth={true}
+             
               showColumnLines = {false}
              keyExpr="id"
-             onRowPrepared={onRowPre}
-               
+          noDataText=""
+               alignment="center"
            >
-                 <Selection
-    mode="multiple"
-    selectAllMode= "allPages"
-    showCheckBoxesMode= "always"
-  />
                 <Paging enabled={true}  defaultPageSize={3}/>
           <Pager 
            visible={true}
@@ -168,36 +112,7 @@ const Holding = () => {
            showNavigationButtons = {true} />
                  <Column
                  caption= "Stocks"
-                 dataField = "stack" >
-                 </Column>
-                 <Column
-                 caption= "Graph"
-                 dataField = "graph"
-                 cellRender={TemplateNameCell} >
-                 </Column>
-                 <Column
-                 caption= "Graph"
-                 dataField = "Quantity" >
-                 </Column>
-                 <Column
-                 caption= "Current Price"
-                 dataField = "Current" >
-                 </Column>
-                 <Column
-                 caption= "Current Value"
-                 dataField = "CurrentValue" >
-                 </Column>
-                 <Column
-                 caption= "Net Profit 	&#38; loss"
-                 dataField = "NetProfile" >
-                 </Column>
-                 <Column
-                 caption= "Buy"
-                 dataField = "buyTxt" >
-                 </Column>
-                 <Column
-                 caption= "Sell"
-                 dataField = "sellTxt" >
+                 dataField = "stacks" >
                  </Column>
                   
 </DataGrid>

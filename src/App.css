@@ -1,56 +1,106 @@
-
-
 .App-link {
   color: #61dafb;
 }
-.warning{
-  color: #0085FF !important;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins" !important;
+}
+.breadcrumbStyle {
+  font-family: "Poppins";
+  font-style: normal;
   font-weight: 600;
-  font-size: 20px;
-  font-family : "Poppins";
+  font-size: 18px;
+  line-height: 36px;
+  color: #3d3d3d;
+}
+.subBreadcrumbStyle {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 33px;
+  color: #3d3d3d;
+}
+#gridContainer .dx-datagrid-headers .dx-datagrid-content,
+#dataGrid .dx-datagrid-headers .dx-datagrid-content {
+  font-family: "Poppins" !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  line-height: 30px !important;
+  color: #3d3d3d !important;
+  border: 1px solid #e1f1ff !important;
+  border-radius: 10px !important;
+}
+
+#gridContainer .dx-datagrid-rowsview .dx-datagrid-content,
+#dataGrid .dx-datagrid-rowsview .dx-datagrid-content {
+  font-family: "Poppins" !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 27px !important;
+  /* identical to box height */
+
+  color: #3d3d3d !important;
+}
+#gridContainer .checked {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  padding: 30px;
+}
+.openingBalance,
+.creditBalance {
+  color: #0085ff !important;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: "Poppins";
   line-height: 30px;
   text-align: right;
 }
-.warning2{
-  color: #E2A705 !important;
+.debitBalance {
+  color: #e2a705 !important;
   font-weight: 600;
-  font-size: 20px;
-  font-family : "Poppins";
+  font-size: 12px;
+  font-family: "Poppins";
   line-height: 30px;
   text-align: right;
 }
-.warning3{
-  color : #00B824 !important;
+.totalBalance {
+  color: #00b824 !important;
   font-weight: 600;
-  font-size: 20px;
-  font-family : "Poppins";
+  font-size: 12px;
+  font-family: "Poppins";
   line-height: 30px;
   text-align: right;
 }
-.warning4{
+.warning4 {
   font-family: Poppins !important;
-font-style: normal !important;
-font-weight: 600 !important;
-font-size: 16px !important;
-line-height: 30px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 30px !important;
 
-
-color: #0085FF !important;
-
+  color: #0085ff !important;
 }
-.variantClass{
+.variantClass {
   font-family: Poppins !important;
-font-style: normal !important;
-font-weight: 600 !important;
-font-size: 16px !important;
-line-height: 30px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 30px !important;
 
-
-color: #000 !important;
-
+  color: #000 !important;
 }
-.myMenuActive{
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(165deg) brightness(104%) contrast(97%) !important;
+.myMenuActive {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(165deg)
+    brightness(104%) contrast(97%) !important;
 }
 @keyframes App-logo-spin {
   from {
@@ -60,29 +110,28 @@ color: #000 !important;
     transform: rotate(360deg);
   }
 }
-.dx-header-row{
-  color: #3B3B3B !important;
+
+.dx-header-row {
+  color: #3b3b3b !important;
 }
-.dx-datagrid-rowsview .dx-selection.dx-row > td, .dx-datagrid-rowsview .dx-selection.dx-row:hover > td {  
-  background-color: transparent !important;  
-} 
-.pieClass{
+.dx-datagrid-rowsview .dx-selection.dx-row > td,
+.dx-datagrid-rowsview .dx-selection.dx-row:hover > td {
+  background-color: transparent !important;
+}
+.pieClass {
   border-radius: 50px !important;
 }
- /* .dx-datagrid-rowsview .dx-row:nth-child(2n + 2) , .dx-datagrid-rowsview .dx-row > tr:nth-child(2n + 2){
+/* .dx-datagrid-rowsview .dx-row:nth-child(2n + 2) , .dx-datagrid-rowsview .dx-row > tr:nth-child(2n + 2){
   background-color: #E1F1FF !important;
 }
  .dx-datagrid .dx-row-alt:nth-child(2n + 2), .dx-datagrid .dx-row-alt > tr:nth-child(2n + 2) {
   background-color: #E1F1FF !important;
 } */
-.dx-datagrid-checkbox-size.dx-checkbox-checked .dx-checkbox-icon {  
- color: #fff !important;
- background-color: #0085FF !important;
- width: 20px;
- height : 20px;
- border-radius: 5px;
- outline: none;
-}
-.myVal{
-  fill:  green;
+.dx-datagrid-checkbox-size.dx-checkbox-checked .dx-checkbox-icon {
+  color: #fff !important;
+  background-color: #0085ff !important;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  outline: none;
 }

@@ -1,8 +1,6 @@
-import React from 'react'
+import React from 'react';
 export const ComponentToPrint = React.forwardRef((props, ref) => {
-
-    return (
-      <div ref={ref}></div>
-    );
-  });
-  
+ return(
+     <div ref={ref}></div>
+ )
+})

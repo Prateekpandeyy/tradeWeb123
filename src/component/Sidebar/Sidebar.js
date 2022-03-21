@@ -20,8 +20,8 @@ const Sidebar = () => {
         },
         myNav : {
             display: "flex",
-            width: "30px",
-            height: "30px",
+            width: "40px",
+            height: "40px",
             margin: "15px 8px",
            padding: "5px", 
            cursor: "pointer",

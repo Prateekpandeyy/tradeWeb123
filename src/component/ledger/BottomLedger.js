@@ -43,26 +43,25 @@ const BottomLedger = ({ledgerReport}) => {
   const onRowPre =(e) => {  
        
     if(e.rowType == "header"){
+        
       e.rowElement.style.backgroundColor = '#E1F1FF';
-e.rowElement.style.fontFamily = 'Poppins';
-e.rowElement.style.fontStyle = "normal";
-e.rowElement.style.fontSize = "16px";
-e.rowElement.style.color = "#3D3D3D";
-e.rowElement.style.fontWeight = 600;
-
-e.rowElement.style.lineHeight = "35px"
-
-             }  
-    if(e.rowType == "data"){
-      e.rowElement.style.borderBottom = "1px solid #F0F0F0";
-      e.rowElement.style.margin = "10px";
       e.rowElement.style.fontFamily = 'Poppins';
-    e.rowElement.style.fontStyle = "normal";
-    e.rowElement.style.fontSize = "16px";
-    e.rowElement.style.color = "#3D3D3D";
-    e.rowElement.style.fontWeight = 500;
-    e.rowElement.style.lineHeight = "35px"
- 
+      e.rowElement.style.fontStyle = "normal";
+      e.rowElement.style.fontSize = "14px";
+      e.rowElement.style.color = "#3D3D3D";
+      e.rowElement.style.fontWeight = 600;
+    
+      e.rowElement.style.lineHeight = "35px"
+    }  
+    if(e.rowType == "data"){
+   
+        e.rowElement.style.margin = "10px";
+        e.rowElement.style.fontFamily = 'Poppins';
+      e.rowElement.style.fontStyle = "normal";
+      e.rowElement.style.fontSize = "12px";
+      e.rowElement.style.color = "#3D3D3D";
+      e.rowElement.style.lineHeight = "35px"
+      e.rowElement.style.fontWeight = 400;
     }
 }        
      const onCellPre = (e) => {
@@ -83,26 +82,26 @@ e.rowElement.style.lineHeight = "35px"
    const TemplateNameCell = (e) => {
   
      if(e.Debitflag === "D"){
-        return parseFloat(e.Amount).toFixed(2)
+        return parseFloat(Math.abs(e.Amount)).toFixed(2)
      }
      else {
-       return 0;
+       return parseFloat(0).toFixed(2);
      }
    }
    const TemplateNameCell2 = (e) => {
 
     if(e.Debitflag === "C"){
-      return (parseFloat(e.Amount).toFixed(2))
+      return (parseFloat(Math.abs(e.Amount)).toFixed(2))
     }
    else{
-    return 0;
+    return parseFloat(0).toFixed(2);
    }
 
   }
   const TemplateNameCell3 = (e) => {
 
     
-      return (parseFloat(e.Amount).toFixed(2))
+      return (parseFloat(Math.abs(e.Amount)).toFixed(2))
     
   }
   const onExporting = (e) => {
@@ -198,22 +197,40 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
                 </Box>
                <DataGrid 
-                  id="dataGrid"
-                  ref={dataGridRef}
-                  dataSource={ledgerReport}
+                //   id="dataGrid"
+                //   ref={dataGridRef}
+                //   dataSource={ledgerReport}
                   
-                  onCellPrepared={onCellPre}
-                  onRowPrepared={onRowPre}
+                //   onCellPrepared={onCellPre}
+                //   onRowPrepared={onRowPre}
                  
-                  columnMinWidth={100}
+                //   columnMinWidth={100}
                 
-                showColumnLines={false}
+                // showColumnLines={false}
                   
                   
-                  noDataText='' >
+                //   noDataText=''
+                  id="dataGrid"
+     ref={dataGridRef}
+                  dataSource={ledgerReport}
+  
+ 
+  
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  onCellPrepared={onCellPre}
+  columnAutoWidth={true}
+  columnMinWidth={30}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={false}
+                   >
                       <Grouping expandMode="rowClick" />
                 <GroupPanel visible={true} /> 
-          <Paging enabled={true}  defaultPageSize={4}/>
+          <Paging enabled={true}  defaultPageSize={15}/>
           <Pager 
            visible={true}
           

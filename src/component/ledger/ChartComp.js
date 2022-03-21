@@ -35,14 +35,14 @@ const kk = (e) => {
 else if (e.data.data == "Debit") {
   return {
       color: "#E6AA0A",
-     
+      border : "2px solid black"
       
   }
 }
 else if (e.data.data == "Balance") {
   return {
       color: "#00B824",
-     
+      border : "2px solid black"
       
   }
 }
@@ -67,7 +67,7 @@ else if (e.data.data == "Balance") {
     
     this.props.chartData.map((i) => {
     
-      if(i.data === "Credit"){
+      if(i.data === "Creadit"){
         this.setState({creadit : i.value})
       }
       if(i.data === "Debit"){
@@ -87,9 +87,7 @@ else if (e.data.data == "Balance") {
            let text1, text2, text3;
                    this.props.chartData.map((i) => {
                     if(i.data === "Credit"){
-                
-                     text1 =    
-                     i.value 
+                     text1 = i.value
                     }
                    else if(i.data === "Debit"){
                       text2 = i.value
@@ -109,7 +107,7 @@ else if (e.data.data == "Balance") {
               name = name + " " + " " +
                 text3            }
            
-         return name;
+            return name
   }
 
   render() {
@@ -120,7 +118,7 @@ else if (e.data.data == "Balance") {
        <Box>
        <PieChart 
        type="doughnut"
-        dataSource={this.state.data33}
+        dataSource={this.props.chartData}
         innerRadius={0.65}
        diameter={0.5}
         customizePoint = {kk}
@@ -163,3 +161,46 @@ else if (e.data.data == "Balance") {
   }
 }
 export default ChartComp;
+// import React , {useRef} from 'react'
+// import { Doughnut } from 'react-chartjs-2'
+// import {Chart, ArcElement} from 'chart.js'
+// Chart.register(ArcElement);
+
+
+// const BarChart = () => {
+//   const myChartRef = useRef()
+  
+//   return (
+//     <Doughnut
+    
+//       data={{
+//         labels: [
+//           'Red',
+//           'Blue',
+//           'Yellow'
+//         ],
+//         datasets: [{
+//           label: 'My First Dataset',
+//           data: [300, 50, 100],
+//           backgroundColor: [
+//             'rgb(255, 99, 132)',
+//             'rgb(54, 162, 235)',
+//             'rgb(255, 205, 86)'
+//           ],
+//           hoverOffset: 4
+//         }]
+//       }}
+    
+//     />
+//   )
+// }
+
+// const ChartComp = () => {
+//   return (
+
+//       <BarChart  />
+  
+//   )
+// }
+
+// export default ChartComp
