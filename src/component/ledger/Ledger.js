@@ -70,7 +70,7 @@ const TopBox = styled(Box)({
 
 const Ledger = () => {
   let tradeval = []
-  const [selectValue, setSelectValue] = useState();
+
   const [searchDate, setSearchDate] = useState({
     fromDate: "20210401",
     toDate: "20220331",
@@ -81,15 +81,17 @@ const Ledger = () => {
   const [balance, setBalance] = useState();
   const [tradeValue, setTradeValue] = useState(1);
   const [detData, setDetData] = useState([]);
-  const [checkValue, setCheckValue] = useState();
- 
+  const [checkValue, setCheckValue] = useState([]);
+  const [selectValue, setSelectValue] = useState();
   const classes = useStyle();
   
   useEffect(() => {
     getDate();
-   
-  }, [searchDate]);
   
+  }, [searchDate]);
+ useEffect(() => {
+   getBottomData()
+ }, [checkValue])
   const chartData = [
     {
       data: "Credit",
@@ -104,56 +106,7 @@ const Ledger = () => {
       value: balance,
     },
   ];
-  const getBottomData = () => {
-    
-    let cescds = [];
-    console.log("checkValue", checkValue, tradeval)
-    for (let i in checkValue) {
-      cescds.push({
-        type: date[checkValue[i]].Type,
-        exchseg: date[checkValue[i]].CESCD,
-      });
-    }
-    getSelectData(reduce(cescds));
-
-  }
-
-  const reduce = (arr) => {
-    let newArray = [];
-
-    const checkValueAvailability = (toFind) => {
-      let found = newArray.findIndex((item2) => {
-        return item2.type == toFind.type;
-      });
-
-      if (found !== -1) {
-        return found;
-      } else {
-        return null;
-      }
-    };
-
-    arr.forEach((item) => {
-      let foundIndex = checkValueAvailability(item);
-
-      foundIndex = foundIndex == null ? null : foundIndex.toString();
-
-      if (foundIndex) {
-        newArray[foundIndex] = {
-          type: item.type,
-          exchseg: [...newArray[foundIndex].exchseg, item.exchseg],
-        };
-      } else {
-        newArray.push({
-          type: item.type,
-          exchseg: [item.exchseg],
-        });
-      }
-    });
-    return newArray;
-    // console.log("NEW ARRAY--->", newArray);
-  };
-
+ 
   const getSelectData = (e) => {
     if (e.length > 0) {
     
@@ -177,10 +130,7 @@ const Ledger = () => {
       getledData([]);
     }
   };
-    useEffect(() => {
-   getBottomData();
-
-  }, [checkValue]);
+    
   let kk = [];
   const getledData = (e) => {
     kk.push(e);
@@ -216,7 +166,7 @@ const Ledger = () => {
         value={tradeValue}
         onChange={(e) => tradeFun(e)}
       >
-        <option value={1}>Trading</option>
+        <option value={1}>Equity</option>
         <option value={2}> Commodity </option>
       </select>
     );
@@ -355,11 +305,11 @@ const Ledger = () => {
                tradeval.push(inc)
            }
           })
-         
+          setCheckValue(tradeval)
         }
       });
      
-      setCheckValue(tradeval)
+    getBottomData()
    
   };
   const onSelectionChanged = (e) => {
@@ -381,6 +331,57 @@ const Ledger = () => {
   const totalFun = (e) => {
     return parseFloat(e.Balance).toFixed(2);
   };
+  // bottom ledger data 
+  const getBottomData = () => {
+    
+    let cescds = [];
+    console.log("checkValue", checkValue, tradeval)
+    for (let i in checkValue) {
+      cescds.push({
+        type: date[checkValue[i]].Type,
+        exchseg: date[checkValue[i]].CESCD,
+      });
+    }
+    getSelectData(reduce(cescds));
+
+  }
+
+  const reduce = (arr) => {
+    let newArray = [];
+
+    const checkValueAvailability = (toFind) => {
+      let found = newArray.findIndex((item2) => {
+        return item2.type == toFind.type;
+      });
+
+      if (found !== -1) {
+        return found;
+      } else {
+        return null;
+      }
+    };
+
+    arr.forEach((item) => {
+      let foundIndex = checkValueAvailability(item);
+
+      foundIndex = foundIndex == null ? null : foundIndex.toString();
+
+      if (foundIndex) {
+        newArray[foundIndex] = {
+          type: item.type,
+          exchseg: [...newArray[foundIndex].exchseg, item.exchseg],
+        };
+      } else {
+        newArray.push({
+          type: item.type,
+          exchseg: [item.exchseg],
+        });
+      }
+    });
+    return newArray;
+    // console.log("NEW ARRAY--->", newArray);
+  };
+
   return (
     <>
       <Layout mainLink="BP EQUTIES PVT. LTD" subLink="Ledger">

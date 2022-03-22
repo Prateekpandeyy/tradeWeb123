@@ -247,7 +247,7 @@ const myBuyAmount = (e) => {
       }
       // exchange option function
       const exchangeFunction = (e) => {
-    
+    console.log(e.target.value)
       setStlFieldType([])
       setFirstValue(e.target.value[1])
       let a = e.target.value.slice(0, 2)
@@ -264,7 +264,7 @@ const myBuyAmount = (e) => {
           }
        }
 
-axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${e.target.value[1]}`, myConfig)
+axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${a}`, myConfig)
   .then((res) => {
    
    setStlType(res.data)
@@ -431,7 +431,7 @@ else if (i.ScripName === "Due To Us :"){
         </Typography>
         <select className={classes.MySelect} onChange={(e) => exchangeFunction(e)}
         value = {exchangeValue} multiple={false}>
-           <option key={0}> select </option>
+         
                {
                  exchange?.map((i, e) => {
                    return(
@@ -456,9 +456,9 @@ else if (i.ScripName === "Due To Us :"){
        value={stlfieldType} multiple = {false}>
                  <option key={1}> select </option>
      {
-       stlType.map((i) => {
+       stlType.map((i, e) => {
          return(
-           <option key={i.type} value={i.type}>{i.description} </option>
+           <option key={e} value={i.type}>{i.description} </option>
          )
        })
      }
@@ -525,7 +525,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
           noDataText=""
                alignment="center"
            >
-                <Paging enabled={true}  defaultPageSize={3}/>
+                <Paging enabled={true}  defaultPageSize={15}/>
           <Pager 
            visible={true}
            allowedPageSizes = {allowedPageSizes}

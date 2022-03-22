@@ -88,7 +88,8 @@ const Header  = (props) => {
          <MySubHeading>
            {userName}
              </MySubHeading>
-             <ExpandMoreIcon />
+             <ExpandMoreIcon style={{display : "flex", height: "100%", justifyContent : "center", 
+            alignItems : "center"}} />
           </ProfileInfo>
       </MainContainer>
     )

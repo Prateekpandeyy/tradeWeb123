@@ -26,11 +26,17 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 const { RangePicker } = DatePicker;
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'DD/MM/YYYY';
 const weekFormat = 'MM/DD';
 const monthFormat = 'YYYY/MM';
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
-const customFormat = value => `custom format: ${value.format(dateFormat)}`;
+const customFormat = (value) => {
+  console.log("value", value)
+  
+  return(
+    `${value.format(dateFormat)}`
+  )
+};
 
 const TopBox = styled(Box)({
   display: "flex",
@@ -59,7 +65,7 @@ const MyButton = styled(Button)({
   boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
   borderRadius: "5px",
   minWidth: "120px",
-  height: "40px",
+  height: "35px",
 })
 const useStyle = (makeStyles)({
   boxRoot: {
@@ -125,13 +131,12 @@ const startupSelectedKeys = [540691]
 
   // onRow pre function (table row & column styling function)
   const onRowPre =(e) => {  
-        
     if(e.rowType == "header"){
         
       e.rowElement.style.backgroundColor = '#E1F1FF';
       e.rowElement.style.fontFamily = 'Poppins';
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "16px";
+      e.rowElement.style.fontSize = "14px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.fontWeight = 600;
     
@@ -142,14 +147,16 @@ const startupSelectedKeys = [540691]
         e.rowElement.style.margin = "10px";
         e.rowElement.style.fontFamily = 'Poppins';
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "16px";
+      e.rowElement.style.fontSize = "12px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.lineHeight = "35px"
-      e.rowElement.style.fontWeight = 500;
+      e.rowElement.style.fontWeight = 400;
+    } 
+    
     if(e.rowIndex % 2 === 0){
       e.rowElement.style.backgroundColor = '#E1F1FF';
     }
-    }
+    
 }  
 
   // transaction data 
@@ -373,6 +380,16 @@ const exportGrid = React.useCallback(() => {
     doc.save('Customers.pdf');
   });
 });
+// buy Amount Function
+const buyAmountFun = (e) => {
+  return parseFloat(Math.abs(e.BuyAmount)).toFixed(2);
+};
+const sellAmountFun = (e) => {
+  return parseFloat(Math.abs(e.SellAmount)).toFixed(2);
+}
+const netAmountFun = (e) => {
+  return parseFloat(Math.abs(e.data.NetAmount)).toFixed(2);
+}
   return(
     <Layout mainLink = "Transaction" noBreadcrumb = {true}>
                <TopBox>
@@ -413,11 +430,11 @@ const exportGrid = React.useCallback(() => {
            }
             <Box className={classes.boxRoot}>
           
-          <Space direction="vertical" size={12}>
+          <Space direction="vertical" size={12} style={{display : "flex", 
+        width : "300px", margin: "0 10px"}}>
   <RangePicker
-    defaultValue={[moment(`From - ${fromDate}`, dateFormat), 
-    moment(`To - ${toDate}`, dateFormat)]}
-    format={dateFormat}
+   defaultValue={[moment('20/01/2015', dateFormat), moment('10/01/2015', dateFormat)]}
+    format={customFormat}
     onChange={getValue}
   />
 
@@ -466,11 +483,11 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   columnResizingMode="nextColumn"
  
   noDataText=''
-  showBorders={true}>
+  showBorders={false}>
     
   <Grouping expandMode="rowClick" />
                 <GroupPanel visible={true} /> 
-          <Paging enabled={true}  defaultPageSize={5}/>
+          <Paging enabled={true}  defaultPageSize={15}/>
           <Pager 
            visible={true}
           
@@ -503,6 +520,8 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
            <Column 
            dataField="BuyAmount"
            caption="Buy Amount"
+           calculateCellValue={buyAmountFun}
+           alignment="right"
            />
           
          <Column
@@ -512,6 +531,8 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
           <Column
          dataField="SellAmount"
          caption = "Sell Amount"
+         calculateCellValue={sellAmountFun}
+         alignment="right"
          />
           <Column
          dataField="Net"
@@ -520,6 +541,8 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
           <Column
          dataField="NetAmount"
          caption = "Net Amount"
+         cellRender={netAmountFun}
+         alignment="right"
          />
         <Column
         dataField="AvgRate"
@@ -534,18 +557,18 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
        id="myDataGrid"
       displayFormat="{0}"
       customizeText={myNetAmount}
-      cssClass={"warning4"}
+      cssClass={"totalSummaryStyle"}
       showInColumn="NetAmount" />
        <TotalItem
       name="SelectedRowsSummaryBuy"
       summaryType="custom"
     
       displayFormat="{0}"
-      cssClass={"warning4"}
+      cssClass={"totalSummaryStyle"}
       customizeText={myBuyAmount}
       showInColumn="BuyAmount" />
          <TotalItem
-      cssClass={"warning4"}
+      cssClass={"totalSummaryStyle"}
       displayFormat="Total"
       showInColumn="ScripCode" />
   </Summary>
@@ -573,7 +596,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
     
   <Grouping expandMode="rowClick" />
                 <GroupPanel visible={true} /> 
-          <Paging enabled={true}  defaultPageSize={5}/>
+          <Paging enabled={true}  defaultPageSize={15}/>
           <Pager 
            visible={true}
           
@@ -663,7 +686,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   showBorders={true}>
   <Grouping expandMode="rowClick" />
   <GroupPanel visible={true} /> 
-<Paging enabled={true}  defaultPageSize={5}/>
+<Paging enabled={true}  defaultPageSize={15}/>
 <Pager 
 visible={true}
 
