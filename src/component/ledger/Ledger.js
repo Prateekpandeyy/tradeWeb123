@@ -181,25 +181,28 @@ const Ledger = () => {
     }
 
     return (
+     <>
+     {e.row.data.Type !== "Total" ? 
       <span style={{display : "flex", padding : "6px 0px"}}>
-        {aka === true ? (
-          <input
-            type="checkbox"
-            onChange={() => valueFun(e.row)}
-            
-            checked={true}
-            className="checked"
-          ></input>
-        ) : (
-          <input
-            type="checkbox"
-            onChange={() => valueFun(e.row)}
+      {aka === true ? (
+        <input
+          type="checkbox"
+          onChange={() => valueFun(e.row)}
           
-            checked={false}
-            className="checked"
-          ></input>
-        )}
-      </span>
+          checked={true}
+          className="checked"
+        ></input>
+      ) : (
+        <input
+          type="checkbox"
+          onChange={() => valueFun(e.row)}
+        
+          checked={false}
+          className="checked"
+        ></input>
+      )}
+    </span> : ""}
+     </>
     );
   };
   const valueFun = (e) => {
@@ -219,6 +222,8 @@ const Ledger = () => {
     // getSelectData(e);
   };
   const tradeFun = (e) => {
+    let a = 0;
+    let bb = []
     setTradeValue(e.target.value);
     setCheckValue([]);
     axios
@@ -227,10 +232,14 @@ const Ledger = () => {
         myConfig
       )
       .then((res) => {
+     
         if (res.status === 200) {
-          setDate(res.data);
+      res.data.map((i) => {
+       bb.push(a++)
+      })
         }
       });
+      setCheckValue(bb)
   };
 
   const onRowPre = (e) => {
@@ -255,6 +264,8 @@ const Ledger = () => {
       e.rowElement.style.lineHeight = "35px"
       e.rowElement.style.fontWeight = 400;
     }
+ 
+   
   };
 
   const myBuyAmount = (e) => {
@@ -286,7 +297,7 @@ const Ledger = () => {
   };
   
   const getDate = () => {
-    let inc = 1;
+    let inc = 2;
   
     axios
       .get(
@@ -295,11 +306,11 @@ const Ledger = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          setDate(res.data);
+         process(res.data)
        
           res.data.map((i) => {
            if(i.Type === "Trading"){
-             console.log(i.Type)
+            
                inc++;
                let p = String(inc)
                tradeval.push(inc)
@@ -333,16 +344,17 @@ const Ledger = () => {
   };
   // bottom ledger data 
   const getBottomData = () => {
-    
+  
     let cescds = [];
-    console.log("checkValue", checkValue, tradeval)
+  
     for (let i in checkValue) {
       cescds.push({
-        type: date[checkValue[i]].Type,
-        exchseg: date[checkValue[i]].CESCD,
+        type: date.data[checkValue[i]].Type,
+        exchseg: date.data[checkValue[i]].CESCD,
       });
     }
     getSelectData(reduce(cescds));
+   
 
   }
 
@@ -381,6 +393,88 @@ const Ledger = () => {
     return newArray;
     // console.log("NEW ARRAY--->", newArray);
   };
+  const process = (arr) => {
+    let groupedData = {};
+    let totalData = {};
+    let outputDataArray = [];
+    let typesArray;
+  
+    //GROUPING DATA
+    arr.forEach((element) => {
+      if (!groupedData[element.Type]) {
+        groupedData[element.Type] = [element];
+      } else {
+        groupedData[element.Type] = [...groupedData[element.Type], element];
+      }
+    });
+  
+    //LIST OF TYPES
+    typesArray = Object.getOwnPropertyNames(groupedData);
+  
+    //SUMATION OF GROUPED DATA
+    typesArray.forEach((element, index) => {
+      totalData[element] = {
+        Type: "Total",
+        ExchSeg: "Total",
+        CESCD: "",
+        OpeningBalance: parseFloat(
+          groupedData[element]
+            .reduce((prevItem, item) => {
+              return prevItem + item.OpeningBalance;
+            }, 0)
+            .toFixed(2)
+        ),
+        Debit: parseFloat(
+          groupedData[element]
+            .reduce((prevItem, item) => {
+              return prevItem + item.Debit;
+            }, 0)
+            .toFixed(2)
+        ),
+        Credit: parseFloat(
+          groupedData[element]
+            .reduce((prevItem, item) => {
+              return prevItem + item.Credit;
+            }, 0)
+            .toFixed(2)
+        ),
+        Balance: parseFloat(
+          groupedData[element]
+            .reduce((prevItem, item) => {
+              return prevItem + item.Balance;
+            }, 0)
+            .toFixed(2)
+        ),
+      };
+  
+      //CONSOLIDATED DATA ----[actual_data , total]
+      outputDataArray = [...outputDataArray, ...groupedData[element], totalData[element]];
+    });
+  setDate({
+    types: typesArray,
+    data: outputDataArray,
+  })
+    return {
+      types: typesArray,
+      data: outputDataArray,
+    };
+  };
+  // total cell style
+  const cellPrepered = (e) => {
+    // console.log("cellPre", e)
+    if(e.rowType === "data" && e.data.Type === "Total"){
+      console.log("e", e)
+      if(e.columnIndex === 1 || e.columnIndex === 2 || e.columnIndex === 4){
+        e.cellElement.style.color = "#0085ff"
+      }
+      else if(e.columnIndex === 3){
+        e.cellElement.style.color = "#e2a705"
+      }
+      else if (e.columnIndex === 5){
+        e.cellElement.style.color = "#00b824"
+      }
+    }
+  }
 
   return (
     <>
@@ -417,7 +511,7 @@ const Ledger = () => {
   id="gridContainer"
  
   onSelectionChanged={onSelectionChanged}
-  dataSource={date}
+  dataSource={date.data}
   keyExpr="ExchSeg"
   showRowLines = {true}
   onRowPrepared={onRowPre}
@@ -426,7 +520,7 @@ const Ledger = () => {
   showColumnLines = {false}
   columnHidingEnabled={true}
   columnResizingMode="nextColumn"
- 
+ onCellPrepared = {cellPrepered}
   noDataText=''
   showBorders={false}>
                 <Selection

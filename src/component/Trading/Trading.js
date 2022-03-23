@@ -247,7 +247,7 @@ const myBuyAmount = (e) => {
       }
       // exchange option function
       const exchangeFunction = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value.length)
       setStlFieldType([])
       setFirstValue(e.target.value[1])
       let a = e.target.value.slice(0, 2)
