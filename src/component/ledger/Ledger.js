@@ -79,7 +79,7 @@ const Ledger = () => {
   const [debit, setDebit] = useState(67);
   const [creadit, setCreadit] = useState();
   const [balance, setBalance] = useState();
-  const [tradeValue, setTradeValue] = useState(1);
+  const [tradeValue, setTradeValue] = useState("1");
   const [detData, setDetData] = useState([]);
   const [checkValue, setCheckValue] = useState([]);
   const [selectValue, setSelectValue] = useState();
@@ -121,7 +121,7 @@ const Ledger = () => {
         headers: {
           Authorization: "Bearer " + token,
         },
-        url: `${baseUrl}/TradeWeb/Ledger_Detail`,
+        url: `${baseUrl}/Main/Ledger_Detail`,
         data: details,
       }).then((res) => {
         getledData(res.data);
@@ -206,6 +206,7 @@ const Ledger = () => {
     );
   };
   const valueFun = (e) => {
+   
     let pp = [...checkValue];
     let ko = pp.filter((i) => {
       return i === e.rowIndex;
@@ -222,8 +223,15 @@ const Ledger = () => {
     // getSelectData(e);
   };
   const tradeFun = (e) => {
+  
     let a = 0;
     let bb = []
+    if(e.target.value === "1"){
+      a = 3
+    }
+    else if (e.target.value === "2"){
+      a = 0
+    }
     setTradeValue(e.target.value);
     setCheckValue([]);
     axios
@@ -235,7 +243,18 @@ const Ledger = () => {
      
         if (res.status === 200) {
       res.data.map((i) => {
-       bb.push(a++)
+       
+      if(e.target.value === "1"){
+       
+        if(i.Type === "Trading"){
+         
+          bb.push(a++)
+        }
+       
+      }
+      else if(e.target.value === "2"){
+        bb.push(a++)
+      }
       })
         }
       });
@@ -264,8 +283,6 @@ const Ledger = () => {
       e.rowElement.style.lineHeight = "35px"
       e.rowElement.style.fontWeight = 400;
     }
- 
-   
   };
 
   const myBuyAmount = (e) => {
@@ -301,7 +318,7 @@ const Ledger = () => {
   
     axios
       .get(
-        `${baseUrl}/TradeWeb/Ledger_Summary?fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
+        `${baseUrl}/Main/Ledger_Summary?fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
         myConfig
       )
       .then((res) => {
@@ -346,7 +363,7 @@ const Ledger = () => {
   const getBottomData = () => {
   
     let cescds = [];
-  
+   
     for (let i in checkValue) {
       cescds.push({
         type: date.data[checkValue[i]].Type,
@@ -354,7 +371,7 @@ const Ledger = () => {
       });
     }
     getSelectData(reduce(cescds));
-   
+  
 
   }
 
@@ -391,7 +408,7 @@ const Ledger = () => {
       }
     });
     return newArray;
-    // console.log("NEW ARRAY--->", newArray);
+   
   };
   const process = (arr) => {
     let groupedData = {};
@@ -459,23 +476,103 @@ const Ledger = () => {
       data: outputDataArray,
     };
   };
-  // total cell style
-  const cellPrepered = (e) => {
-    // console.log("cellPre", e)
-    if(e.rowType === "data" && e.data.Type === "Total"){
-      console.log("e", e)
-      if(e.columnIndex === 1 || e.columnIndex === 2 || e.columnIndex === 4){
-        e.cellElement.style.color = "#0085ff"
-      }
-      else if(e.columnIndex === 3){
-        e.cellElement.style.color = "#e2a705"
-      }
-      else if (e.columnIndex === 5){
-        e.cellElement.style.color = "#00b824"
-      }
+// cell styleling
+const cellPrepered = (e) => {
+  // console.log("cellPre", e)
+  if(e.rowType === "data" && e.data.Type === "Total"){
+    console.log("e", e)
+    if(e.columnIndex === 1 || e.columnIndex === 2 || e.columnIndex === 4){
+      e.cellElement.style.color = "#0085ff";
+      e.cellElement.style.fontWeight = 600;
+      e.cellElement.style.fontSize = "12px";
+      e.cellElement.style.fontFamily = "Poppins";
+      e.cellElement.style.lineHeight = "30px"
+    }
+    else if(e.columnIndex === 3){
+      e.cellElement.style.color = "#e2a705";
+      e.cellElement.style.fontWeight = 600;
+      e.cellElement.style.fontSize = "12px";
+      e.cellElement.style.fontFamily = "Poppins";
+      e.cellElement.style.lineHeight = "30px"
+    }
+    else if (e.columnIndex === 5){
+      e.cellElement.style.color = "#00b824";
+      e.cellElement.style.fontWeight = 600;
+      e.cellElement.style.fontSize = "12px";
+      e.cellElement.style.fontFamily = "Poppins";
+      e.cellElement.style.lineHeight = "30px"
     }
   }
+}
+// Opening balance
+const calculateSelectedRow = (options) => {
+ 
+     
+                               
+                                          
+  if (options.name === 'OpeningBalance') {
 
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
+     
+      console.log("options", options.value)
+      if(options.value.Type !== "Total"){
+        options.totalValue += options.value.OpeningBalance;
+      }
+      
+    }
+  
+  } 
+  if (options.name === 'Debit') {
+
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
+     
+      console.log("options", options.value)
+      if(options.value.Type !== "Total"){
+        options.totalValue += options.value.Debit;
+      }
+      
+    }
+  
+  } 
+  if (options.name === 'Credit') {
+
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
+     
+      console.log("options", options.value)
+      if(options.value.Type !== "Total"){
+        options.totalValue += options.value.Credit;
+      }
+      
+    }
+  
+  } 
+  if (options.name === 'Balance') {
+
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
+     
+      console.log("options", options.value)
+      if(options.value.Type !== "Total"){
+        options.totalValue += options.value.Balance;
+      }
+      
+    }
+  
+  } 
+
+}
+  
   return (
     <>
       <Layout mainLink="BP EQUTIES PVT. LTD" subLink="Ledger">
@@ -509,7 +606,7 @@ const Ledger = () => {
 
                 <DataGrid
   id="gridContainer"
- 
+ onCellPrepared={cellPrepered}
   onSelectionChanged={onSelectionChanged}
   dataSource={date.data}
   keyExpr="ExchSeg"
@@ -520,7 +617,7 @@ const Ledger = () => {
   showColumnLines = {false}
   columnHidingEnabled={true}
   columnResizingMode="nextColumn"
- onCellPrepared = {cellPrepered}
+ 
   noDataText=''
   showBorders={false}>
                 <Selection
@@ -564,39 +661,39 @@ const Ledger = () => {
                   alignment="right"
                 ></Column>
 
-                <Summary>
+<Summary calculateCustomSummary={calculateSelectedRow}>
                   <TotalItem
                     cssClass={"openingBalance"}
                     displayFormat="Total"
                     showInColumn="ExchSeg"
                   />
                   <TotalItem
-                    column="OpeningBalance"
-                    summaryType="sum"
+                    name="OpeningBalance"
+                    summaryType="custom"
                     customizeText={myBuyAmount}
                     displayFormat="{0}"
                     cssClass={"openingBalance"}
                     showInColumn="OpeningBalance"
                   />
                   <TotalItem
-                    column="Debit"
-                    summaryType="sum"
+                    name="Debit"
+                    summaryType="custom"
                     customizeText={myBuyAmount3}
                     displayFormat="{0}"
                     cssClass={"debitBalance"}
                     showInColumn="Debit"
                   />
                   <TotalItem
-                    column="Credit"
-                    summaryType="sum"
+                      name="Credit"
+                      summaryType="custom"
                     customizeText={myBuyAmount4}
                     displayFormat="{0}"
                     cssClass={"creditBalance"}
                     showInColumn="Credit"
                   />
                   <TotalItem
-                    column="Balance"
-                    summaryType="sum"
+                     name="Balance"
+                     summaryType="custom"
                     customizeText={myBuyAmount2}
                     displayFormat="{0}"
                     cssClass={"totalBalance"}

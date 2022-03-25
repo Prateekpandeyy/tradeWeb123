@@ -7,6 +7,27 @@ import MyContainer from '../commonFunction/MyContainer';
 import {
     DataGrid, Column, Selection, Paging, Summary, TotalItem, MasterDetail, Scrolling, Pager,
 } from 'devextreme-react/data-grid';
+import {
+    LineChart,
+    Line,
+    CartesianGrid,
+    XAxis,
+    YAxis,
+    AreaChart,
+    Area,
+  } from "recharts";
+  const data = [
+    { name: "", uv: 20, pv: 2400, amt: 2400 },
+    { name: "", uv: 60, pv: 2000, amt: 2300 },
+    { name: "", uv: 150, pv: 2000, amt: 2300 },
+    { name: "", uv: 100, pv: 2000, amt: 2300 },
+    { name: "", uv: 300, pv: 2000, amt: 2300 },
+    { name: "", uv: 120, pv: 2000, amt: 2300 },
+    { name: "", uv: 200, pv: 2000, amt: 2300 },
+    { name: "", uv: 80, pv: 2000, amt: 2300 },
+    { name: "", uv: 10, pv: 2000, amt: 2300 },
+    { name: "", uv: 150, pv: 2000, amt: 2300 },
+  ];
 const TopBox = styled(Box)({
     display: "flex",
     alignItems: "center",
@@ -56,6 +77,58 @@ const MyButton = styled(Button)({
 })
 const Holding = () => {
     const classes = useStyle()
+    const onRowPre = (e) => {
+        if(e.rowType == "header"){
+            
+          e.rowElement.style.backgroundColor = '#E1F1FF';
+          e.rowElement.style.fontFamily = 'Poppins';
+          e.rowElement.style.fontStyle = "normal";
+          e.rowElement.style.fontSize = "14px";
+          e.rowElement.style.color = "#3D3D3D";
+          e.rowElement.style.fontWeight = 600;
+        
+          e.rowElement.style.lineHeight = "35px"
+        }  
+        if(e.rowType == "data"){
+       
+            e.rowElement.style.margin = "10px";
+            e.rowElement.style.fontFamily = 'Poppins';
+          e.rowElement.style.fontStyle = "normal";
+          e.rowElement.style.fontSize = "12px";
+          e.rowElement.style.color = "#3D3D3D";
+          e.rowElement.style.lineHeight = "35px"
+          e.rowElement.style.fontWeight = 400;
+        }
+      };
+      const cellRender = (e) => {
+          console.log("cellRender", e)
+          return(
+              <>
+               <AreaChart
+          width={80}
+          height={40}
+          margin={{ top: 20, right: 5, bottom: 5, left: 5 }}
+          data={data}
+        >
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="10%" stopColor="rgba(0, 100, 0, 0.2)" stopOpacity={1.0} />
+              <stop offset="100%" stopColor="rgba(0, 100, 0, 0.2)" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <Area
+            type="monotone"
+            dataKey="uv"
+            stroke="rgba(0, 184, 36, 1)"
+            strokeWidth={2}
+            // fill="rgba(0, 100, 0, 0.2)"
+            fillOpacity={5} fill="url(#colorUv)" 
+          />
+        </AreaChart>
+              </>
+          )
+      }
+    
     return(
         <Layout subLink = "Holding">
         <TopBox>
@@ -70,7 +143,7 @@ const Holding = () => {
             </Box>
             <Box className={classes.boxRoot}>
      
-     As On
+     As On :
      </Box>
             <Box className={classes.boxRoot}>
      
@@ -91,18 +164,25 @@ const Holding = () => {
              <Grid style={{padding: "20px"}}>
              <DataGrid 
              dataSource = {HoldingData}
-            
-              showRowLines={false}
-              showCheckBoxesMode={true}
-              showBorders = {true}
-              columnAutoWidth={true}
-             
-              showColumnLines = {false}
+             onRowPrepared={onRowPre}
              keyExpr="id"
           noDataText=""
                alignment="center"
+               showRowLines = {true}
+               columnAutoWidth={true}
+               showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={false}
            >
-                <Paging enabled={true}  defaultPageSize={3}/>
+                               <Selection
+                  mode="multiple"
+                
+                  showCheckBoxesMode="always"
+                />
+                <Paging enabled={true}  defaultPageSize={15}/>
           <Pager 
            visible={true}
           
@@ -112,7 +192,35 @@ const Holding = () => {
            showNavigationButtons = {true} />
                  <Column
                  caption= "Stocks"
-                 dataField = "stacks" >
+                 dataField = "stack" >
+                 </Column>
+                 <Column
+                 caption= "Graph"
+                cellRender={cellRender} >
+                 </Column>
+                 <Column
+                 caption= "Quantity"
+                 dataField = "Quantity" >
+                 </Column>
+                 <Column
+                 caption= "Current Price"
+                 dataField = "Current" >
+                 </Column>
+                 <Column
+                 caption= "Current Value"
+                 dataField = "CurrentValue" >
+                 </Column>
+                 <Column
+                 caption= "Net Profit & loss"
+                 dataField = "CurrentValue" >
+                 </Column>
+                 <Column
+                 caption= "Buy"
+                 dataField = "CurrentValue" >
+                 </Column>
+                 <Column
+                 caption= "Sell"
+                 dataField = "CurrentValue" >
                  </Column>
                   
 </DataGrid>

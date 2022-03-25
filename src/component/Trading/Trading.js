@@ -24,19 +24,19 @@ import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
 const data2 = [
-    {
-      OrderID : 1,
-      TradeID : "1",
-      TradeTime : "2342000",
-      Stlmnt : "20:12:20",
-      Buy : "29292929",
-        MarketRate : "2992",
-        Brokerage : "2929",
-        BuyValue : "1919",
-        SellValue : "29292992",
-        ScripCode : "2020",
-        NetValue : ""
-    }
+  {
+    OrderID : 1,
+    TradeID : "1",
+    TradeTime : "2342000",
+    Stlmnt : "20:12:20",
+    Buy : "29292929",
+      MarketRate : "2992",
+      Brokerage : "2929",
+      BuyValue : "1919",
+      SellValue : "29292992",
+      ScripCode : "2020",
+      NetValue : ""
+  }
 ]
 const data3 = [
   {
@@ -77,150 +77,72 @@ const data3 = [
 }
 ]
 const TopBox = styled(Box)({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "20px"
-})
-const useStyle = (makeStyles)({
-    boxRoot: {
-        display : "flex", 
-        justifyContent: "space-between",
-        alignItems: "center"
-      
-      }, 
-      MySelect: {
-          display:"flex",
-          maxWidth: "200px",
-          
-    height: "40px",
-    background: "#ffffff",
-    border: "1px solid #EBEBEB",
-    
-    boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
-    borderRadius: "7px",
-    padding: "0 10px",
-    fontSize: "16px"
-      } ,
-      MySelect2: {
-        display:"flex",
-        maxWidth: "300px",
-  height: "40px",
-  background: "#ffffff",
-  border: "1px solid #EBEBEB",
-  
-  boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
-  borderRadius: "7px",
-  padding: "0 10px",
-  fontSize: "16px"
-    } 
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "20px"
 })
 const MyData =  styled(Box)({
-    width: "150px",
-    height: "36px",
-    borderRadius: "5px",
-    border: "1px solid #EBEBEB",
-    padding: "5px 10px",
-    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)"
+  width: "150px",
+  height: "36px",
+  borderRadius: "5px",
+  border: "1px solid #EBEBEB",
+  padding: "5px 10px",
+  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)"
 })
-
 const MyButton = styled(Button)({
-    borderRadius: "5px",
-    backgroundColor: "#0364BE", 
-    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-    borderRadius: "5px",
-    minWidth: "120px"
+  borderRadius: "5px",
+  backgroundColor: "#0364BE", 
+  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+  borderRadius: "5px",
+  minWidth: "120px"
 })
+const useStyle = (makeStyles)({
+  boxRoot: {
+      display : "flex", 
+      justifyContent: "space-between",
+      alignItems: "center"  
+    }, 
+    MySelect: {
+      display:"flex",
+      maxWidth: "200px",  
+height: "40px",
+background: "#ffffff",
+border: "1px solid #EBEBEB",
+boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
+borderRadius: "7px",
+padding: "0 10px",
+fontSize: "16px"
+  } ,
+  MySelect2: {
+    display:"flex",
+    maxWidth: "300px",
+height: "40px",
+background: "#ffffff",
+border: "1px solid #EBEBEB",
+
+boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
+borderRadius: "7px",
+padding: "0 10px",
+fontSize: "16px"
+}
+  })
 const Trading = () => {
-    const [selectValue, setSelectValue] = useState(1);
+  const [selectValue, setSelectValue] = useState(1);
     const [exchange, setExchange] = useState([])
-    const [showSetlmentType, setShowSetlmentType] = useState(true)
-   const [stlType, setStlType] = useState([])
-    const [stlfieldType , setStlFieldType] = useState("")
+    const [stlType, setStlType] = useState([])
+    const [stlfieldType , setStlFieldType] = useState("N")
     const [exchangeValue, setExchangeValue] = useState("")
-    const [data, setData] = useState(data2)
-    const [data22, setData2] = useState(data3)
+    const [showSetlmentType, setShowSetlmentType] = useState(true)
+    const [getFirstValue, setFirstValue] = useState("B");
+    const [data, setData] = useState([])
     const token = localStorage.getItem("token")
+    const dataGridRef = React.createRef();
+    const [date22, setStartDate] = useState("01042021");
+    const [data22, setData2] = useState([])
     const allowedPageSizes = [5, 10, 15]
     const checkedValueTo = ["2020"]
-    const [getFirstValue, setFirstValue] = useState();
-    const [getScrondValue, setSecondValue] = useState()
-    const [date22, setStartDate] = useState();
-    const dataGridRef = React.createRef();
-useEffect(()=>{
-  getExchange()
-} ,[])
-const getExchange = () => {
-  const myConfig = {
-            headers: {
-               Authorization: "Bearer " + token
-            }
-         }
- 
-  axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
-    .then((res) => {
-      setExchange(res.data)
-     
-    });
-};
-const myBuyAmount = (e) => {
-    
-  let k = parseFloat(e.value).toFixed(2)
-  return k
-}   
-
-   
-    const onRowPre =(e) => {  
-        
-        if(e.rowType == "header"){
-            
-            e.rowElement.style.backgroundColor = '#E1F1FF';
-            e.rowElement.style.fontFamily = 'Poppins';
-            e.rowElement.style.fontStyle = "normal";
-            e.rowElement.style.fontSize = "16px";
-            e.rowElement.style.color = "#3D3D3D";
-            e.rowElement.style.fontWeight = 600;
-          
-            e.rowElement.style.lineHeight = "35px"
-          }  
-          if(e.rowType == "data"){
-              e.rowElement.style.borderBottom = "1px solid #F0F0F0";
-              e.rowElement.style.margin = "10px";
-              e.rowElement.style.fontFamily = 'Poppins';
-            e.rowElement.style.fontStyle = "normal";
-            e.rowElement.style.fontSize = "16px";
-            e.rowElement.style.color = "#3D3D3D";
-            e.rowElement.style.fontWeight = 500;
-            e.rowElement.style.lineHeight = "35px"
-          
-          }
-    }    
-    const onRowPre2 =(e) => {  
-        
-      if(e.rowType == "header"){
-          
-        
-          e.rowElement.style.fontFamily = 'Poppins';
-          e.rowElement.style.fontStyle = "normal";
-          e.rowElement.style.fontSize = "16px";
-          e.rowElement.style.color = "#3D3D3D";
-          e.rowElement.style.fontWeight = 600;
-        
-          e.rowElement.style.lineHeight = "35px"
-        }  
-        if(e.rowType == "data"){
-            e.rowElement.style.backgroundColor = "#fff";
-            e.rowElement.style.margin = "10px";
-            e.rowElement.style.fontFamily = 'Poppins';
-          e.rowElement.style.fontStyle = "normal";
-          e.rowElement.style.fontSize = "16px";
-          e.rowElement.style.color = "#3D3D3D";
-          e.rowElement.style.fontWeight = 700;
-          e.rowElement.style.lineHeight = "35px"
-        
-        }
-  }    
-    let a ;
+    // Summary calculate function
     const calculateSelectedRow = (options) => {
       if (options.name === 'SelectedRowsSummaryBuy') {
              
@@ -245,191 +167,278 @@ const myBuyAmount = (e) => {
         }
       }
       }
-      // exchange option function
-      const exchangeFunction = (e) => {
-    console.log(e.target.value.length)
-      setStlFieldType([])
-      setFirstValue(e.target.value[1])
-      let a = e.target.value.slice(0, 2)
-     setExchangeValue(e.target.value)
-        if(a === "AB"){
-          setShowSetlmentType(true)
-        }
-        else{
-          setShowSetlmentType(false)
-        }
-        const myConfig = {
-          headers: {
-             Authorization: "Bearer " + token
-          }
-       }
-
-axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exch=${a}`, myConfig)
+    // On row prepared
+    const onRowPre =(e) => {  
+      if(e.rowType == "header"){
+        
+        e.rowElement.style.backgroundColor = '#E1F1FF';
+        e.rowElement.style.fontFamily = 'Poppins';
+        e.rowElement.style.fontStyle = "normal";
+        e.rowElement.style.fontSize = "14px";
+        e.rowElement.style.color = "#3D3D3D";
+        e.rowElement.style.fontWeight = 600;
+      
+        e.rowElement.style.lineHeight = "35px"
+      }  
+      if(e.rowType == "data"){
+     
+          e.rowElement.style.margin = "10px";
+          e.rowElement.style.fontFamily = 'Poppins';
+        e.rowElement.style.fontStyle = "normal";
+        e.rowElement.style.fontSize = "12px";
+        e.rowElement.style.color = "#3D3D3D";
+        e.rowElement.style.lineHeight = "35px"
+        e.rowElement.style.fontWeight = 400;
+      }
+  }    
+    // get Exhange select box value 
+    useEffect(()=>{
+      getExchange()
+    } ,[])
+    useEffect(() => {
+      exchangeFunction()
+    }, [exchange])
+    const getExchange = () => {
+      const myConfig = {
+                headers: {
+                   Authorization: "Bearer " + token
+                }
+             }
+     
+      axios.get(`${baseUrl}/Bills/Bills_exchSeg`, myConfig)
+        .then((res) => {
+          setExchange(res.data)
+         
+        });
+    };
+    // exchange option function
+    const exchangeFunction = (e) => {
+     
+     
+         
+        // let a = e.slice(0, 2)
+       setExchangeValue(e)
+          // if(a === "AB"){
+          //   setShowSetlmentType(true)
+          // }
+          // else{
+          //   setShowSetlmentType(false)
+          // }
+          const myConfig = {
+            headers: {
+               Authorization: "Bearer " + token
+            }
+         }
+  
+ if(e) {
+   console.log(e.split(" ")[0][1])
+  setFirstValue(e.split(" ")[0][1])
+  axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=${e.split(" ")[1][0]}`, myConfig)
   .then((res) => {
    
    setStlType(res.data)
   });
-      }
-
-
-
-      const showData = () => {
-        let pp = []
-           const myConfig = {
-          headers: {
-             Authorization: "Bearer " + token
-          }
-       }
-
-
-axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&dt=${date22}`, myConfig)
-  .then((res) => {
-  
- setData(res.data)
- 
- res.data.map((i) => {
- if(i.ScripName === "Central GST @ 9%"){
-   let a = {
-     ScripCode : i.ScripCode,
-     order : i.ScripName, 
-     trade : i.BuyValue
-   }
-   pp.push(a)
  }
-
- else if(i.ScripName === "SEBI FEES"){
-  let a = {
-    ScripCode : i.ScripCode,
-    order : i.ScripName, 
-    trade : i.BuyValue
+ else{
+  axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=B`, myConfig)
+  .then((res) => {
+   
+   setStlType(res.data)
+  });
+ }
+        }
+  
+  // stymy type 
+  const stymtType = (e) => {
+    console.log("type", e.target.value)
+    setStlFieldType(e.target.value)
   }
-  pp.push(a)
-}
-
-else if(i.ScripName === "Stamp Duty"){
-  let a = {
-    ScripCode : i.ScripCode,
-    order : i.ScripName, 
-    trade : i.BuyValue
-  }
-  pp.push(a)
-}
-
-else if(i.ScripName === "State GST @ 9%"){
-  let a = {
-    ScripCode : i.ScripCode,
-    order : i.ScripName, 
-    trade : i.BuyValue
-  }
-  pp.push(a)
-}
-
-else if (i.ScripName === "ransaction Charges [Normal]") {
-  let a = {
-    ScripCode : i.ScripCode,
-    order : i.ScripName, 
-    trade : i.BuyValue
-  }
-  pp.push(a)
-}
-
-else if (i.ScripName === "Due To Us :"){
-  let a = {
-    ScripCode : i.ScripCode,
-    order : i.ScripName, 
-    trade : i.NetValue
-  }
-  pp.push(a)
-}
- })
-  })
-  setData2(pp)
-
-      }
-
-      const stymtType = (e) => {
-        setStlFieldType(e.target.value)
-      }
-      const handleDateChange = (e) => {
-        
-       
-      }
-      const exportGrid = React.useCallback(() => {
-        const doc = new jsPDF();
-        const dataGrid = dataGridRef.current.instance;
-    
-        exportDataGridToPdf({
-          jsPDFDocument: doc,
-          component: dataGrid,
-        }).then(() => {
-          doc.save('Customers.pdf');
-        });
-      });
-      const onExporting = (e) => {
-        const workbook = new Workbook();
-        const worksheet = workbook.addWorksheet('Main sheet');
-        const dataGrid = dataGridRef.current.instance;
-        exportDataGrid({
-            component: dataGrid,
-            worksheet: worksheet,
-            customizeCell: function(options) {
-                const excelCell = options;
-                excelCell.font = { name: 'Arial', size: 12 };
-                excelCell.alignment = { horizontal: 'left' };
-            } 
-        }).then(function() {
-            workbook.xlsx.writeBuffer()
-                .then(function(buffer) {
-                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.xlsx');
-                });
-        });
-        e.cancel = true;
-    }
-    
-    const onPirnt = (e) => {
-
-      const dataGrid = dataGridRef.current.instance;
-    //  window.print()
-    window.print(dataGrid)
-    
-    }
-    const onExportingCsv = (e) => {
-      const workbook = new Workbook();
-      const worksheet = workbook.addWorksheet('Main sheet');
-      const dataGrid = dataGridRef.current.instance;
-      exportDataGrid({
-          component: dataGrid,
-          worksheet: worksheet,
-          customizeCell: function(options) {
-              const excelCell = options;
-              excelCell.font = { name: 'Arial', size: 12 };
-              excelCell.alignment = { horizontal: 'left' };
-          } 
-      }).then(function() {
-          workbook.csv.writeBuffer()
-              .then(function(buffer) {
-                  saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.csv');
-              });
-      });
-      e.cancel = true;
-  }
+  // datepicker function 
   const dateFun = (e) => {
 
     let a = e.format("YYYYMMDD")
     setStartDate(a)
   
   }
- 
-      const classes = useStyle()
-    return(
-        <Layout subLink = "Bills">
+  // ShowData function 
+  const showData = () => {
+    let pp = []
+    let kk = []
+       const myConfig = {
+      headers: {
+         Authorization: "Bearer " + token
+      }
+   }
+
+
+axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&date=${date22}`, myConfig)
+.then((res) => {
+console.log("resData", res.data)
+
+
+res.data.map((i) => {
+if(i.ScripCode === "Charges"){
+let a = {
+ ScripCode : i.ScripCode,
+ order : i.ScripName, 
+ trade : i.BuyValue
+}
+pp.push(a)
+}
+else if (i.ScripName === "Due To You :"){
+  console.log("fixed")
+  let a = {
+    ScripCode : i.ScripCode,
+    order : i.ScripName, 
+    trade : i.NetValue
+   }
+   pp.push(a)
+}
+else {
+  console.log("iii", i)
+  setData((oldData) => {
+   return( [...oldData, i])
+  })
+}
+})
+})
+setData2(pp)
+
+console.log(data)
+  }
+// onExportingCsv
+const onExportingCsv = (e) => {
+  const workbook = new Workbook();
+  const worksheet = workbook.addWorksheet('Main sheet');
+  const dataGrid = dataGridRef.current.instance;
+  exportDataGrid({
+      component: dataGrid,
+      worksheet: worksheet,
+      customizeCell: function(options) {
+          const excelCell = options;
+          excelCell.font = { name: 'Arial', size: 12 };
+          excelCell.alignment = { horizontal: 'left' };
+      } 
+  }).then(function() {
+      workbook.csv.writeBuffer()
+          .then(function(buffer) {
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.csv');
+          });
+  });
+  e.cancel = true;
+}
+
+// onPrint 
+const onPirnt = (e) => {
+
+  const dataGrid = dataGridRef.current.instance;
+//  window.print()
+window.print(dataGrid)
+
+}
+// onExporting 
+const onExporting = (e) => {
+  const workbook = new Workbook();
+  const worksheet = workbook.addWorksheet('Main sheet');
+  const dataGrid = dataGridRef.current.instance;
+  exportDataGrid({
+      component: dataGrid,
+      worksheet: worksheet,
+      customizeCell: function(options) {
+          const excelCell = options;
+          excelCell.font = { name: 'Arial', size: 12 };
+          excelCell.alignment = { horizontal: 'left' };
+      } 
+  }).then(function() {
+      workbook.xlsx.writeBuffer()
+          .then(function(buffer) {
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.xlsx');
+          });
+  });
+  e.cancel = true;
+}
+// ExportGrid 
+const exportGrid = React.useCallback(() => {
+  const doc = new jsPDF();
+  const dataGrid = dataGridRef.current.instance;
+
+  exportDataGridToPdf({
+    jsPDFDocument: doc,
+    component: dataGrid,
+  }).then(() => {
+    doc.save('Customers.pdf');
+  });
+});
+//OnRowPre2
+const onRowPre2 =(e) => {  
+  if(e.rowType == "header"){
         
-         <TopBox>
+    e.rowElement.style.backgroundColor = '#E1F1FF';
+    e.rowElement.style.fontFamily = 'Poppins';
+    e.rowElement.style.fontStyle = "normal";
+    e.rowElement.style.fontSize = "14px";
+    e.rowElement.style.color = "#3D3D3D";
+    e.rowElement.style.fontWeight = 600;
+  
+    e.rowElement.style.lineHeight = "35px"
+  }  
+  if(e.rowType == "data"){
+ 
+      e.rowElement.style.margin = "10px";
+      e.rowElement.style.fontFamily = 'Poppins';
+    e.rowElement.style.fontStyle = "normal";
+    e.rowElement.style.fontSize = "12px";
+    e.rowElement.style.color = "#3D3D3D";
+    e.rowElement.style.lineHeight = "35px"
+    e.rowElement.style.fontWeight = 400;
+  }
+}    
+// My Buy amount 
+const myBuyAmount = (e) => {
+    
+  let k = parseFloat(e.value).toFixed(2)
+  return k
+}   
+// cellRender 
+const cellRender = (e) => {
+  
+  if(e.data.NetValue){
+    return (
+      <span style={{fontFamily : "font-family", 
+      fontStyle : "normal", fontWeight : 600, 
+      fontSize :"14px", lineHeight: "30px"}}>
+       Net Item Amount (Sale-Buy)
+      </span>
+      
+    )
+  }
+  else{
+    return(
+     <span>
+       {e.data.OrderID}
+     </span>
+    )
+  }
+}
+const securityRender = (e) => {
+ if(!e.data.NetValue){
+  return(
+    <span>
+     {`${e.data.ScripName} (${e.data.ScripCode})`}
+    </span>
+  )
+ }
+}
+  const classes = useStyle()
+  return(
+    <Layout subLink = "Bills">
+       <MyContainer>
+       <TopBox>
          <Box className={classes.boxRoot}>
             <Typography variant="body1" mr={2}>
             Exchange : 
         </Typography>
-        <select className={classes.MySelect} onChange={(e) => exchangeFunction(e)}
+        <select className={classes.MySelect} onChange={(e) => exchangeFunction(e.target.value)}
         value = {exchangeValue} multiple={false}>
          
                {
@@ -437,7 +446,7 @@ else if (i.ScripName === "Due To Us :"){
                    return(
                    <>
                     
-                     <option key={e} value ={i.CESCd}>{i.exchange + " " + i.segment}</option>
+                     <option key={i.CESCd} value ={i.CESCd + " " + i.exchange}>{i.exchange + " " + i.segment}</option>
                    </>
                    )
                  })
@@ -445,7 +454,7 @@ else if (i.ScripName === "Due To Us :"){
              
             </select>
             </Box>
-         {showSetlmentType === true ?
+            {showSetlmentType === true ?
          
          <Box className={classes.boxRoot}>
          <Typography variant="body1" mr={2}>
@@ -454,18 +463,18 @@ else if (i.ScripName === "Due To Us :"){
  
        <select className={classes.MySelect2} onChange= {(e) => stymtType(e)}
        value={stlfieldType} multiple = {false}>
-                 <option key={1}> select </option>
+            
      {
        stlType.map((i, e) => {
          return(
-           <option key={e} value={i.type}>{i.description} </option>
+           <option key={i.type} value={i.type}>{i.description} </option>
          )
        })
      }
   </select>
    
          </Box>  : ""}
-            <Box className={classes.boxRoot}>
+         <Box className={classes.boxRoot}>
        <MyData>
        <DatePicker
           defaultValue={moment(new Date(), 'DD MMM, YYYY')}
@@ -487,8 +496,6 @@ else if (i.ScripName === "Due To Us :"){
           }}
         />
        </MyData>
-    
-
             </Box>
             <Box className={classes.boxRoot}>
             <MyButton variant="contained" onClick = {(e)=> showData(e)}>Show</MyButton>
@@ -507,35 +514,30 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
                 </Box>
             </Box>
-         </TopBox>
-         <MyContainer>
-             <Grid container>
+            </TopBox>
+            <Grid container>
              <Grid style={{padding: "20px"}}>
-             <DataGrid 
-             dataSource = {data}
-             onRowPrepared={onRowPre}
-             ref={dataGridRef}
-              showRowLines={false}
-              showCheckBoxesMode={true}
-              showBorders = {true}
-              columnAutoWidth={true}
-              defaultSelectedRowKeys = {checkedValueTo}
-              showColumnLines = {false}
-             keyExpr="ScripCode"
-          noDataText=""
-               alignment="center"
-           >
-                <Paging enabled={true}  defaultPageSize={15}/>
-          <Pager 
-           visible={true}
-           allowedPageSizes = {allowedPageSizes}
-           displayMode = "full"
-         
-           showInfo={true}
-           showNavigationButtons = {true} />
+             <DataGrid
+  id="gridContainer"
+ 
+ 
+  dataSource={data}
+  keyExpr="ScripCode"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={50}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={false}>
+              
                    <Column 
                    dataField="OrderID"
                    caption="Order"
+                   cellRender = {cellRender}
                    alignment="center">
                    </Column>
                    <Column 
@@ -547,8 +549,9 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                    caption= "Time">
                    </Column>
                    <Column 
-                   dataField="Stlmnt"
-                   caption="Security">
+                   caption="Security"
+                   cellRender={securityRender}
+                   >
                    </Column>
                    <Column 
                    dataField="Buy"
@@ -573,26 +576,13 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                 dataField = "NetValue"
                 caption="Net Value"></Column>
                     
-                    <Summary calculateCustomSummary={calculateSelectedRow}>
-                    <TotalItem
-              cssClass={"variantClass"}
-              displayFormat="Net Item Amount (Sale - Buy)"
-              showInColumn="OrderID" />
-                <TotalItem
-              name="SelectedRowsSummaryBuy"
-              summaryType="custom"
-            
-              displayFormat="{0}"
-              cssClass={"warning4"}
-            
-              showInColumn="NetValue" />
-              </Summary>
+         
 </DataGrid>
              </Grid>
              </Grid>
             
-         </MyContainer>
-         <MyContainer>
+       </MyContainer>
+       <MyContainer>
              <Grid container>
              <Grid  style={{padding: "20px"}}>
              <DataGrid 
@@ -619,6 +609,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                 <Column 
                    dataField="trade"
                    caption = ""
+                   alignment="right"
                   >
                    </Column>
                     
@@ -643,7 +634,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
              </Grid>
             
          </MyContainer>
-        </Layout>
-    )
+      </Layout>
+  )
 }
 export default Trading;

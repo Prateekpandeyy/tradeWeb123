@@ -112,7 +112,7 @@ const Login = () => {
         if (res.data.type === "success" || otp == "1234") {
           axios({
             method: "POST",
-            url: `${baseUrl}/TradeWeb/Login_validate_Password?userId=${userId}&password=${passWord}`,
+            url: `${baseUrl}/Main/Login_validate_Password?userId=${userId}&password=${passWord}`,
             data: data4,
           }).then((res2) => {
             if (res2.data.status === true) {
@@ -157,7 +157,7 @@ const Login = () => {
       localStorage.setItem("userId", mNo);
       axios({
         method: "POST",
-        url: `${baseUrl}/TradeWeb/Login_validate_USER?userId=${mNo}`,
+        url: `${baseUrl}/Main/Login_validate_USER?userId=${mNo}`,
         headers: {
           "Content-Type": "application/json",
         },
