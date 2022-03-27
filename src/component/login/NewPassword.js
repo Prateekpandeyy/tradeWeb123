@@ -91,7 +91,7 @@ const NewPassword = () => {
 
     axios({
       method: "POST",
-      url: `${baseUrl}/TradeWeb/Login_update_password?userId=${userId}&OTP=${otp}&newPassword=${password}`,
+      url: `${baseUrl}/Main/Login_update_password?userId=${userId}&OTP=${otp}&newPassword=${password}`,
       headers: {
         "Content-Type": "application/json",
       },

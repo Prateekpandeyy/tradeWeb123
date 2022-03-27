@@ -6,7 +6,7 @@ import {
   Grid,
 } from "@mui/material";
 import { styled, makeStyles } from "@mui/styles";
-
+import moment from 'moment';
 import {
   DataGrid,
   Column,
@@ -236,7 +236,7 @@ const Ledger = () => {
     setCheckValue([]);
     axios
       .get(
-        `${baseUrl}/TradeWeb/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
+        `${baseUrl}/Main/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
         myConfig
       )
       .then((res) => {
@@ -480,7 +480,7 @@ const Ledger = () => {
 const cellPrepered = (e) => {
   // console.log("cellPre", e)
   if(e.rowType === "data" && e.data.Type === "Total"){
-    console.log("e", e)
+
     if(e.columnIndex === 1 || e.columnIndex === 2 || e.columnIndex === 4){
       e.cellElement.style.color = "#0085ff";
       e.cellElement.style.fontWeight = 600;
