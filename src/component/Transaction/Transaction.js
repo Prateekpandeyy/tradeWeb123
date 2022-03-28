@@ -31,8 +31,7 @@ const weekFormat = 'MM/DD';
 const monthFormat = 'YYYY/MM';
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
 const customFormat = (value) => {
-  console.log("value", value)
-  
+
   return(
     `${value.format(dateFormat)}`
   )
@@ -151,7 +150,7 @@ const startupSelectedKeys = [540691]
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.lineHeight = "35px"
       e.rowElement.style.fontWeight = 400;
-    } 
+    }
     
     if(e.rowIndex % 2 === 0){
       e.rowElement.style.backgroundColor = '#E1F1FF';
@@ -189,7 +188,7 @@ const calculateSelectedRow = (options) => {
     } else if (options.summaryProcess === 'calculate') {
      
       if (options.component.isRowSelected(options.value.ScripCode)) {
-        console.log(options.value.ScripCode)
+
         options.totalValue += options.value.NetAmount;
         
       }
@@ -388,7 +387,11 @@ const sellAmountFun = (e) => {
   return parseFloat(Math.abs(e.SellAmount)).toFixed(2);
 }
 const netAmountFun = (e) => {
-  return parseFloat(Math.abs(e.data.NetAmount)).toFixed(2);
+  return parseFloat(Math.abs(e.NetAmount)).toFixed(2);
+}
+const avgRate = (e) => {
+  
+  return parseFloat(Math.abs(e.AvgRate)).toFixed(2);
 }
   return(
     <Layout mainLink = "Transaction" noBreadcrumb = {true}>
@@ -433,7 +436,7 @@ const netAmountFun = (e) => {
           <Space direction="vertical" size={12} style={{display : "flex", 
         width : "300px", margin: "0 10px"}}>
   <RangePicker
-   defaultValue={[moment('20/01/2015', dateFormat), moment('10/01/2015', dateFormat)]}
+   defaultValue={[moment('04/01/2020', dateFormat), moment('31/03/2021', dateFormat)]}
     format={customFormat}
     onChange={getValue}
   />
@@ -469,7 +472,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 {
   showTime === true && agts === false ?
   <DataGrid
-  id="gridContainer"
+  id="transactionDataGrid"
   ref={dataGridRef}
   onSelectionChanged={onSelectionChanged}
   dataSource={transactionData}
@@ -485,9 +488,13 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   noDataText=''
   showBorders={false}>
     
-  <Grouping expandMode="rowClick" />
-                <GroupPanel visible={true} /> 
-          <Paging enabled={true}  defaultPageSize={15}/>
+
+ <Selection
+  mode="multiple"
+  showCheckBoxesMode="always" />
+   <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+        <Paging enabled={true}  defaultPageSize={15}/>
           <Pager 
            visible={true}
           
@@ -495,13 +502,6 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          
            showInfo={true}
            showNavigationButtons = {true} />
- 
-  <Selection
-    mode="multiple"
-    selectAllMode= "allPages"
-    showCheckBoxesMode= "always"
-  />
-        
          
          <Column 
            dataField="ScripCode"
@@ -541,12 +541,13 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
           <Column
          dataField="NetAmount"
          caption = "Net Amount"
-         cellRender={netAmountFun}
+         calculateCellValue={netAmountFun}
          alignment="right"
          />
         <Column
         dataField="AvgRate"
         caption="Avg.Rate" 
+        calculateCellValue={avgRate}
        />
        
         

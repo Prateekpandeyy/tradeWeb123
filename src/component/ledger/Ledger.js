@@ -478,7 +478,7 @@ const Ledger = () => {
   };
 // cell styleling
 const cellPrepered = (e) => {
-  // console.log("cellPre", e)
+
   if(e.rowType === "data" && e.data.Type === "Total"){
 
     if(e.columnIndex === 1 || e.columnIndex === 2 || e.columnIndex === 4){
@@ -515,9 +515,9 @@ const calculateSelectedRow = (options) => {
     if (options.summaryProcess === 'start') {
       options.totalValue = 0;
     } else if (options.summaryProcess === 'calculate') {
-  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
+
      
-      console.log("options", options.value)
+    
       if(options.value.Type !== "Total"){
         options.totalValue += options.value.OpeningBalance;
       }
@@ -530,9 +530,7 @@ const calculateSelectedRow = (options) => {
     if (options.summaryProcess === 'start') {
       options.totalValue = 0;
     } else if (options.summaryProcess === 'calculate') {
-  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
-     
-      console.log("options", options.value)
+
       if(options.value.Type !== "Total"){
         options.totalValue += options.value.Debit;
       }
@@ -545,9 +543,7 @@ const calculateSelectedRow = (options) => {
     if (options.summaryProcess === 'start') {
       options.totalValue = 0;
     } else if (options.summaryProcess === 'calculate') {
-  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
-     
-      console.log("options", options.value)
+ 
       if(options.value.Type !== "Total"){
         options.totalValue += options.value.Credit;
       }
@@ -560,9 +556,7 @@ const calculateSelectedRow = (options) => {
     if (options.summaryProcess === 'start') {
       options.totalValue = 0;
     } else if (options.summaryProcess === 'calculate') {
-  console.log("a", options.component.isRowSelected(options.value.ExchSeg))
-     
-      console.log("options", options.value)
+ 
       if(options.value.Type !== "Total"){
         options.totalValue += options.value.Balance;
       }

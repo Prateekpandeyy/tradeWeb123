@@ -26,7 +26,11 @@ body {
   color: #3d3d3d;
 }
 #gridContainer .dx-datagrid-headers .dx-datagrid-content,
-#dataGrid .dx-datagrid-headers .dx-datagrid-content {
+#dataGrid .dx-datagrid-headers .dx-datagrid-content,
+#holdingDataGird .dx-datagrid-headers .dx-datagrid-content,
+#holdingDataGrid .dx-datagrid-headers .dx-datagrid-content,
+#transactionDataGrid .dx-datagrid-headers .dx-datagrid-content,
+#transactionDataGrid .dx-datagrid-headers .dx-datagrid-content {
   font-family: "Poppins" !important;
   font-style: normal !important;
   font-weight: 500 !important;

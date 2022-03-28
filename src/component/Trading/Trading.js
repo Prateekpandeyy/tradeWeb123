@@ -133,7 +133,7 @@ const Trading = () => {
     const [stlType, setStlType] = useState([])
     const [stlfieldType , setStlFieldType] = useState("N")
     const [exchangeValue, setExchangeValue] = useState("")
-    const [showSetlmentType, setShowSetlmentType] = useState(true)
+    const [showSetlmentType, setShowSetlmentType] = useState("Cash")
     const [getFirstValue, setFirstValue] = useState("B");
     const [data, setData] = useState([])
     const token = localStorage.getItem("token")
@@ -213,17 +213,9 @@ const Trading = () => {
     };
     // exchange option function
     const exchangeFunction = (e) => {
-     
-     
-         
-        // let a = e.slice(0, 2)
        setExchangeValue(e)
-          // if(a === "AB"){
-          //   setShowSetlmentType(true)
-          // }
-          // else{
-          //   setShowSetlmentType(false)
-          // }
+       setData([])
+       setData2([])
           const myConfig = {
             headers: {
                Authorization: "Bearer " + token
@@ -231,18 +223,16 @@ const Trading = () => {
          }
   
  if(e) {
-   console.log(e.split(" ")[0][1])
+    setShowSetlmentType(e.split(" ")[1].slice(0))
   setFirstValue(e.split(" ")[0][1])
-  axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=${e.split(" ")[1][0]}`, myConfig)
+  axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=${e.split(" ")[0][1]}`, myConfig)
   .then((res) => {
-   
    setStlType(res.data)
   });
  }
  else{
   axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=B`, myConfig)
-  .then((res) => {
-   
+  .then((res) => { 
    setStlType(res.data)
   });
  }
@@ -250,7 +240,7 @@ const Trading = () => {
   
   // stymy type 
   const stymtType = (e) => {
-    console.log("type", e.target.value)
+   
     setStlFieldType(e.target.value)
   }
   // datepicker function 
@@ -269,42 +259,46 @@ const Trading = () => {
          Authorization: "Bearer " + token
       }
    }
-
-
-axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&date=${date22}`, myConfig)
-.then((res) => {
-console.log("resData", res.data)
-
-
-res.data.map((i) => {
-if(i.ScripCode === "Charges"){
-let a = {
- ScripCode : i.ScripCode,
- order : i.ScripName, 
- trade : i.BuyValue
-}
-pp.push(a)
-}
-else if (i.ScripName === "Due To You :"){
-  console.log("fixed")
+   console.log("slhow", showSetlmentType)
+if(showSetlmentType === "Cash"){
+  axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&date=${date22}`, myConfig)
+  .then((res) => {
+  res.data.map((i) => {
+  if(i.ScripCode === "Charges"){
   let a = {
-    ScripCode : i.ScripCode,
-    order : i.ScripName, 
-    trade : i.NetValue
-   }
-   pp.push(a)
+   ScripCode : i.ScripCode,
+   order : i.ScripName, 
+   trade : i.BuyValue
+  }
+  pp.push(a)
+  }
+  else if (i.ScripName === "Due To You :"){
+    let a = {
+      ScripCode : i.ScripCode,
+      order : i.ScripName, 
+      trade : i.NetValue
+     }
+     pp.push(a)
+  }
+  else {
+    setData((oldData) => {
+     return( [...oldData, i])
+    })
+  }})})
+  setData2(pp)  
 }
-else {
-  console.log("iii", i)
-  setData((oldData) => {
-   return( [...oldData, i])
+else if(showSetlmentType === "Comm"){
+  axios.get(`${baseUrl}/Bills/Bills_Commodity?exch=${getFirstValue}&date=${date22}`, myConfig)
+  .then((res) => {
+setData(res.data)
   })
 }
-})
-})
-setData2(pp)
-
-console.log(data)
+else if(showSetlmentType === "F&O"){
+  axios.get(`${baseUrl}/Bills/Bills_FO?exch=${getFirstValue}&seg=${showSetlmentType}&date=${date22}`, myConfig)
+  .then((res) => {
+setData(res.data)
+  })
+}
   }
 // onExportingCsv
 const onExportingCsv = (e) => {
@@ -399,6 +393,9 @@ const myBuyAmount = (e) => {
   let k = parseFloat(e.value).toFixed(2)
   return k
 }   
+// const myfoBuyAmount = (e) => {
+//   console.log("eee", e)
+// }
 // cellRender 
 const cellRender = (e) => {
   
@@ -412,10 +409,33 @@ const cellRender = (e) => {
       
     )
   }
+  
   else{
     return(
      <span>
        {e.data.OrderID}
+     </span>
+    )
+  }
+}
+// cellRender date
+const cellRenderDate = (e) => {
+  
+  if(e.data.NetValue){
+    return (
+      <span style={{fontFamily : "font-family", 
+      fontStyle : "normal", fontWeight : 600, 
+      fontSize :"14px", lineHeight: "30px"}}>
+      
+      </span>
+      
+    )
+  }
+  
+  else{
+    return(
+     <span>
+       {e.data.Date}
      </span>
     )
   }
@@ -428,6 +448,50 @@ const securityRender = (e) => {
     </span>
   )
  }
+}
+// close Price 
+const closePrice = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.CloseRate)).toFixed(2)
+  }
+}
+// buy Price 
+const buyPrice = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.buy)).toFixed(2)
+  }
+}
+// sell Price 
+const sellPrice = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.sell)).toFixed(2)
+  }
+}
+// Market rate
+const MarketRate2 = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.Marketrate)).toFixed(2)
+  }
+}
+const rateFun = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.Rate)).toFixed(2)
+  }
+}
+const valueFun = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.value)).toFixed(2)
+  }
+}
+const drcrFun = (e) => {
+  if(!e.NetValue){
+    return parseFloat(Math.abs(e.drcr)).toFixed(2)
+  }
+}
+const netvalueFun = (e) => {
+  if(e.NetValue){
+    return parseFloat(Math.abs(e.NetValue)).toFixed(2)
+  }
 }
   const classes = useStyle()
   return(
@@ -446,7 +510,7 @@ const securityRender = (e) => {
                    return(
                    <>
                     
-                     <option key={i.CESCd} value ={i.CESCd + " " + i.exchange}>{i.exchange + " " + i.segment}</option>
+                     <option key={i.CESCd} value ={i.CESCd + " " + i.segment}>{i.exchange + " " + i.segment}</option>
                    </>
                    )
                  })
@@ -454,7 +518,7 @@ const securityRender = (e) => {
              
             </select>
             </Box>
-            {showSetlmentType === true ?
+            {showSetlmentType === "Cash" ?
          
          <Box className={classes.boxRoot}>
          <Typography variant="body1" mr={2}>
@@ -515,125 +579,253 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                 </Box>
             </Box>
             </TopBox>
+          {
+            showSetlmentType === "Cash" ? 
             <Grid container>
-             <Grid style={{padding: "20px"}}>
-             <DataGrid
-  id="gridContainer"
- 
- 
-  dataSource={data}
-  keyExpr="ScripCode"
-  showRowLines = {true}
-  onRowPrepared={onRowPre}
-  columnAutoWidth={true}
-  columnMinWidth={50}
-  showColumnLines = {false}
-  columnHidingEnabled={true}
-  columnResizingMode="nextColumn"
- 
-  noDataText=''
-  showBorders={false}>
-              
-                   <Column 
-                   dataField="OrderID"
-                   caption="Order"
-                   cellRender = {cellRender}
-                   alignment="center">
-                   </Column>
-                   <Column 
-                   dataField="TradeID"
-                   caption="Trade">
-                   </Column>
-                   <Column 
-                   dataField="TradeTime"
-                   caption= "Time">
-                   </Column>
-                   <Column 
-                   caption="Security"
-                   cellRender={securityRender}
-                   >
-                   </Column>
-                   <Column 
-                   dataField="Buy"
-                   caption="Buy">
-                   </Column>
-                
-                   <Column 
-                   dataField="MarketRate"
-                   caption="Market Rate"></Column>
-                <Column
-                dataField="Brokerage"
-                caption="Brokerage"></Column>
-                <Column 
-                dataField="BuyValue"
-                caption="Buy Value">
-                </Column>
-                <Column 
-                dataField="SellValue"
-                caption="Sell Value">
-                </Column>
-                <Column 
-                dataField = "NetValue"
-                caption="Net Value"></Column>
-                    
-         
-</DataGrid>
-             </Grid>
-             </Grid>
-            
-       </MyContainer>
-       <MyContainer>
-             <Grid container>
-             <Grid  style={{padding: "20px"}}>
-             <DataGrid 
-             dataSource = {data22}
-             onRowPrepared={onRowPre2}
-            
-              showRowLines={false}
-              showCheckBoxesMode={false}
-              showBorders = {false}
-              columnAutoWidth={true}
-            
-              showColumnLines = {false}
-              keyExpr="ScripCode"
-          noDataText=""
-         
-             >
-              
-               
-                <Column 
-                dataField="order"
-                caption = "Charges"
-            >
-                </Column>
-                <Column 
-                   dataField="trade"
-                   caption = ""
-                   alignment="right"
-                  >
-                   </Column>
-                    
-                    <Summary>
-                    <TotalItem
-              cssClass={"warning"}
-              displayFormat="Sub Total"
-              showInColumn="order" />
-                 <TotalItem
-           
-              summaryType="sum"
-              column="trade"
-              displayFormat="{0}"
-              cssClass={"warning4"}
-            customizeText = {myBuyAmount}
-              showInColumn="trade" />
-              </Summary>
-           
+            <Grid style={{padding: "20px"}}>
+            <DataGrid
+ id="gridContainer"
+
+
+ dataSource={data}
+ keyExpr="ScripCode"
+ showRowLines = {true}
+ onRowPrepared={onRowPre}
+ columnAutoWidth={true}
+ columnMinWidth={50}
+ showColumnLines = {false}
+ columnHidingEnabled={true}
+ columnResizingMode="nextColumn"
+
+ noDataText=''
+ showBorders={false}>
              
+                  <Column 
+                  dataField="OrderID"
+                  caption="Order"
+                  cellRender = {cellRender}
+                  alignment="center">
+                  </Column>
+                  <Column 
+                  dataField="TradeID"
+                  caption="Trade">
+                  </Column>
+                  <Column 
+                  dataField="TradeTime"
+                  caption= "Time">
+                  </Column>
+                  <Column 
+                  caption="Security"
+                  cellRender={securityRender}
+                  >
+                  </Column>
+                  <Column 
+                  dataField="Buy"
+                  caption="Buy">
+                  </Column>
+               
+                  <Column 
+                  dataField="MarketRate"
+                  caption="Market Rate"></Column>
+               <Column
+               dataField="Brokerage"
+               caption="Brokerage"></Column>
+               <Column 
+               dataField="BuyValue"
+               caption="Buy Value">
+               </Column>
+               <Column 
+               dataField="SellValue"
+               caption="Sell Value">
+               </Column>
+               <Column 
+               dataField = "NetValue"
+               caption="Net Value"></Column>
+                   
+        
 </DataGrid>
-             </Grid>
-             </Grid>
-            
-         </MyContainer>
+            </Grid>
+            </Grid> : ""
+          }
+           {
+             showSetlmentType === "F&O" ?
+             <Grid container>
+            <Grid style={{padding: "20px"}}>
+            <DataGrid
+ id="gridContainer"
+
+
+ dataSource={data}
+ keyExpr="SeriesId"
+ showRowLines = {true}
+ onRowPrepared={onRowPre}
+ columnAutoWidth={true}
+ columnMinWidth={50}
+ showColumnLines = {false}
+ columnHidingEnabled={true}
+ columnResizingMode="nextColumn"
+
+ noDataText=''
+ showBorders={false}>
+             
+                  <Column 
+                  dataField="Date"
+                  caption="Order"
+                  cellRender = {cellRenderDate}
+                  alignment="center">
+                  </Column>
+                  <Column 
+                  dataField="SeriesName"
+                  caption="Description">
+                  </Column>
+                  <Column 
+                  dataField="CloseRate"
+                  caption= "Close Price"
+                  calculateCellValue={closePrice}>
+                  </Column>
+                  <Column 
+                  caption="Buy"
+                  dataField="buy"
+                  calculateCellValue={buyPrice}
+                  >
+                  </Column>
+                  <Column 
+                  dataField="sell"
+                  caption="Sell"
+                  calculateCellValue={sellPrice}>
+                  </Column>
+               
+                  <Column 
+                  dataField="Brokerage"
+                  caption="Brokerage"></Column>
+                <Column 
+                  dataField="Marketrate"
+                  caption="Market Rate"
+                  calculateCellValue={MarketRate2}></Column>
+               
+               <Column 
+               dataField="Rate"
+               caption="Rate"
+               calculateCellValue={rateFun}>
+               </Column>
+               <Column 
+               dataField="value"
+               caption="Value"
+               calculateCellValue={valueFun}>
+               </Column>
+               <Column 
+               dataField="drcr"
+               caption="Dr/Cr"
+               calculateCellValue={drcrFun}>
+               </Column>
+               <Column 
+               dataField = "NetValue"
+               caption="Net Value"
+               calculateCellValue={netvalueFun}></Column>
+                    <Summary>
+               <TotalItem
+         cssClass={"warning4"}
+         displayFormat="Sub Total"
+         showInColumn="Date" />
+            <TotalItem
+      
+         summaryType="sum"
+         column="buy"
+         displayFormat="{0}"
+         cssClass={"warning4"}
+      customizeText={myBuyAmount}
+         showInColumn="buy" />
+            <TotalItem
+      
+      summaryType="sum"
+      column="sell"
+      displayFormat="{0}"
+      customizeText={myBuyAmount}
+      cssClass={"warning4"}
+   
+      showInColumn="sell" />
+       <TotalItem
+      
+      summaryType="sum"
+      column="drcr"
+      displayFormat="{0}"
+      customizeText={myBuyAmount}
+      cssClass={"warning4"}
+   
+      showInColumn="drcr" />
+       <TotalItem
+      
+      summaryType="sum"
+      column="value"
+      displayFormat="{0}"
+      customizeText={myBuyAmount}
+      cssClass={"warning4"}
+   
+      showInColumn="value" />
+         </Summary>
+       
+        
+</DataGrid>
+            </Grid>
+            </Grid> : ""
+
+           } 
+       </MyContainer>
+      {
+        showSetlmentType === "Cash" ?
+        <MyContainer>
+        <Grid container>
+        <Grid  style={{padding: "20px"}}>
+        <DataGrid 
+        dataSource = {data22}
+        onRowPrepared={onRowPre2}
+       
+         showRowLines={false}
+         showCheckBoxesMode={false}
+         showBorders = {false}
+         columnAutoWidth={true}
+       
+         showColumnLines = {false}
+         keyExpr="ScripCode"
+     noDataText=""
+    
+        >
+         
+          
+           <Column 
+           dataField="order"
+           caption = "Charges"
+       >
+           </Column>
+           <Column 
+              dataField="trade"
+              caption = ""
+              alignment="right"
+             >
+              </Column>
+               
+               <Summary>
+               <TotalItem
+         cssClass={"warning4"}
+         displayFormat="Sub Total"
+         showInColumn="order" />
+            <TotalItem
+      
+         summaryType="sum"
+         column="trade"
+         displayFormat="{0}"
+         cssClass={"warning4"}
+       customizeText = {myBuyAmount}
+         showInColumn="trade" />
+         </Summary>
+      
+        
+</DataGrid>
+        </Grid>
+        </Grid>
+       
+    </MyContainer> : ""
+      }
       </Layout>
   )
 }
