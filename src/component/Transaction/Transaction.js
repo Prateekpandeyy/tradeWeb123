@@ -102,19 +102,22 @@ fontSize: "16px"
 const Transaction = () => {
   // useState declear 
   const [transactionData, setTransationData] = useState([])
-  const [timeVal, setTimeVal] = useState(1)
+  const [timeVal, setTimeVal] = useState("1")
   const [toDate, setDate] = useState("20200401");
   const [fromDate, setFromDate] = useState("20210331")
-  const [test, setTest] = useState(1)
+  const [test, setTest] = useState("1")
   const [showTime, setShowTime] = useState(true)
   const [agts, setShowagts] = useState(false)
   const [gal, setGal] = useState("")
   const [agtsVal, setAgtsVal] = useState("")
   const [transactionAccount, setTransactionAccount] = useState([])
   const [agtsTransaction, setAgtsTransaction] = useState([])
+  const [bal, setBal] = useState(0)
+  
   const classes = useStyle()
   const dataGridRef = React.createRef();
   const componentRef = useRef();
+  let bb = 0;
   //token
   const token = localStorage.getItem("token")
   useEffect(() => {
@@ -180,17 +183,35 @@ const startupSelectedKeys = [540691]
 
 // Summary calculate function 
 const calculateSelectedRow = (options) => {
-   
-  if (options.name === 'SelectedRowsSummary') {
+
+  if (options.name === 'SelectedRowsSummaryBuytime') {
        
     if (options.summaryProcess === 'start') {
       options.totalValue = 0;
     } else if (options.summaryProcess === 'calculate') {
-     
-      if (options.component.isRowSelected(options.value.ScripCode)) {
-
+      if (options.component.isRowSelected(options.value.Stlmnt)) {
+        options.totalValue += options.value.BuyAmount;
+      }
+    }
+  }
+  
+  if (options.name === 'SelectedRowsSummarySelltime') {
+       
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.Stlmnt)) {
+        options.totalValue += options.value.SellAmount;
+      }
+    }
+  }
+  if (options.name === 'SelectedRowsSummaryNettime') {
+       
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.Stlmnt)) {
         options.totalValue += options.value.NetAmount;
-        
       }
     }
   }
@@ -204,6 +225,37 @@ const calculateSelectedRow = (options) => {
       }
     }
   }
+  
+  if (options.name === 'SelectedRowsSummarySell') {
+       
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.ScripCode)) {
+        options.totalValue += options.value.SellAmount;
+      }
+    }
+  }
+  if (options.name === 'SelectedRowsSummaryNet') {
+       
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.ScripCode)) {
+        options.totalValue += options.value.NetAmount;
+      }
+    }
+  }
+  // if (options.name === 'SelectedRowsSummaryBuy') {
+       
+  //   if (options.summaryProcess === 'start') {
+  //     options.totalValue = 0;
+  //   } else if (options.summaryProcess === 'calculate') {
+  //     if (options.component.isRowSelected(options.value.ScripCode)) {
+  //       options.totalValue += options.value.BuyAmount;
+  //     }
+  //   }
+  // }
   if (options.name === 'Credit3') {
        
     if (options.summaryProcess === 'start') {
@@ -238,6 +290,7 @@ const myNetAmount = (e) => {
 }
 // select box value
 const mySel = (e) => {
+  setTransationData([])
   setTest(e.target.value)
  
   if(e.target.value == 1 || e.target.value == 2){
@@ -264,6 +317,7 @@ const mySel = (e) => {
 const getTransationShow = () => {
      
   if(test == 1 || test == 2){ 
+  
    const details =
    {
        fromDate: fromDate,
@@ -393,6 +447,38 @@ const avgRate = (e) => {
   
   return parseFloat(Math.abs(e.AvgRate)).toFixed(2);
 }
+const timeFun = (e) => {
+  setTimeVal(e.target.value)
+  setTransationData([])
+}
+// date Render 
+const dateRender = (e) => {
+  return moment(e.Date).format("DD/MM/YYYY")
+}
+// Paritculars fun 
+const particularsFun = (e) => {
+ if(e.Debit === 0){
+   return (`By ${e.Description} / ${e.Settlment} / ${e.Beneficiery}`)
+ }
+ else{
+  return (`To ${e.Description} / ${e.Settlment} / ${e.Beneficiery}`)
+ }
+}
+
+
+const balanceValueFun = (e) => {
+ 
+  let kk = 0
+if(e.Debit === 0){
+  kk  = parseInt(parseInt(e.Balance) + e.Credit)
+}
+else{
+  kk  = parseInt(parseInt(e.Balance) - e.Debit)
+}
+
+  bb += parseInt(kk);
+return bb;
+}
   return(
     <Layout mainLink = "Transaction" noBreadcrumb = {true}>
                <TopBox>
@@ -413,7 +499,7 @@ const avgRate = (e) => {
              <Box className={classes.boxRoot}>
            
              <select className={classes.MySelect} value={timeVal}
-             onChange={(e) => setTimeVal(e.target.value)}>
+             onChange={(e) => timeFun(e)}>
                  <option value={1}>Item Wise</option>
                  <option value={2}> Date Wise</option>
              </select>
@@ -470,7 +556,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
              <Grid>
              <ComponentToPrint ref={dataGridRef}/>
 {
-  showTime === true && agts === false ?
+  showTime === true && test === "1"  && timeVal === "1" && agts === false ?
   <DataGrid
   id="transactionDataGrid"
   ref={dataGridRef}
@@ -552,28 +638,212 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
        
         
         <Summary calculateCustomSummary={calculateSelectedRow}>
-    <TotalItem
-      name="SelectedRowsSummary"
-      summaryType="custom"
-       id="myDataGrid"
-      displayFormat="{0}"
-      customizeText={myNetAmount}
-      cssClass={"totalSummaryStyle"}
-      showInColumn="NetAmount" />
-       <TotalItem
+        <TotalItem
       name="SelectedRowsSummaryBuy"
       summaryType="custom"
     
       displayFormat="{0}"
       cssClass={"totalSummaryStyle"}
-      customizeText={myBuyAmount}
+       customizeText={myBuyAmount}
       showInColumn="BuyAmount" />
+          <TotalItem
+      name="SelectedRowsSummarySell"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"totalSummaryStyle"}
+       customizeText={myBuyAmount}
+      showInColumn="SellAmount" />
+        <TotalItem
+      name="SelectedRowsSummaryNet"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"totalSummaryStyle"}
+       customizeText={myBuyAmount}
+      showInColumn="NetAmount" />
          <TotalItem
       cssClass={"totalSummaryStyle"}
       displayFormat="Total"
       showInColumn="ScripCode" />
   </Summary>
      
+</DataGrid> : ""
+}
+{
+  showTime === true && test === "2"  && timeVal === "1" && agts === false ?
+  <DataGrid
+  id="transactionDataGrid"
+  ref={dataGridRef}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={transactionData}
+  keyExpr="TrxNo"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+  noDataText=''
+  showBorders={false}>
+    
+
+ <Selection
+  mode="multiple"
+  showCheckBoxesMode="always" />
+   <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+        <Paging enabled={true}  defaultPageSize={15}/>
+          <Pager 
+           visible={true}
+          
+           displayMode = "full"
+         
+           showInfo={true}
+           showNavigationButtons = {true} />
+         
+         <Column 
+           dataField="TrxNo"
+           caption="Tax No"
+           />
+          
+           <Column 
+           
+           caption="Date"
+           type="date"
+           calculateCellValue={dateRender} />
+         
+         <Column 
+           dataField="Particulars"
+           caption="Particulars"
+           calculateCellValue={particularsFun}
+           />
+         
+           <Column 
+           dataField="Debit"
+           caption="Debit"
+          
+           />
+          
+         <Column
+         dataField="Credit"
+         caption = "Credit"
+         />
+         
+          <Column
+         dataField="Balance"
+         caption = "Balance"
+         calculateCellValue={balanceValueFun}
+         />
+         
+</DataGrid> : ""
+}
+{
+  showTime === true  && timeVal === "2" && agts === false ?
+  <DataGrid
+  id="transactionDataGrid"
+  ref={dataGridRef}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={transactionData}
+  keyExpr="Stlmnt"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={false}>
+    
+
+ <Selection
+  mode="multiple"
+  showCheckBoxesMode="always" />
+   <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+        <Paging enabled={true}  defaultPageSize={15}/>
+          <Pager 
+           visible={true}
+          
+           displayMode = "full"
+         
+           showInfo={true}
+           showNavigationButtons = {true} />
+         
+         <Column 
+           dataField="Date"
+           caption="Date"
+           />
+          
+           <Column 
+           dataField="Stlmnt"
+           caption="Settlement" />
+         
+         <Column 
+           dataField="Buy"
+           caption="Purchase Qty"
+           />
+         
+           <Column 
+           dataField="BuyAmount"
+           caption="Amount"
+           calculateCellValue={buyAmountFun}
+           alignment="right"
+           />
+          
+         <Column
+         dataField="Sell"
+         caption = "Sales Qty"
+         />
+          <Column
+         dataField="SellAmount"
+         caption = "Amount"
+         calculateCellValue={sellAmountFun}
+         alignment="right"
+         />
+          <Column
+         dataField="Net"
+         caption = "Net Qty"
+         />
+          <Column
+         dataField="NetAmount"
+         caption = "Net Amount"
+         calculateCellValue={netAmountFun}
+         alignment="right"
+         />
+      
+         
+        <Summary calculateCustomSummary={calculateSelectedRow}>
+   
+       <TotalItem
+      name="SelectedRowsSummaryBuytime"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"totalSummaryStyle"}
+       customizeText={myBuyAmount}
+      showInColumn="BuyAmount" />
+          <TotalItem
+      name="SelectedRowsSummarySelltime"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"totalSummaryStyle"}
+       customizeText={myBuyAmount}
+      showInColumn="SellAmount" />
+        <TotalItem
+      name="SelectedRowsSummaryNettime"
+      summaryType="custom"
+    
+      displayFormat="{0}"
+      cssClass={"totalSummaryStyle"}
+       customizeText={myBuyAmount}
+      showInColumn="NetAmount" />
+  </Summary>
+      
 </DataGrid> : ""
 }
 {
