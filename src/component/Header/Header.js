@@ -85,6 +85,11 @@ const Header  = (props) => {
              <BillButton variant="contained">Bills</BillButton>
           <img src={notificatonImg} style={{width: "28px", height: "28px", margin: "0 10px",  backgroundColor: "#E3F0FF"}} />
          <img src={profileImg} style={{width : "28px", height: "28px", margin: "0 10px"}} />
+        {/* <Link to = "/tradeweb/profile">
+        <MySubHeading>
+           {userName}
+             </MySubHeading>
+        </Link> */}
          <MySubHeading>
            {userName}
              </MySubHeading>

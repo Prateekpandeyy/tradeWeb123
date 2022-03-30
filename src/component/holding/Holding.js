@@ -223,6 +223,11 @@ accountNumber = i.accountNumber;
   const valueFun = (e) => {
     return parseFloat(Math.abs(e.Value)).toFixed(2)
   }
+  const myBuyAmount = (e) => {
+    
+    let k = parseFloat(e.value).toFixed(2)
+    return k
+  }   
     return(
         <Layout subLink = "Holding">
         <TopBox>
@@ -243,7 +248,7 @@ accountNumber = i.accountNumber;
      
      <select className={classes.MySelect22}>
          <option value={1}>Current holding</option>
-         <option>{moment(date).format("DD-MM-YYYY")}</option>
+         <option>{moment(date).format("DD/MM/YYYY")}</option>
      </select>
      </Box>
      <Box className={classes.boxRoot}>
@@ -344,7 +349,20 @@ accountNumber = i.accountNumber;
                  caption= "Type"
                  dataField = "BalanceType">
                  </Column>
-               
+                 <Summary>
+               <TotalItem
+         cssClass={"warning4"}
+         displayFormat="Total"
+         showInColumn="CompanyName" />
+            <TotalItem
+      
+         summaryType="sum"
+         column="Value"
+         displayFormat="{0}"
+         cssClass={"warning4"}
+      customizeText={myBuyAmount}
+         showInColumn="buy" />
+         </Summary>
                   
 </DataGrid>
              </Grid>

@@ -131,7 +131,7 @@ const Trading = () => {
   const [selectValue, setSelectValue] = useState(1);
     const [exchange, setExchange] = useState([])
     const [stlType, setStlType] = useState([])
-    const [stlfieldType , setStlFieldType] = useState("N")
+    const [stlfieldType , setStlFieldType] = useState("Q")
     const [exchangeValue, setExchangeValue] = useState("")
     const [showSetlmentType, setShowSetlmentType] = useState("Cash")
     const [getFirstValue, setFirstValue] = useState("B");
@@ -227,13 +227,18 @@ const Trading = () => {
   setFirstValue(e.split(" ")[0][1])
   axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=${e.split(" ")[0][1]}`, myConfig)
   .then((res) => {
+    
    setStlType(res.data)
+   setStlFieldType(res.data[0].type)
   });
  }
  else{
   axios.get(`${baseUrl}/Bills/Bills_cash_settTypes_list?exchange=B`, myConfig)
   .then((res) => { 
+   
    setStlType(res.data)
+ 
+   setStlFieldType(res.data[0].type)
   });
  }
         }
@@ -252,6 +257,7 @@ const Trading = () => {
   }
   // ShowData function 
   const showData = () => {
+    let total = 0;
     let pp = []
     let kk = []
        const myConfig = {
@@ -259,7 +265,8 @@ const Trading = () => {
          Authorization: "Bearer " + token
       }
    }
-   console.log("slhow", showSetlmentType)
+setData([])
+setData2([])
 if(showSetlmentType === "Cash"){
   axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&date=${date22}`, myConfig)
   .then((res) => {
@@ -272,6 +279,14 @@ if(showSetlmentType === "Cash"){
   }
   pp.push(a)
   }
+  else if (i.ScripName === "Due To Us :"){
+    let a = {
+      ScripCode : i.ScripCode,
+      order : i.ScripName, 
+      trade : i.NetValue
+     }
+     pp.push(a)
+  }
   else if (i.ScripName === "Due To You :"){
     let a = {
       ScripCode : i.ScripCode,
@@ -281,6 +296,8 @@ if(showSetlmentType === "Cash"){
      pp.push(a)
   }
   else {
+    console.log("iii", i)
+    total += parseInt(i.NetValue)
     setData((oldData) => {
      return( [...oldData, i])
     })
@@ -393,9 +410,7 @@ const myBuyAmount = (e) => {
   let k = parseFloat(e.value).toFixed(2)
   return k
 }   
-// const myfoBuyAmount = (e) => {
-//   console.log("eee", e)
-// }
+
 // cellRender 
 const cellRender = (e) => {
   
@@ -493,6 +508,7 @@ const netvalueFun = (e) => {
     return parseFloat(Math.abs(e.NetValue)).toFixed(2)
   }
 }
+console.log("data2", data, data22)
   const classes = useStyle()
   return(
     <Layout subLink = "Bills">
@@ -580,7 +596,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
             </Box>
             </TopBox>
           {
-            showSetlmentType === "Cash" ? 
+            showSetlmentType === "Cash" || showSetlmentType === "Comm" ? 
             <Grid container>
             <Grid style={{padding: "20px"}}>
             <DataGrid
@@ -648,7 +664,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
             </Grid> : ""
           }
            {
-             showSetlmentType === "F&O" ?
+             showSetlmentType === "F&O" || showSetlmentType === "FX" ?
              <Grid container>
             <Grid style={{padding: "20px"}}>
             <DataGrid

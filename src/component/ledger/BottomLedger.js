@@ -82,26 +82,26 @@ const BottomLedger = ({ledgerReport}) => {
    const TemplateNameCell = (e) => {
   
      if(e.Debitflag === "D"){
-        return parseFloat(Math.abs(e.Amount)).toFixed(2)
+        return Number(e.Amount)
      }
      else {
-       return parseFloat(0).toFixed(2);
+       return Number(0);
      }
    }
    const TemplateNameCell2 = (e) => {
 
     if(e.Debitflag === "C"){
-      return (parseFloat(Math.abs(e.Amount)).toFixed(2))
+      return Number(Math.abs(e.Amount))
     }
    else{
-    return parseFloat(0).toFixed(2);
+    return Number(0)
    }
 
   }
-  const TemplateNameCell3 = (e) => {
-
-    
-      return (parseFloat(Math.abs(e.Amount)).toFixed(2))
+  
+  // final Balance
+  const finalBalance = (e) => {
+    return Number(Math.abs(e.finalBalance))
     
   }
   const onExporting = (e) => {
@@ -148,21 +148,27 @@ const onPirnt = (e) => {
   
   const dataGrid = dataGridRef.current.instance;
   let kk = document.getElementById("dataGrid")
-//  window.print()
-// var divContents = document.getElementById("dataGrid").innerHTML;
-//             var a = window.open('', '', 'height=500, width=500');
-//             a.document.write('<html>');
-//             a.document.write('<body > <h1>Div contents are <br>');
-//             a.document.write(divContents);
-//             a.document.write('</body></html>');
-//             a.document.close();
-//             a.print();
+
 kk.print()
 
 }
 const handlePrint = useReactToPrint({
   content: () => dataGridRef.current,
 });
+let kk = []
+const sortByLocation = (e) => {
+ 
+  kk.push(Math.abs(e.Amount))
+ let pp = kk.sort(function(a, b) {
+    return a - b;
+  });
+ 
+  return pp;
+}
+const floatVal = (e) => {
+
+  return (parseFloat(e.value).toFixed(2))
+}
 
     return(
         <>
@@ -170,20 +176,7 @@ const handlePrint = useReactToPrint({
      <Grid container>
           <Grid item sm={12}>
           <ComponentToPrint ref={dataGridRef}/>
-         {/* <DataGrid
-         dataSource= {ledgerReport}
-         id = "id"
-             onCellPrepared={onCellPre}
-             onRowPrepared={onRowPre}
-             showRowLines = {true}
-             showColumnLines = {false}
-             columnAutoWidth={true}
-             columnMinWidth={160}
-             columnHidingEnabled={true}
-             columnResizingMode="nextColumn"
-           
-             noDataText=''
-             showBorders={true}> */}
+         
                      <Box sx={{textAlign: "right"}} p={2}>
 <FaFileCsv title="Csv File" onClick={onExportingCsv} style={{color: "#80BB55", cursor : "pointer", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
@@ -197,25 +190,9 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding: "5px", width : "40px", height : "40px" }} />
                 </Box>
                <DataGrid 
-                //   id="dataGrid"
-                //   ref={dataGridRef}
-                //   dataSource={ledgerReport}
-                  
-                //   onCellPrepared={onCellPre}
-                //   onRowPrepared={onRowPre}
-                 
-                //   columnMinWidth={100}
-                
-                // showColumnLines={false}
-                  
-                  
-                //   noDataText=''
                   id="dataGrid"
      ref={dataGridRef}
                   dataSource={ledgerReport}
-  
- 
-  
   showRowLines = {true}
   onRowPrepared={onRowPre}
   onCellPrepared={onCellPre}
@@ -224,7 +201,6 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   showColumnLines = {false}
   columnHidingEnabled={true}
   columnResizingMode="nextColumn"
- 
   noDataText=''
   showBorders={false}
                    >
@@ -244,44 +220,44 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
         dataType = "date"
         format = "dd/MM/yyyy"
       >
-               <RequiredRule />
+
         </Column>
         <Column 
         dataField="ExchSeg"
         caption="Exchange"
         
       >
-               <RequiredRule />
+
         </Column>
         <Column
         dataField="Particular"
-        caption="Particular"
+        caption="Particulars"
         width={400}
       >
-               <RequiredRule />
+
         </Column>
         <Column 
-       
+     dataField="Debit"
         caption="Debit"
-       allowSorting={true}
+        customizeText={floatVal}
         calculateCellValue={TemplateNameCell}>
-               <RequiredRule />
+
         </Column>
         <Column 
-       
-        caption="Credit"
-        allowSorting={true}
-        dataType="number"
+      dataField="Credit"
+        caption="Credit"  
+        customizeText={floatVal}
         calculateCellValue={TemplateNameCell2}
        >
-               <RequiredRule />
+
         </Column>
         <Column 
-        dataField="Amount"
+        dataField="finalBalance"
         caption="Balance"
-        calculateCellValue={TemplateNameCell3}
+        customizeText={floatVal}
+        calculateCellValue={finalBalance}
        >
-               <RequiredRule />
+               
         </Column>
         
        

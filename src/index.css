@@ -1,8 +1,7 @@
-
- /* .dx-selection tr{
+/* .dx-selection tr{
   background: #E1F1FF !important;
 } */
-.ant-picker-date-panel{
+/* .ant-picker-date-panel{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,4 +30,4 @@
 }
 .ant-picker-prev-icon, .ant-picker-next-icon{
   color: #fff;
-}
+} */

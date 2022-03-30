@@ -7,6 +7,7 @@ import Trading from './component/Trading/Trading';
 import Transaction from './component/Transaction/Transaction';
 import 'devextreme/dist/css/dx.light.css';
 import Holding from './component/holding/Holding';
+import Profile from './component/pages/profile/Profile';
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
       <Route exact path = "/tradeweb/trading" element={<Trading />} />
       <Route exact path = "/tradeweb/transaction" element={<Transaction />} />
       <Route exact path = "/tradeweb/holding" element = {<Holding />} />
+      <Route exact path = "/tradeweb/profile" element = {<Profile />} />
       </Routes>
       </BrowserRouter>
       </>

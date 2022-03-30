@@ -109,10 +109,11 @@ const Transaction = () => {
   const [showTime, setShowTime] = useState(true)
   const [agts, setShowagts] = useState(false)
   const [gal, setGal] = useState("")
-  const [agtsVal, setAgtsVal] = useState("")
+  const [agtsVal, setAgtsVal] = useState("C")
   const [transactionAccount, setTransactionAccount] = useState([])
   const [agtsTransaction, setAgtsTransaction] = useState([])
   const [bal, setBal] = useState(0)
+  const [ref, setRef] = useState(true)
   
   const classes = useStyle()
   const dataGridRef = React.createRef();
@@ -246,16 +247,16 @@ const calculateSelectedRow = (options) => {
       }
     }
   }
-  // if (options.name === 'SelectedRowsSummaryBuy') {
+  if (options.name === 'SelectedRowsSummaryref') {
        
-  //   if (options.summaryProcess === 'start') {
-  //     options.totalValue = 0;
-  //   } else if (options.summaryProcess === 'calculate') {
-  //     if (options.component.isRowSelected(options.value.ScripCode)) {
-  //       options.totalValue += options.value.BuyAmount;
-  //     }
-  //   }
-  // }
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.DocumentNo)) {
+        options.totalValue += options.value.Amount;
+      }
+    }
+  }
   if (options.name === 'Credit3') {
        
     if (options.summaryProcess === 'start') {
@@ -263,6 +264,24 @@ const calculateSelectedRow = (options) => {
     } else if (options.summaryProcess === 'calculate') {
       if (options.component.isRowSelected(options.value.DocumentNo)) {
         options.totalValue += options.value.Credit;
+      }
+    }
+  }
+  if(options.name === "SelectedRowsSummaryrefcredit"){
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.DocumentNo)) {
+        options.totalValue += options.value.Credit;
+      }
+    }
+  }
+  if(options.name === "SelectedRowsSummaryrefdebit"){
+    if (options.summaryProcess === 'start') {
+      options.totalValue = 0;
+    } else if (options.summaryProcess === 'calculate') {
+      if (options.component.isRowSelected(options.value.DocumentNo)) {
+        options.totalValue += options.value.Debit;
       }
     }
   }
@@ -290,16 +309,26 @@ const myNetAmount = (e) => {
 }
 // select box value
 const mySel = (e) => {
+  setTransactionAccount([])
   setTransationData([])
   setTest(e.target.value)
  
   if(e.target.value == 1 || e.target.value == 2){
-   
+   setRef(false)
     setShowTime(true)
     setShowagts(false)
   }
+  else if(e.target.value == 3 || e.target.value == 4){
+    setShowTime(false)
+    setRef(true)
+  }
+  else if (e.target.value === 5 || e.target.value == 5){
+    setRef(false)
+    setShowTime(false)
+  }
   else if(e.target.value == 7){
     setShowagts(true)
+    setRef(false)
   }
   else{
     setShowTime(false)
@@ -316,8 +345,65 @@ const mySel = (e) => {
 // Show Function 
 const getTransationShow = () => {
      
-  if(test == 1 || test == 2){ 
+  if(test == 1){ 
   
+   const details =
+   {
+       fromDate: fromDate,
+       toDate: toDate,
+      type : 2,
+   }
+   const myConfig = {
+       headers: {
+          Authorization: "Bearer " + token
+       }
+    }
+    axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Summary?tradeType=${test}&selectType=${timeVal}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
+.then((res) => {
+
+   setTransationData(res.data)
+})
+  }
+  else if(test == 2 && timeVal == 1){
+    let data = []
+    let k = 0;
+    const details =
+    {
+        fromDate: fromDate,
+        toDate: toDate,
+       type : 2,
+    }
+    const myConfig = {
+        headers: {
+           Authorization: "Bearer " + token
+        }
+     }
+     axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Summary?tradeType=${test}&selectType=${timeVal}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
+ .then((res) => {
+
+  
+    res.data.map((i) => {
+   let k =   balanceValueFun(i)
+      let a = {
+        finalbalance : k,
+        Balance: i.Balance,
+Beneficiery: i.Beneficiery,
+Credit: i.Credit,
+Date: i.Date,
+Debit: i.Debit,
+Description: i.Description,
+Settlment: i.Settlment,
+TrxNo: i.TrxNo
+      }
+      data.push(a)
+    })
+    setTransationData(data)
+ })
+ 
+ 
+  }
+  else if(test == 2 && timeVal == 2){
+    
    const details =
    {
        fromDate: fromDate,
@@ -348,7 +434,7 @@ const getTransationShow = () => {
             Authorization: "Bearer " + token
          }
       }
-      axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Accounts?type=${test}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
+      axios.get(`${baseUrl}/Confirmation_Transaction/Transaction_Accounts?type=${test -2}&fromDate=${toDate}&toDate=${fromDate}`, myConfig)
  .then((res) => {
 
      setTransactionAccount(res.data)
@@ -466,6 +552,7 @@ const particularsFun = (e) => {
 }
 
 
+
 const balanceValueFun = (e) => {
  
   let kk = 0
@@ -478,6 +565,20 @@ else{
 
   bb += parseInt(kk);
 return bb;
+}
+const amountValue = (e) => {
+  return (parseFloat(e.Amount).toFixed(2))
+}
+const mycreditAmount = (e) => {
+  
+  return parseFloat(e.value).toFixed(2)
+}
+const mydebitAmount = (e) => {
+  return parseFloat(e.value).toFixed(2)
+}
+// float value
+const floatVal = (e) => {
+  return (parseFloat(Math.abs(e.value)).toFixed(2))
 }
   return(
     <Layout mainLink = "Transaction" noBreadcrumb = {true}>
@@ -519,20 +620,25 @@ return bb;
            }
             <Box className={classes.boxRoot}>
           
-          <Space direction="vertical" size={12} style={{display : "flex", 
+          {/* <Space direction="vertical" size={12} style={{display : "flex", 
         width : "300px", margin: "0 10px"}}>
   <RangePicker
    defaultValue={[moment('04/01/2020', dateFormat), moment('31/03/2021', dateFormat)]}
     format={customFormat}
+ 
+    changeYear={true}
     onChange={getValue}
   />
 
-</Space>
+</Space> */}
+ <RangePicker
+      defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+      format={dateFormat}
+    />
           </Box>
           <Box className={classes.boxRoot}>
             <MyButton variant="contained" onClick={getTransationShow}>Show</MyButton>
             </Box>
-            {/* <input type="text" onChange={(e) => setGal(e.target.value)} value={gal}/> */}
             </Box>
             <Box className={classes.boxRoot}>
                 <FaFileCsv  onClick={onExportingCsv} style={{color: "#80BB55", margin : "2px 8px", fontSize: "30px", border : "1px solid #EBEBEB",
@@ -558,7 +664,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 {
   showTime === true && test === "1"  && timeVal === "1" && agts === false ?
   <DataGrid
-  id="transactionDataGrid"
+  id="transactionDataGridtrade"
   ref={dataGridRef}
   onSelectionChanged={onSelectionChanged}
   dataSource={transactionData}
@@ -566,7 +672,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   showRowLines = {true}
   onRowPrepared={onRowPre}
   columnAutoWidth={true}
-  columnMinWidth={80}
+
   showColumnLines = {false}
   columnHidingEnabled={true}
   columnResizingMode="nextColumn"
@@ -606,7 +712,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
            <Column 
            dataField="BuyAmount"
            caption="Buy Amount"
-           calculateCellValue={buyAmountFun}
+         customizeText={floatVal}
            alignment="right"
            />
           
@@ -633,6 +739,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
         <Column
         dataField="AvgRate"
         caption="Avg.Rate" 
+        alignment="right"
         calculateCellValue={avgRate}
        />
        
@@ -732,15 +839,78 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          />
          
           <Column
-         dataField="Balance"
+         dataField="finalbalance"
          caption = "Balance"
-         calculateCellValue={balanceValueFun}
+         
          />
          
 </DataGrid> : ""
 }
 {
-  showTime === true  && timeVal === "2" && agts === false ?
+  showTime === true && test === "2"  && timeVal === "2" && agts === false ?
+  <DataGrid
+  id="transactionDataGrid"
+  ref={dataGridRef}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={transactionData}
+  keyExpr="ISIN"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+  noDataText=''
+  showBorders={false}>
+    
+
+ <Selection
+  mode="multiple"
+  showCheckBoxesMode="always" />
+   <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+        <Paging enabled={true}  defaultPageSize={15}/>
+          <Pager 
+           visible={true}
+          
+           displayMode = "full"
+         
+           showInfo={true}
+           showNavigationButtons = {true} />
+         
+        
+          
+           <Column 
+           
+           caption="Date"
+           type="date"
+           calculateCellValue={dateRender} />
+         
+         <Column 
+           dataField="ISIN"
+           caption="ISIN"
+          
+           />
+         <Column 
+         dataField="SecurityDescription"
+         caption = "Security Description" />
+           <Column 
+           dataField="Debit"
+           caption="Debit"
+          
+           />
+          
+         <Column
+         dataField="Credit"
+         caption = "Credit"
+         />
+         
+      
+</DataGrid> : ""
+}
+{
+  showTime === true && test === "1"  && timeVal === "2" && agts === false ?
   <DataGrid
   id="transactionDataGrid"
   ref={dataGridRef}
@@ -847,7 +1017,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 </DataGrid> : ""
 }
 {
-  showTime === false && agts === false ?
+  showTime === false && agts === false && ref === true ?
   <DataGrid
   id="gridContainer"
   ref={dataGridRef}
@@ -863,7 +1033,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   columnResizingMode="nextColumn"
  
   noDataText=''
-  showBorders={true}>
+  showBorders={false}>
     
   <Grouping expandMode="rowClick" />
                 <GroupPanel visible={true} /> 
@@ -883,14 +1053,10 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
   />
         
          
-         <Column 
-           dataField="Type"
-           caption="Type"
-           />
-          
+        
            <Column 
            dataField="DocumentNo"
-           caption="Document" />
+           caption="RefNo" />
          
          <Column 
            dataField="Date"
@@ -899,40 +1065,122 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          
            <Column 
            dataField="Particular"
-           caption="Particular"
+           caption="Particulars"
            />
-          
-         <Column
-         dataField="Debit"
-         caption = "Debit"
-         />
+          <Column 
+          dataField="Chequeno"
+          caption = "Instrument"/>
+        
           <Column
-         dataField="Credit"
-         caption = "Credit"
+         dataField="Amount"
+         caption = "Amount"
+         calculateCellValue={amountValue}
          />
         
         
         <Summary calculateCustomSummary={calculateSelectedRow}>
+      
+         <TotalItem
+      cssClass={"warning4"}
+      displayFormat="Total"
+      showInColumn="DocumentNo" />
         <TotalItem
-      name="Debit3"
+      name="SelectedRowsSummaryref"
       summaryType="custom"
     
       displayFormat="{0}"
       cssClass={"warning4"}
+      customizeText={myBuyAmount}
+      showInColumn="Amount" />
+  </Summary>
      
-      showInColumn="Credit" />
-       <TotalItem
-      name="Debit3"
+</DataGrid> : ""
+}
+{
+  showTime === false && agts === false && ref === false ?
+  <DataGrid
+  id="gridContainer"
+  ref={dataGridRef}
+  onSelectionChanged={onSelectionChanged}
+  dataSource={transactionAccount}
+  keyExpr="DocumentNo"
+  showRowLines = {true}
+  onRowPrepared={onRowPre}
+  columnAutoWidth={true}
+  columnMinWidth={80}
+  showColumnLines = {false}
+  columnHidingEnabled={true}
+  columnResizingMode="nextColumn"
+ 
+  noDataText=''
+  showBorders={false}>
+    
+  <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} /> 
+          <Paging enabled={true}  defaultPageSize={15}/>
+          <Pager 
+           visible={true}
+          
+           displayMode = "full"
+         
+           showInfo={true}
+           showNavigationButtons = {true} />
+ 
+  <Selection
+    mode="multiple"
+    selectAllMode= "allPages"
+    showCheckBoxesMode= "always"
+  />
+        
+         
+        
+           <Column 
+           dataField="DocumentNo"
+           caption="RefNo" />
+         
+         <Column 
+           dataField="Date"
+           caption="Date"
+           />
+         
+           <Column 
+           dataField="Particular"
+           caption="Particulars"
+           />
+          <Column 
+          dataField="Debit"
+          caption = "Debit"
+          customizeText={mydebitAmount}/>
+        
+          <Column
+         dataField="Credit"
+         caption = "Credit"
+         customizeText={mycreditAmount}
+         />
+        
+        
+        <Summary calculateCustomSummary={calculateSelectedRow}>
+      
+         <TotalItem
+      cssClass={"warning4"}
+      displayFormat="Total"
+      showInColumn="DocumentNo" />
+        <TotalItem
+      name="SelectedRowsSummaryrefdebit"
       summaryType="custom"
     
       displayFormat="{0}"
       cssClass={"warning4"}
      
       showInColumn="Debit" />
-         <TotalItem
+        <TotalItem
+      name="SelectedRowsSummaryrefcredit"
+      summaryType="custom"
+    
+      displayFormat="{0}"
       cssClass={"warning4"}
-      displayFormat="Total"
-      showInColumn="DocumentNo" />
+     
+      showInColumn="Credit" />
   </Summary>
      
 </DataGrid> : ""
@@ -971,39 +1219,46 @@ showNavigationButtons = {true} />
     selectAllMode= "allPages"
     showCheckBoxesMode= "always"
   />
-        
+                    <Column 
+           dataField="Exchange"
+           caption="Exch"
+           />
          
          <Column 
            dataField="Date"
            caption="Date"
+           calculateCellValue={dateRender}
            />
-                   <Column 
-           dataField="Exchange"
-           caption="Exch"
-           />
-           <Column 
-           dataField="ExchTRX_Chrg"
-           caption="Charge" />
+       <Column 
+       dataField = "Stlmnt"
+       caption = "Settlement" />
          
-
          
            <Column 
            dataField="BSFlag"
-           caption="Bs"
+           caption="B/s"
            />
           
          <Column
          dataField="Quantity"
          caption = "Qty"
          />
+         <Column 
+         dataField = "MarketRate" 
+         caption = "Rate" />
           <Column
          dataField="NetRate"
-         caption = "Rate"
+         caption = "Net Rate"
          />
           <Column
          dataField="Brokerage"
          caption = "Brokerage"
          />
+           <Column 
+           dataField="ExchTRX_Chrg"
+           caption="Exch Trx" />
+         
+
        
         <Column
         dataField="StampDuty"

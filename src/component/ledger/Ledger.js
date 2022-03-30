@@ -70,7 +70,7 @@ const TopBox = styled(Box)({
 
 const Ledger = () => {
   let tradeval = []
-
+  let final = 0;
   const [searchDate, setSearchDate] = useState({
     fromDate: "20210401",
     toDate: "20220331",
@@ -133,9 +133,50 @@ const Ledger = () => {
     
   let kk = [];
   const getledData = (e) => {
-    kk.push(e);
-    setDetData(e);
+   
+    e.map((i) => {
+      let k =   balanceValueFun(i)
+      
+      let a = {
+        finalBalance: k,
+        Amount: i.Amount,
+        CESCD: i.CESCD, 
+        Chequeno: i.Chequeno,
+        ClientCode: i.ClientCode,
+        Common: i.Common,
+        Date: i.Date,                   
+        Debitflag : i.Debitflag,
+        Documenttype: i.Documenttype,
+        ExchSeg: i.ExchSeg,
+        Ldate: i.Ldate,
+        LookUp: i.LookUp,
+        Particular: i.Particular,
+        Type: i.Type,
+       
+      }
+      kk.push(a)
+    })
+  
+    setDetData(kk);
   };
+  const balanceValueFun = (e) => {
+ 
+    let kk = 0
+  if(e.Debitflag === "C"){
+  
+  let ab = Math.abs(e.Amount)
+    final  = final + ab;
+  }
+  else if(e.Debitflag === "D") {
+   
+    let ba = Math.abs(e.Amount)
+  final = final - ba;
+  }
+ 
+  
+   
+  return parseFloat(final).toFixed(2);
+  }
 
   // select year function
   const finincialYear = (e) => {
@@ -223,7 +264,7 @@ const Ledger = () => {
     // getSelectData(e);
   };
   const tradeFun = (e) => {
-  
+
     let a = 0;
     let bb = []
     if(e.target.value === "1"){
@@ -233,7 +274,7 @@ const Ledger = () => {
       a = 0
     }
     setTradeValue(e.target.value);
-    setCheckValue([]);
+  
     axios
       .get(
         `${baseUrl}/Main/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
@@ -247,18 +288,22 @@ const Ledger = () => {
       if(e.target.value === "1"){
        
         if(i.Type === "Trading"){
-         
+       
           bb.push(a++)
         }
        
       }
       else if(e.target.value === "2"){
+      
         bb.push(a++)
       }
       })
         }
+       
+        setCheckValue(bb)
       });
-      setCheckValue(bb)
+     
+     
   };
 
   const onRowPre = (e) => {
@@ -312,7 +357,7 @@ const Ledger = () => {
       Authorization: "Bearer " + token,
     },
   };
-  
+  // get Data
   const getDate = () => {
     let inc = 2;
   
@@ -340,6 +385,7 @@ const Ledger = () => {
     getBottomData()
    
   };
+  // onSelection
   const onSelectionChanged = (e) => {
     e.component.refresh(true);
   };
@@ -361,7 +407,7 @@ const Ledger = () => {
   };
   // bottom ledger data 
   const getBottomData = () => {
-  
+ 
     let cescds = [];
    
     for (let i in checkValue) {
@@ -370,6 +416,7 @@ const Ledger = () => {
         exchseg: date.data[checkValue[i]].CESCD,
       });
     }
+ 
     getSelectData(reduce(cescds));
   
 
@@ -566,7 +613,10 @@ const calculateSelectedRow = (options) => {
   } 
 
 }
-  
+  // float value
+  const floatVal = (e) => {
+    return (parseFloat(Math.abs(e.value)).toFixed(2))
+  }
   return (
     <>
       <Layout mainLink="BP EQUTIES PVT. LTD" subLink="Ledger">
@@ -590,6 +640,7 @@ const calculateSelectedRow = (options) => {
                 <option value="3">2019-2020</option>
               </select>
             </Box>
+            
           </TopBox>
           <Grid container style={{ padding: "20px" }}>
             <Grid item sm={3}>
@@ -630,35 +681,36 @@ const calculateSelectedRow = (options) => {
                 <Column
                   dataField="OpeningBalance"
                   caption="Opening Balance"
-                 calculateCellValue={balanceFun}
+                  customizeText={floatVal}
+              
                   alignment="right"
                 ></Column>
 
                 <Column
                   dataField="Debit"
                   caption="Debit"
-                calculateCellValue={debitFun}
+                  customizeText={floatVal}
                   alignment="right"
                 ></Column>
 
                 <Column
                   dataField="Credit"
                   caption="Credit"
-               calculateCellValue={creditFun}
+                  customizeText={floatVal}
                   alignment="right"
                 ></Column>
 
                 <Column
                   dataField="Balance"
                   caption="Balance"
-                  calculateCellValue={totalFun}
+                  customizeText={floatVal}
                   alignment="right"
                 ></Column>
 
 <Summary calculateCustomSummary={calculateSelectedRow}>
                   <TotalItem
                     cssClass={"openingBalance"}
-                    displayFormat="Total"
+                    displayFormat="Grand Total"
                     showInColumn="ExchSeg"
                   />
                   <TotalItem
@@ -699,8 +751,8 @@ const calculateSelectedRow = (options) => {
             </Grid>
           </Grid>
         </MyContainer>
-        <Grid container>
-          <Grid item sm={12} style={{ padding: "0px 20px" }}>
+        <Grid container style={{ padding: "20px 0px" }}>
+          <Grid item sm={12}>
             <BottomLedger ledgerReport={detData} />
           </Grid>
         </Grid>
