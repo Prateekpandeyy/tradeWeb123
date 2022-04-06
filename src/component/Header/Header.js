@@ -9,6 +9,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import transactionImg from '../../images/PngImages/transactionimg.png';
 import { MySubHeading } from '../commonFunction/MyContainer';
 
+const useStyle = makeStyles({
+    linkStyle: {
+        color: "#3D3D3D"
+    }
+})
 const MainContainer = styled(Paper)({
     display: "flex", 
     width: "100%",
@@ -51,6 +56,7 @@ root: {
 })
 const Header  = (props) => {
     const userName = localStorage.getItem("userName")
+    const classes = useStyle()
     return(
       <MainContainer>
           <NameProfile>
@@ -85,14 +91,13 @@ const Header  = (props) => {
              <BillButton variant="contained">Bills</BillButton>
           <img src={notificatonImg} style={{width: "28px", height: "28px", margin: "0 10px",  backgroundColor: "#E3F0FF"}} />
          <img src={profileImg} style={{width : "28px", height: "28px", margin: "0 10px"}} />
-        {/* <Link to = "/tradeweb/profile">
+        <Link to = "/tradeweb/profile"
+        className={classes.linkStyle}>
         <MySubHeading>
            {userName}
              </MySubHeading>
-        </Link> */}
-         <MySubHeading>
-           {userName}
-             </MySubHeading>
+        </Link> 
+        
              <ExpandMoreIcon style={{display : "flex", height: "100%", justifyContent : "center", 
             alignItems : "center"}} />
           </ProfileInfo>

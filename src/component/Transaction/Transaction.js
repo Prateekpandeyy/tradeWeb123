@@ -620,21 +620,17 @@ const floatVal = (e) => {
            }
             <Box className={classes.boxRoot}>
           
-          {/* <Space direction="vertical" size={12} style={{display : "flex", 
+            <Space direction="vertical" size={12} style={{display : "flex", 
         width : "300px", margin: "0 10px"}}>
   <RangePicker
-   defaultValue={[moment('04/01/2020', dateFormat), moment('31/03/2021', dateFormat)]}
+   defaultValue={[moment('01/04/2020', dateFormat), moment('31/03/2021', dateFormat)]}
     format={customFormat}
  
     changeYear={true}
     onChange={getValue}
   />
 
-</Space> */}
- <RangePicker
-      defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-      format={dateFormat}
-    />
+</Space>
           </Box>
           <Box className={classes.boxRoot}>
             <MyButton variant="contained" onClick={getTransationShow}>Show</MyButton>
@@ -722,7 +718,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
          />
           <Column
          dataField="SellAmount"
-         caption = "Sell Amount"
+         caption = "Seles Amount"
          calculateCellValue={sellAmountFun}
          alignment="right"
          />

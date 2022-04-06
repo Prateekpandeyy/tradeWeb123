@@ -270,39 +270,9 @@ setData2([])
 if(showSetlmentType === "Cash"){
   axios.get(`${baseUrl}/Bills/Bills_cash_settType?exch_settType=${getFirstValue}${stlfieldType}&date=${date22}`, myConfig)
   .then((res) => {
-  res.data.map((i) => {
-  if(i.ScripCode === "Charges"){
-  let a = {
-   ScripCode : i.ScripCode,
-   order : i.ScripName, 
-   trade : i.BuyValue
-  }
-  pp.push(a)
-  }
-  else if (i.ScripName === "Due To Us :"){
-    let a = {
-      ScripCode : i.ScripCode,
-      order : i.ScripName, 
-      trade : i.NetValue
-     }
-     pp.push(a)
-  }
-  else if (i.ScripName === "Due To You :"){
-    let a = {
-      ScripCode : i.ScripCode,
-      order : i.ScripName, 
-      trade : i.NetValue
-     }
-     pp.push(a)
-  }
-  else {
-    console.log("iii", i)
-    total += parseInt(i.NetValue)
-    setData((oldData) => {
-     return( [...oldData, i])
-    })
-  }})})
-  setData2(pp)  
+    setData(res.data)
+  })
+  
 }
 else if(showSetlmentType === "Comm"){
   axios.get(`${baseUrl}/Bills/Bills_Commodity?exch=${getFirstValue}&date=${date22}`, myConfig)
@@ -413,18 +383,24 @@ const myBuyAmount = (e) => {
 
 // cellRender 
 const cellRender = (e) => {
-  
+  console.log("eee", e.data)
   if(e.data.NetValue){
     return (
       <span style={{fontFamily : "font-family", 
       fontStyle : "normal", fontWeight : 600, 
       fontSize :"14px", lineHeight: "30px"}}>
-       Net Item Amount (Sale-Buy)
+      {e.data.ScripName}
       </span>
       
     )
   }
-  
+  else if(e.data.ScripCode == "Charges"){
+    return(
+      <span>
+        {e.data.ScripName}
+        </span>
+    )
+  }
   else{
     return(
      <span>
@@ -456,7 +432,11 @@ const cellRenderDate = (e) => {
   }
 }
 const securityRender = (e) => {
- if(!e.data.NetValue){
+ if(e.data.ScripCode == "Charges"){
+   return null;
+
+ }
+ else if(!e.data.NetValue){
   return(
     <span>
      {`${e.data.ScripName} (${e.data.ScripCode})`}
@@ -508,8 +488,76 @@ const netvalueFun = (e) => {
     return parseFloat(Math.abs(e.NetValue)).toFixed(2)
   }
 }
-console.log("data2", data, data22)
+// tradevalfun 
+const tradeValfun = (e) => {
+  if(e.ScripCode == "Charges"){
+    return null;
+ 
+  }
+  else if(!e.NetValue){
+    return (e.TradeID)
+  }
+}
+// timefun 
+const timeFun = (e) => {
+  if(e.ScripCode == "Charges"){
+    return null;
+ 
+  }
+  else if(!e.NetValue){
+    return (e.TradeTime)
+  }
+}
+// buy fun 
+const buyFun = (e) => {
+  if(e.ScripCode == "Charges"){
+    return null;
+ 
+  }
+  else if(!e.NetValue){
+    return (parseFloat(e.Buy).toFixed(2))
+  }
+}
+const sellFun = (e) => {
+  if(e.ScripCode == "Charges"){
+    return null;
+ 
+  }
+  else if(!e.NetValue){
+    return (parseFloat(e.Sell).toFixed(2))
+  }
+}
+const marketFun = (e) => {
+  if(e.ScripCode == "Charges"){
+    return null;
+ 
+  }
+  else if(!e.NetValue){
+    return (parseFloat(e.MarketRate).toFixed(2))
+  }
+}
+const brokerFun = (e) => {
+  if(e.ScripCode == "Charges"){
+    return null;
+ 
+  }
+  else if(!e.NetValue){
+    return (parseFloat(e.Brokerage).toFixed(2))
+  }
+}
+
+const buyFunValue = (e) => {
+  if(!e.NetValue){
+    return (parseFloat(e.BuyValue).toFixed(2))
+  }
+}
+const sellFunValue = (e) => {
+  if(!e.NetValue){
+    return (parseFloat(e.SellValue).toFixed(2))
+  }
+}
   const classes = useStyle()
+  
   return(
     <Layout subLink = "Bills">
        <MyContainer>
@@ -624,10 +672,13 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                   </Column>
                   <Column 
                   dataField="TradeID"
-                  caption="Trade">
+                  caption="Trade"
+                  calculateCellValue={tradeValfun}
+                >
                   </Column>
                   <Column 
                   dataField="TradeTime"
+                calculateCellValue={timeFun}
                   caption= "Time">
                   </Column>
                   <Column 
@@ -637,27 +688,69 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
                   </Column>
                   <Column 
                   dataField="Buy"
+                  calculateCellValue={buyFun}
                   caption="Buy">
+                   
                   </Column>
-               
+                  <Column
+                    dataField="Sell"
+                    calculateCellValue={sellFun}
+                    caption = "Sell">
+                    </Column>
                   <Column 
                   dataField="MarketRate"
+                calculateCellValue={marketFun}
                   caption="Market Rate"></Column>
                <Column
                dataField="Brokerage"
+             calculateCellValue={brokerFun}
                caption="Brokerage"></Column>
                <Column 
                dataField="BuyValue"
-               caption="Buy Value">
+               caption="Buy Value"
+               calculateCellValue={buyFunValue}
+               >
                </Column>
                <Column 
                dataField="SellValue"
+               calculateCellValue={sellFunValue}
                caption="Sell Value">
                </Column>
                <Column 
                dataField = "NetValue"
                caption="Net Value"></Column>
-                   
+          <Summary>
+               <TotalItem
+         cssClass={"warning4"}
+         displayFormat="Sub Total"
+         showInColumn="OrderID" />
+           <TotalItem
+      
+      summaryType="sum"
+      column="BuyValue"
+      displayFormat="{0}"
+      cssClass={"warning4"}
+    customizeText = {myBuyAmount}
+      showInColumn="BuyValue" />
+            <TotalItem
+      
+         summaryType="sum"
+         column="Brokerage"
+         displayFormat="{0}"
+         cssClass={"warning4"}
+       customizeText = {myBuyAmount}
+         showInColumn="Brokerage" />
+            <TotalItem
+      
+      summaryType="sum"
+      column="SellValue"
+      displayFormat="{0}"
+      cssClass={"warning4"}
+    customizeText = {myBuyAmount}
+      showInColumn="SellValue" />
+      
+         </Summary>
+               
         
 </DataGrid>
             </Grid>
@@ -787,61 +880,7 @@ boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)", borderRadius : "10px", padding
 
            } 
        </MyContainer>
-      {
-        showSetlmentType === "Cash" ?
-        <MyContainer>
-        <Grid container>
-        <Grid  style={{padding: "20px"}}>
-        <DataGrid 
-        dataSource = {data22}
-        onRowPrepared={onRowPre2}
-       
-         showRowLines={false}
-         showCheckBoxesMode={false}
-         showBorders = {false}
-         columnAutoWidth={true}
-       
-         showColumnLines = {false}
-         keyExpr="ScripCode"
-     noDataText=""
-    
-        >
-         
-          
-           <Column 
-           dataField="order"
-           caption = "Charges"
-       >
-           </Column>
-           <Column 
-              dataField="trade"
-              caption = ""
-              alignment="right"
-             >
-              </Column>
-               
-               <Summary>
-               <TotalItem
-         cssClass={"warning4"}
-         displayFormat="Sub Total"
-         showInColumn="order" />
-            <TotalItem
-      
-         summaryType="sum"
-         column="trade"
-         displayFormat="{0}"
-         cssClass={"warning4"}
-       customizeText = {myBuyAmount}
-         showInColumn="trade" />
-         </Summary>
-      
-        
-</DataGrid>
-        </Grid>
-        </Grid>
-       
-    </MyContainer> : ""
-      }
+     
       </Layout>
   )
 }
