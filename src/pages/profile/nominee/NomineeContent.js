@@ -35,6 +35,7 @@ box-shadow: 0px 2px 16px rgba(61, 61, 61, 0.06);
 border-radius: 10px;
 justify-content : center;
 flex-direction : column;
+padding: 40px 0;
 `
 const MyForm = styled.div`
 display : flex;
@@ -118,7 +119,8 @@ font-weight: 600;
 font-size: 26px;
 line-height: 39px;
 color: #0085FF;
-text-align: center
+text-align: center;
+
 `
 const MyPara = styled.p`
 font-family: 'Poppins';

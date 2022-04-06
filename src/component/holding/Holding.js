@@ -196,7 +196,7 @@ const Holding = () => {
 accountNumber = i.accountNumber;
       })
       axios.get(
-        `${baseUrl}/Holding/Holding_myDematAct_Current?dematActNo=${accountNumber}`,
+        `${baseUrl}/Holding/Holding_myDematAct_Current?dematActNo=${accountNumber}&graphDays=484`,
         myConfig
       )
       .then((res) => {
