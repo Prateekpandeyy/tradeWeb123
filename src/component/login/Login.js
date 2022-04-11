@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Grid,
   Card,
@@ -23,6 +23,8 @@ import ResetPass from "./ResetPass";
 import loginImg from "../ledger/lgoinImg.png";
 import { baseUrl } from "../baseUrl/BaseUrl";
 import { padding } from "@mui/system";
+import {fetchUserDetails} from "../../Redux/actions/action"
+import {useSelector,useDispatch} from "react-redux";
 const useStyle = makeStyles({
   rightAlign: {
     display: "flex",
@@ -78,12 +80,18 @@ const MyLabel = styled(Typography)({
   lineHeight: "27px",
 });
 const Login = () => {
-  const [showOtp, setShotOpt] = useState(false);
+  const AuthDetails = useSelector((state)=>state.LoginReducer.AuthDetails);
+  const passwordOpen = useSelector((state)=>state.LoginReducer.setOtpBoxOpen);
+
+  const state =useSelector(state=>state)
+
+  const dispatch = useDispatch();
+  const [showOtp, setShotOpt] = useState(passwordOpen);
   const [otp, setOpt] = useState();
   const [passWord, getPassWord] = useState("");
   const [userId, setUserId] = useState("");
   const [myToken, getToken] = useState("");
-  const [moNumber, setMonumber] = useState();
+  const [moNumber, setMonumber] = useState(AuthDetails.Mobile || "");
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [showResetPass, setShowResetPass] = useState(false);
   let history = useNavigate();
@@ -97,6 +105,25 @@ const Login = () => {
     phoneno: "91" + moNumber,
     otp: otp,
   });
+  useEffect(()=>{
+
+    const token = localStorage.getItem("token");
+
+    if(token!== null && token.length > 0){
+
+      history("/tradeweb/ledger");
+
+    }
+
+    else{
+
+       localStorage.removeItem("persist:root")
+
+       history("/")
+
+    }
+
+  },[])
   const onSubmit = (value) => {
     let formData = new FormData();
 
@@ -120,6 +147,7 @@ const Login = () => {
 
               localStorage.setItem("userName", a[0].ClientName);
               localStorage.setItem("token", res2.data.token);
+              localStorage.setItem("tokenExpireTime", res2.data.tokenExpireTime)
               Swal.fire({
                 title: "success",
                 html: "login successfully",
@@ -154,43 +182,8 @@ const Login = () => {
     let mNo = e.target.value;
     if (mNo.length > 0) {
       setUserId(mNo);
+      dispatch(fetchUserDetails(e.target.value))
       localStorage.setItem("userId", mNo);
-      axios({
-        method: "POST",
-        url: `${baseUrl}/Main/Login_validate_USER?userId=${mNo}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: mNo,
-      }).then((res) => {
-        if (res.status === 200) {
-          let a = res.data;
-          let bb = a[0].Mobile;
-          setMonumber(bb);
-
-          var data2 = JSON.stringify({
-            phoneno: "91" + bb,
-          });
-          axios({
-            method: "POST",
-            url: `https://prod-00.centralindia.logic.azure.com/workflows/a7d7a088db2d41e985861b0509977c77/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=5Xl1exEMOMVsctxYVZdHTOhIsQEi5fpWrhQB5dgqUFY`,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            data: data2,
-          }).then((res) => {
-            if (res.data.type === "success") {
-              setShotOpt(true);
-            }
-          });
-        } else {
-          Swal.fire({
-            title: "error",
-            html: "Incorrect user id",
-            icon: "error",
-          });
-        }
-      });
     }
   };
   const resendOtp = (e) => {
@@ -224,6 +217,7 @@ const Login = () => {
     e.preventDefault();
     setShowResetPass(true);
   };
+
   return (
     <div className={style.main}>
       <Container maxWidth="md" className={style.myContainer}>
@@ -367,7 +361,7 @@ const Login = () => {
                               )}{" "}
                             </span>
                           </Box>
-                          {showOtp ? (
+                          {passwordOpen ? (
                             <a
                               href="/"
                               className={classes.rightAlign}
@@ -381,7 +375,7 @@ const Login = () => {
                           )}
                         </Grid>
 
-                        {showOtp && (
+                        {passwordOpen && (
                           <Grid item sm={12} pt={2} pb={2}>
                             <MyLabel
                               style={{

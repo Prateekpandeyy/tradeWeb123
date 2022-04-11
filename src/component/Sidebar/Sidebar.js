@@ -4,6 +4,9 @@ import documentImg from '../../images/PngImages/document.png';
 import homeImg from '../../images/PngImages/home.png';
 import bookImg from '../../images/PngImages/book.png';
 import arrowImg from '../../images/PngImages/arrow.png';
+import confirmationImg from '../../images/PngImages/confirmation.png';
+import marginImg from '../../images/PngImages/margin.png';
+import requestImg from '../../images/PngImages/request.png';
 import cameraImg from '../../images/sideBarImages/Frame.svg';
 import { styled, makeStyles } from '@mui/styles';
 import {Link, useLocation } from 'react-router-dom';
@@ -34,7 +37,7 @@ const Sidebar = () => {
             flexDirection: "column",
             padding: "10px 5px",
             backgroundColor: "#ffffff",
-            boxShadow : "0px 2px 4px rgba(0, 0, 0, 0.12)"
+            boxShadow : "0px 2px 4px rgba(0, 0, 0, 0.12)",
         }
     })
  
@@ -75,6 +78,21 @@ const Sidebar = () => {
                     <li className={splitLocation[2] === "transaction" ? "myMenuActive" : ""}>
                        <Link to = "/tradeweb/transaction" title="Transaction">
                        <img src={arrowImg} className={classes.myNav} />
+                       </Link>
+                    </li>
+                    <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/confirmation" title="Transaction">
+                       <img src={confirmationImg} className={classes.myNav} />
+                       </Link>
+                    </li>
+                    <li className={splitLocation[2] === "margin" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/confirmation" title="Transaction">
+                       <img src={marginImg} className={classes.myNav} />
+                       </Link>
+                    </li>
+                    <li className={splitLocation[2] === "request" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/confirmation" title="Transaction">
+                       <img src={requestImg} className={classes.myNav} />
                        </Link>
                     </li>
         </ul>

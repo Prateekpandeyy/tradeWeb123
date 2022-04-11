@@ -17,7 +17,10 @@ import ProfileActive from './pages/profile/userprofile/ProfileActive';
 import AddNoimee from './pages/profile/nominee/AddNoimee'
 import AddBank from './pages/profile/bank/AddBank';
 import AddDemat from './pages/profile/demat/AddDemat';
+import Confirmation from './pages/confirmation/confirmation/Confirmation';
 function App() {
+
+ 
   return (
     <>
     <BrowserRouter>
@@ -37,10 +40,11 @@ function App() {
       <Route exact path = "/tradeweb/commodity" element = {<Commodity />} />
       <Route exact path = "/tradeweb/active-profile" element = {<ProfileActive />} /> 
       <Route exact path = "/tradeweb/addbank" element = {<AddBank />} />
-      <Route exact path = "/tradeweb/dematcontent" element = {<AddDemat />} />
+      <Route exact path = "/tradeweb/dematcontent" element = {<AddDemat />} /> 
+      <Route exact path = "/tradeweb/confirmation" element = {<Confirmation />} />
       </Routes>
       </BrowserRouter>
-      </>
+    </>
   );
 }
 
