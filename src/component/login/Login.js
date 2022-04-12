@@ -25,6 +25,7 @@ import { baseUrl } from "../baseUrl/BaseUrl";
 import { padding } from "@mui/system";
 import {fetchUserDetails} from "../../Redux/actions/action"
 import {useSelector,useDispatch} from "react-redux";
+import {setOtpBoxOpen} from "../../Redux/actions/action"
 const useStyle = makeStyles({
   rightAlign: {
     display: "flex",
@@ -117,8 +118,8 @@ const Login = () => {
 
     else{
 
-       localStorage.removeItem("persist:root")
-
+       localStorage.clear()
+       dispatch(setOtpBoxOpen(false));
        history("/")
 
     }

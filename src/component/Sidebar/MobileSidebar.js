@@ -143,7 +143,7 @@ alignItems: "center"
                </p>
                </Link>
                     </li>
-                    <li className={`${splitLocation[2] === "confirmation" ? "myMenuActive" : ""} ${classes.myMobileSidebar}`}>
+                    {/* <li className={`${splitLocation[2] === "confirmation" ? "myMenuActive" : ""} ${classes.myMobileSidebar}`}>
                        <Link to = "/tradeweb/confirmation" title="Transaction" className={classes.myNavMenu}>
                        <img src={confirmationImg} className={classes.myNav} />
                      
@@ -169,7 +169,7 @@ alignItems: "center"
                        Request
                </p>
                </Link>
-                    </li>
+                    </li> */}
         </ul>
     )
 }

@@ -64,7 +64,7 @@ const BottomLedger = ({ ledgerReport }) => {
       e.rowElement.style.margin = "10px";
       e.rowElement.style.fontFamily = "Poppins";
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "12px";
+      e.rowElement.style.fontSize = "16px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.lineHeight = "35px";
       e.rowElement.style.fontWeight = 400;

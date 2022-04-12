@@ -161,7 +161,7 @@ const Holding = () => {
       e.rowElement.style.margin = "10px";
       e.rowElement.style.fontFamily = "Poppins";
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "12px";
+      e.rowElement.style.fontSize = "16px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.lineHeight = "35px";
       e.rowElement.style.fontWeight = 400;
@@ -169,13 +169,24 @@ const Holding = () => {
   };
 
   const cellRender = (e) => {
+    kk = []
+    e.data.graphDetails.map((i) => {
+    
+      gObj = {
+        name: "",
+        uv: Number(i.rate),
+        pv: Number(i.rateDt),
+        amt: Number(i.rateDt),
+      };
+     kk.push(gObj)
+    })
     return (
       <>
         <AreaChart
           width={80}
           height={40}
           margin={{ top: 20, right: 5, bottom: 5, left: 5 }}
-          data={graphData}
+          data={kk}
         >
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -205,6 +216,7 @@ const Holding = () => {
     );
   };
   let gData = [];
+  let kk ;
   let gObj = {};
   // onSelecton holding
   const onSelectionHolding = (e) => {
@@ -213,6 +225,7 @@ const Holding = () => {
       accountNumber = i.accountNumber;
     });
     try {
+      setIsLoading(true)
       axios
         .get(
           `${baseUrl}/Holding/Holding_myDematAct_Current?dematActNo=${accountNumber}&graphDays=600`,
@@ -220,20 +233,7 @@ const Holding = () => {
         )
         .then((res) => {
           setHoldingData(res.data);
-          res.data.map((i) => {
-           
-            i.graphDetails.map((i) => {
-              gObj = {
-                name: "",
-                uv: Number(i.rate),
-                pv: Number(i.rateDt),
-                amt: Number(i.rateDt),
-              };
-            })
-           
-            gData.push(gObj);
-          });
-          setGraphData(gData);
+         
           setIsLoading(false);
         });
     } catch (err) {
@@ -265,7 +265,7 @@ const Holding = () => {
       </span>
     );
   };
-
+  
   return (
     <Layout mainLink="Holdings" showNavigationButtons={false}>
       <BackDrop isLoading={isLoading} />

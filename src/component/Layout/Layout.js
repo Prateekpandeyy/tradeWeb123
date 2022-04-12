@@ -6,6 +6,9 @@ import { styled } from '@mui/styles';
 import MobileSidebar from '../Sidebar/MobileSidebar';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
+import { useDispatch,useSelector } from 'react-redux';
+import {setOtpBoxOpen} from "../../Redux/actions/action"
+
 const MySidebar = styled(Box)({
        
     display: "flex",
@@ -64,18 +67,18 @@ const Layout = (props) => {
     let history = useNavigate()
     let tokenExpireTime = localStorage.getItem("tokenExpireTime")
     let current_time = moment().format("HH:mm:ss")
-    console.log("done22", tokenExpireTime.split(" ")[1] === current_time)
+    let current_date = moment().format("YYYY/MM/DD")
+    const dispatch= useDispatch();
     const getScWidth = () => {
        setScreenWidth(window.innerWidth)
     }
     useEffect(() => {
        window.addEventListener("resize", getScWidth)
-       if(tokenExpireTime.split(" ")[1] === current_time){
-           localStorage.removeItem("userName")
-           localStorage.removeItem("userId")
-           localStorage.removeItem("token")
-           localStorage.removeItem("tokenExpireTime")
-           history.push("/")
+     console.log("tokenExpire", tokenExpireTime)
+       if(tokenExpireTime?.split(" ")[1] < current_time || tokenExpireTime?.split(" ")[0] !== current_date || tokenExpireTime === null){
+           localStorage.clear()
+           dispatch(setOtpBoxOpen(false));
+           history("/")
        }
        return () => {
            window.removeEventListener("resize", getScWidth)

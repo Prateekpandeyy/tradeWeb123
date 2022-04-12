@@ -162,7 +162,7 @@ const Transaction = () => {
       e.rowElement.style.backgroundColor = "#E1F1FF";
       e.rowElement.style.fontFamily = "Poppins";
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "14px";
+      e.rowElement.style.fontSize = "16px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.fontWeight = 600;
 
@@ -172,7 +172,7 @@ const Transaction = () => {
       e.rowElement.style.margin = "10px";
       e.rowElement.style.fontFamily = "Poppins";
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "12px";
+      e.rowElement.style.fontSize = "16px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.lineHeight = "35px";
       e.rowElement.style.fontWeight = 400;

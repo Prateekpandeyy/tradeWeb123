@@ -315,7 +315,7 @@ const Ledger = () => {
       e.rowElement.style.margin = "10px";
       e.rowElement.style.fontFamily = "Poppins";
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "12px";
+      e.rowElement.style.fontSize = "16px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.lineHeight = "35px";
       e.rowElement.style.fontWeight = 400;
@@ -523,19 +523,19 @@ const Ledger = () => {
       if (e.columnIndex === 1 || e.columnIndex === 2 || e.columnIndex === 4) {
         e.cellElement.style.color = "#0085ff";
         e.cellElement.style.fontWeight = 600;
-        e.cellElement.style.fontSize = "12px";
+        e.cellElement.style.fontSize = "16px";
         e.cellElement.style.fontFamily = "Poppins";
         e.cellElement.style.lineHeight = "30px";
       } else if (e.columnIndex === 3) {
         e.cellElement.style.color = "#e2a705";
         e.cellElement.style.fontWeight = 600;
-        e.cellElement.style.fontSize = "12px";
+        e.cellElement.style.fontSize = "16px";
         e.cellElement.style.fontFamily = "Poppins";
         e.cellElement.style.lineHeight = "30px";
       } else if (e.columnIndex === 5) {
         e.cellElement.style.color = "#00b824";
         e.cellElement.style.fontWeight = 600;
-        e.cellElement.style.fontSize = "12px";
+        e.cellElement.style.fontSize = "16px";
         e.cellElement.style.fontFamily = "Poppins";
         e.cellElement.style.lineHeight = "30px";
       }

@@ -56,9 +56,10 @@ const Sidebar = () => {
                 </li>
                 
                 <li>
-                  <Link to = "/tradeweb/trading">
+                  {/* <Link to = "/tradeweb/trading">
                   <img src={homeImg} className={classes.myNav} />
-                  </Link>
+                  </Link> */}
+                  <img src={homeImg} className={classes.myNav} />
                 </li>
                 <li className={splitLocation[2] === "holding" ? "myMenuActive" : ""}>
                 <Link to ="/tradeweb/holding" title="Holding">
@@ -80,7 +81,7 @@ const Sidebar = () => {
                        <img src={arrowImg} className={classes.myNav} />
                        </Link>
                     </li>
-                    <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
+                    {/* <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
                        <Link to = "/tradeweb/confirmation" title="Transaction">
                        <img src={confirmationImg} className={classes.myNav} />
                        </Link>
@@ -94,7 +95,7 @@ const Sidebar = () => {
                        <Link to = "/tradeweb/confirmation" title="Transaction">
                        <img src={requestImg} className={classes.myNav} />
                        </Link>
-                    </li>
+                    </li> */}
         </ul>
     )
 }
