@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
     const auth = localStorage.getItem("token");
     if (auth) {
       config.headers = {
-        Authorization: `Basic ${auth}`,
+        Authorization: `Bearer ${auth}`,
       };
     }
     return config;

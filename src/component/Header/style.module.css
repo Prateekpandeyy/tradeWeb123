@@ -1,16 +1,15 @@
-.first {
-    width: 50%;
+/* .first {
+   margin-left: 300px;
     display: inline-block;
-}
-.second {
+} */
+/* .second {
     width: 2%;
     display: inline-block;
-}
+} */
 
 @media (max-width: 800px) {
     .first{
-        width: 100%;
-        display: inline-block;
+        margin-left: -500px;
     }
     .second{
         margin-top: 40px;

@@ -18,6 +18,7 @@ import AddNoimee from './pages/profile/nominee/AddNoimee'
 import AddBank from './pages/profile/bank/AddBank';
 import AddDemat from './pages/profile/demat/AddDemat';
 import Confirmation from './pages/confirmation/confirmation/Confirmation';
+import Margin from './component/Margin/Margin';
 function App() {
 
  
@@ -42,6 +43,7 @@ function App() {
       <Route exact path = "/tradeweb/addbank" element = {<AddBank />} />
       <Route exact path = "/tradeweb/dematcontent" element = {<AddDemat />} /> 
       <Route exact path = "/tradeweb/confirmation" element = {<Confirmation />} />
+      <Route exact path = "/tradeweb/margin" element = {<Margin />} />
       </Routes>
       </BrowserRouter>
     </>
