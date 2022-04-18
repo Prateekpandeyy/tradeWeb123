@@ -6,9 +6,7 @@ import {
   Container,
   Box,
   Typography,
-  Paper,
   CardHeader,
-  Input,
 } from "@mui/material";
 import style from "./style.module.css";
 import { styled, makeStyles } from "@mui/styles";
@@ -22,8 +20,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import ResetPass from "./ResetPass";
 import loginImg from "../ledger/lgoinImg.png";
 import { baseUrl } from "../baseUrl/BaseUrl";
-import { padding } from "@mui/system";
-import {fetchUserDetails} from "../../Redux/actions/action"
+import {fetchUserDetails, resendOtp, loginSuccess} from "../../Redux/actions/action"
 import {useSelector,useDispatch} from "react-redux";
 import {setOtpBoxOpen} from "../../Redux/actions/action"
 const useStyle = makeStyles({
@@ -83,11 +80,8 @@ const MyLabel = styled(Typography)({
 const Login = () => {
   const AuthDetails = useSelector((state)=>state.LoginReducer.AuthDetails);
   const passwordOpen = useSelector((state)=>state.LoginReducer.setOtpBoxOpen);
-
   const state =useSelector(state=>state)
-
   const dispatch = useDispatch();
-  const [showOtp, setShotOpt] = useState(passwordOpen);
   const [otp, setOpt] = useState();
   const [passWord, getPassWord] = useState("");
   const [userId, setUserId] = useState("");
@@ -98,80 +92,32 @@ const Login = () => {
   let history = useNavigate();
   const classes = useStyle();
   const { handleSubmit, register, errors } = useForm({});
-  var data4 = JSON.stringify({
-    userId: userId,
-    password: passWord,
-  });
-  var data3 = JSON.stringify({
-    phoneno: "91" + moNumber,
-    otp: otp,
-  });
-  useEffect(()=>{
-
-    const token = localStorage.getItem("token");
-
-    if(token!== null && token.length > 0){
-
-      history("/tradeweb/ledger");
-
+ 
+  var loginData = [
+    {
+      phoneno: "91" + moNumber,
+      otp: otp,
+    },
+    {
+      userId: userId,
+      password: passWord,
     }
-
-    else{
-
-       localStorage.clear()
-       dispatch(setOtpBoxOpen(false));
-       history("/")
-
-    }
-
-  },[])
+  ]
+  // useEffect(()=>{
+  //   const token = localStorage.getItem("token");
+  //   if(token!== null && token.length > 0){
+  //     history("/tradeweb/ledger");
+  //   }
+  //   else{
+       
+  //      dispatch(setOtpBoxOpen(false));
+  //      history("/")
+  //   }
+  // },[])
   const onSubmit = (value) => {
-    let formData = new FormData();
-
-    if (otp) {
-      axios({
-        method: "POST",
-        url: `https://prod-10.centralindia.logic.azure.com/workflows/e9581b06077b4a09af1c86467d171669/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Mx-U8GIyh0K8cSfBtqVul5hmkNHJ_69VjmppB6N7Uy0`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data3,
-      }).then((res) => {
-        if (res.data.type === "success" || otp == "1234") {
-          axios({
-            method: "POST",
-            url: `${baseUrl}/Main/Login_validate_Password?userId=${userId}&password=${passWord}`,
-            data: data4,
-          }).then((res2) => {
-            if (res2.data.status === true) {
-              let a = JSON.parse(res2.data.data);
-
-              localStorage.setItem("userName", a[0].ClientName);
-              localStorage.setItem("token", res2.data.token);
-              localStorage.setItem("tokenExpireTime", res2.data.tokenExpireTime)
-              Swal.fire({
-                title: "success",
-                html: "login successfully",
-                icon: "success",
-              });
-              history("/tradeweb/ledger");
-            } else {
-              Swal.fire({
-                title: "error",
-                html: `${res2.data.error_message}`,
-                icon: "error",
-              });
-            }
-          });
-        } else {
-          Swal.fire({
-            title: "error",
-            html: `${res.data.message}`,
-            icon: "error",
-          });
-        }
-      });
-    }
+ dispatch(loginSuccess(loginData))
+   
+  
   };
   const passFun = (e) => {
     getPassWord(e.target.value);
@@ -187,27 +133,13 @@ const Login = () => {
       localStorage.setItem("userId", mNo);
     }
   };
-  const resendOtp = (e) => {
+  const resendOtpmobile = (e) => {
     e.preventDefault();
     var data2 = JSON.stringify({
       phoneno: "91" + moNumber,
     });
-    axios({
-      method: "POST",
-      url: `https://prod-00.centralindia.logic.azure.com/workflows/a7d7a088db2d41e985861b0509977c77/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=5Xl1exEMOMVsctxYVZdHTOhIsQEi5fpWrhQB5dgqUFY`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data2,
-    }).then((res) => {
-      if (res.data.type === "success") {
-        Swal.fire({
-          title: "success",
-          html: "An otp has been sent to your number",
-          icon: "success",
-        });
-      }
-    });
+    dispatch(resendOtp(data2))
+   
   };
   //Toggle password
   const togglePasssword = () => {
@@ -406,7 +338,7 @@ const Login = () => {
                             <a
                               href="/"
                               className={classes.rightAlign}
-                              onClick={(e) => resendOtp(e)}
+                              onClick={(e) => resendOtpmobile(e)}
                             >
                               {" "}
                               Resend OTP

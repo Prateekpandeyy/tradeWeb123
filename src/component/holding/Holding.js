@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../Layout/Layout";
 import { styled, makeStyles } from "@mui/styles";
+import HoldingData from "./HoldingData";
 import { baseUrl } from "../baseUrl/BaseUrl";
 import { Box, Select, MenuItem, Typography, Button, Grid } from "@mui/material";
 import BackDrop from "../Loader/BackDrop";
+import MyContainer from "../commonFunction/MyContainer";
 import "./style.css";
 import {
   DataGrid,
   Column,
   Selection,
   Paging,
-
+  Summary,
+  TotalItem,
+  MasterDetail,
+  Scrolling,
+  Pager,
 } from "devextreme-react/data-grid";
 import {
- 
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
   AreaChart,
   Area,
 } from "recharts";
 import axios from "axios";
 import moment from "moment";
+import { style } from "@mui/system";
+const data = [
+  
+  { name: "", uv: 60, pv: 2000, amt: 2300 },
+  { name: "", uv: 150, pv: 2000, amt: 2300 },
+  { name: "", uv: 100, pv: 2000, amt: 2300 },
+  { name: "", uv: 300, pv: 2000, amt: 2300 },
+  { name: "", uv: 120, pv: 2000, amt: 2300 },
+  { name: "", uv: 200, pv: 2000, amt: 2300 },
+  { name: "", uv: 80, pv: 2000, amt: 2300 },
+  { name: "", uv: 10, pv: 2000, amt: 2300 },
+  { name: "", uv: 150, pv: 2000, amt: 2300 },
+];
 const TopBox = styled(Box)({
   display: "flex",
   alignItems: "center",

@@ -8,14 +8,19 @@ import {
   Paging,
   Summary,
   TotalItem,
- 
+  MasterDetail,
+  Scrolling,
+  Pager,
+
 } from "devextreme-react/data-grid";
 import axiosInstance from "../../../apiServices";
 import MyContainer from "../../../component/commonFunction/MyContainer";
 import { Box, Select, Button, Typography, Grid } from "@mui/material";
 import { styled, makeStyles } from "@mui/styles";
 import "antd/dist/antd.css";
+// import { sales } from "./data.js";
 import { FaFileCsv } from "react-icons/fa";
+import { RiFileExcel2Fill, RiTimeLine } from "react-icons/ri";
 import { AiFillPrinter } from "react-icons/ai";
 import { GrDocumentText } from "react-icons/gr";
 import { AiFillFilePdf } from "react-icons/ai";
@@ -27,13 +32,16 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { exportDataGrid as exportDataGridToPdf } from "devextreme/pdf_exporter";
 import htmlImg from "./../../../images/PngImages/html.png";
+import BackDrop from "./../../../component/Loader/BackDrop";
 import { ComponentToPrint } from "./../../../component/Transaction/ComponentToPrint";
 import { DatePicker, Space } from "antd";
 
 import moment from "moment";
 const { RangePicker } = DatePicker;
 const dateFormat = "DD/MM/YYYY";
-
+const weekFormat = "MM/DD";
+const monthFormat = "YYYY/MM";
+const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 const customFormat = (value) => {
   return `${value.format(dateFormat)}`;
 };
@@ -104,7 +112,8 @@ const useStyle = makeStyles({
 const Content = () => {
   const [date, setDate] = useState("20210322");
   const [confirmationDrop, setConfirmationDrop] = useState(0);
-  const [data,setData] = useState([])
+  const [data,setData] = useState([]);
+  console.log("data",data);
   const dataGridRef = React.createRef();
   const componentRef = useRef();
   const classes = useStyle();
@@ -182,7 +191,7 @@ const Content = () => {
       e.rowElement.style.backgroundColor = "#E1F1FF";
       e.rowElement.style.fontFamily = "Poppins";
       e.rowElement.style.fontStyle = "normal";
-      e.rowElement.style.fontSize = "18px";
+      e.rowElement.style.fontSize = "12px";
       e.rowElement.style.color = "#3D3D3D";
       e.rowElement.style.fontWeight = 600;
 
@@ -198,54 +207,47 @@ const Content = () => {
       e.rowElement.style.fontWeight = 400;
     }
   };
-  const floatVal = (e) => {
-    return parseFloat(Math.abs(e.value)).toFixed(2);
-  };
+  
 
   // Opening balance
   const calculateSelectedRow = (options) => {
-    if (options.name === "sellQty") {
+    if (options.name === "OpeningBalance") {
       if (options.summaryProcess === "start") {
         options.totalValue = 0;
       } else if (options.summaryProcess === "calculate") {
-        if (options.component.isRowSelected(options.value.scripname)) {
-          options.totalValue += options.value.Sell;
+        if (options.value.Type !== "Total") {
+          options.totalValue += options.value.OpeningBalance;
         }
       }
     }
-
-    if (options.name === "BuyQty") {
+    if (options.name === "Debit") {
       if (options.summaryProcess === "start") {
         options.totalValue = 0;
       } else if (options.summaryProcess === "calculate") {
-        if (options.component.isRowSelected(options.value.scripname)) {
-          options.totalValue += options.value.Buy;
+        if (options.value.Type !== "Total") {
+          options.totalValue += options.value.Debit;
         }
       }
     }
-    if (options.name === "BuyAmount") {
+    if (options.name === "Credit") {
       if (options.summaryProcess === "start") {
         options.totalValue = 0;
       } else if (options.summaryProcess === "calculate") {
-        if (options.component.isRowSelected(options.value.scripname)) {
-          options.totalValue += options.value.BuyAmount;
+        if (options.value.Type !== "Total") {
+          options.totalValue += options.value.Credit;
         }
       }
     }
-    if (options.name === "NetAmount") {
+    if (options.name === "Balance") {
       if (options.summaryProcess === "start") {
         options.totalValue = 0;
       } else if (options.summaryProcess === "calculate") {
-        if (options.component.isRowSelected(options.value.scripname)) {
-          options.totalValue += options.value.NetAmount;
+        if (options.value.Type !== "Total") {
+          options.totalValue += options.value.Balance;
         }
       }
     }
-
-    
-  
   };
-
 
   const confirmationDropDown = (e) => {
     console.log("values", e);
@@ -285,11 +287,7 @@ const Content = () => {
       </span>
     );
   };
-  const myBuyAmount2 = (e) => {
-    let k = parseFloat(Math.abs(e.value)).toFixed(2);
-   
-    return k;
-  };
+
   return (
     <>
     
@@ -424,7 +422,6 @@ const Content = () => {
             id="dataGrid"
             ref={dataGridRef}
             dataSource={data}
-            keyExpr="scripname"
             showRowLines={true}
             columnAutoWidth={true}
             onSelectionChanged={onSelectionChanged}
@@ -442,115 +439,101 @@ const Content = () => {
             <Selection
                     mode="multiple"
                     allowSelectAll={true}
-                    showCheckBoxesMode="always"
+                    showCheckBoxesMode="none"
                   />
-          
+            <Column
+              dataField="scripcode"
+              caption="Code"
+              alignment="center"
+            ></Column>
             <Column
               dataField="scripname"
               caption="Name"
-              alignment="left"
-            ></Column>
-             <Column
-              dataField="stlmnt"
-              caption="Settlement"
-              alignment="left"
+              alignment="center"
             ></Column>
             <Column
               dataField="Sell"
               caption="Sales Qty"
-              alignment="left"
-            ></Column>
-             <Column
-              dataField="SellAmount"
-              caption="Sales Value"
-              customizeText={floatVal}
-              alignment="left"
+              alignment="center"
             ></Column>
             <Column
               dataField="Buy"
-              caption="Purchase Qty"
-            
-              alignment="left"
-            ></Column>
-             <Column
-              dataField="BuyAmount"
-              caption="Purchase Value"
-              customizeText={floatVal}
-              alignment="right"
-            ></Column>
-             <Column
-              dataField="Brokerage"
-              caption="Brokerage"
-              
-              // calculateCellValue={finalBalance}
-              // headerCellRender={customHeaderCell}
-              alignment="right"
-            ></Column>
-           
-            <Column
-              dataField="Net"
-              caption="Net Qty"
+              caption="Bought Qty"
               // customizeText={floatVal}
-              // calculateCellValue={finalBalance}
+              // calculateCellValue={TemplateNameCell2}
               // headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
-           
             <Column
-              dataField="NetAmount"
-              caption="Net Value"
-              customizeText={floatVal}
-              // customizeText={floatVal}
-              // calculateCellValue={finalBalance}
-              // headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-             <Column
               dataField="AvgRate"
               caption="Market Rate"
-              customizeText={floatVal}
               // customizeText={floatVal}
               // calculateCellValue={finalBalance}
               // headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
+            <Column
+              dataField="NetAmount"
+              caption="Net Rate"
+              // customizeText={floatVal}
+              // calculateCellValue={finalBalance}
+              // headerCellRender={customHeaderCell}
+              alignment="center"
+            ></Column>
+            <Column
+              dataField="Brokerage"
+              caption="Brokerage"
+              // customizeText={floatVal}
+              // calculateCellValue={finalBalance}
+              // headerCellRender={customHeaderCell}
+              alignment="center"
+            ></Column>
+            <Column
+              dataField="BuyAmount"
+              caption="Amount"
+              // customizeText={floatVal}
+              // calculateCellValue={finalBalance}
+              // headerCellRender={customHeaderCell}
+              alignment="center"
+            ></Column>
+            
             <Summary calculateCustomSummary={calculateSelectedRow}>
                     <TotalItem
                       cssClass={"openingBalance"}
                       displayFormat="Total"
-                      showInColumn="scripname"
+                      showInColumn="ExchSeg"
                     />
                     <TotalItem
-                      name="sellQty"
+                      name="OpeningBalance"
                       summaryType="custom"
                       // customizeText={myBuyAmount}
                       displayFormat="{0}"
                       cssClass={"openingBalance"}
-                      showInColumn="Sell"
+                      showInColumn="OpeningBalance"
                     />
                     <TotalItem
-                      name="BuyQty"
+                      name="Debit"
                       summaryType="custom"
                       // customizeText={myBuyAmount3}
                       displayFormat="{0}"
-                      cssClass={"openingBalance"}
-                      showInColumn="Buy"
+                      cssClass={"debitBalance"}
+                      showInColumn="Debit"
                     />
                     <TotalItem
-                      name="BuyAmount"
+                      name="Credit"
                       summaryType="custom"
-                     
+                      // customizeText={myBuyAmount4}
                       displayFormat="{0}"
-                      cssClass={"openingBalance"}
-                      showInColumn="BuyAmount"
+                      cssClass={"creditBalance"}
+                      showInColumn="Credit"
                     />
                     <TotalItem
-                      name="NetAmount"
+                      name="Balance"
                       summaryType="custom"
-                      customizeText={myBuyAmount2}
+                      // customizeText={myBuyAmount2}
                       displayFormat="{0}"
-                      cssClass={"openingBalance"}
-                      showInColumn="NetAmount"
+                      cssClass={"totalBalance"}
+                      showInColumn="Balance"
                     />
                   </Summary>
           </DataGrid>

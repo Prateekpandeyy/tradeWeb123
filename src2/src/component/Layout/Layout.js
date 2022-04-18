@@ -20,8 +20,8 @@ const MySidebar = styled(Box)({
 const MyMobileSidebar = styled(Box)({
        
     display: "flex",
-  width: "1000%",
-    height: "100vh",
+  width: "100%",
+    height: "100%",
     position: "fixed",
     zIndex: 99
 })

@@ -1,20 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../Layout/Layout";
+import MyContainer from "../commonFunction/MyContainer";
 import style from "./style.module.scss";
 import {
   DataGrid,
- 
+  Grouping,
+  GroupPanel,
   Column,
   Selection,
-
+  Paging,
+  Summary,
+  TotalItem,
+  MasterDetail,
+  Scrolling,
+  Pager,
 } from "devextreme-react/data-grid";
 import axios from "axios";
 import { baseUrl } from "../baseUrl/BaseUrl";
 import { Box, Select, Button, Typography, Grid } from "@mui/material";
 import { styled, makeStyles } from "@mui/styles";
 import "antd/dist/antd.css";
+import { DatePicker, Space } from "antd";
 import moment from "moment";
 import { FaFileCsv } from "react-icons/fa";
+import { RiFileExcel2Fill, RiTimeLine } from "react-icons/ri";
 import { AiFillPrinter } from "react-icons/ai";
 import { GrDocumentText } from "react-icons/gr";
 import { AiFillFilePdf } from "react-icons/ai";
@@ -106,40 +115,35 @@ const useStyle = makeStyles({
   },
 });
 function Margin() {
-  const [marginData, setMarginData] = useState([]);
-  const [marginDate,  setMarginDate] = useState("")
+  const [transactionData, setTransationData] = useState([]);
+  const [date22, setStartDate] = useState("01042021");
+  const [timeVal, setTimeVal] = useState("1");
+  const [toDate, setDate] = useState("20200401");
+  const [fromDate, setFromDate] = useState("20210331");
+  const [test, setTest] = useState("1");
+  const [showTime, setShowTime] = useState(true);
+  const [agts, setShowagts] = useState(false);
+  const [gal, setGal] = useState("");
+  const [agtsVal, setAgtsVal] = useState("C");
+  const [transactionAccount, setTransactionAccount] = useState([]);
+  const [agtsTransaction, setAgtsTransaction] = useState([]);
+  const [marginDate,  setMarginDate] = useState("20212412")
+  const [bal, setBal] = useState(0);
+  const [ref, setRef] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   const classes = useStyle();
   const dataGridRef = React.createRef();
   const componentRef = useRef();
-  const token = localStorage.getItem("token");
-  const myConfig = {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
+  const { RangePicker } = DatePicker;
+  const dateFormat = "DD/MM/YYYY";
+  const weekFormat = "MM/DD";
+  const monthFormat = "YYYY/MM";
+  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
+  const customFormat = (value) => {
+    return `${value.format(dateFormat)}`;
   };
- 
-  const pledgeData = () => {
-    console.log("done")
-    try {
-      setIsLoading(true)
-      axios
-        .get(
-          `${baseUrl}/Margin/Margin?date=20211224`,
-          myConfig
-        )
-        .then((res) => {
-
-       
-         setMarginData(res.data)
-          setIsLoading(false);
-        });
-    } catch (err) {
-      setIsLoading(false);
-    
-  };
-  }
+  let bb = 0;
   const onExporting = (e) => {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
@@ -221,12 +225,40 @@ function Margin() {
       doc.save("Customers.pdf");
     });
   });
+  const mySel = (e) => {
+    setTransactionAccount([]);
+    setTransationData([]);
+    setTest(e.target.value);
 
+    if (e.target.value == 1 || e.target.value == 2) {
+      setRef(false);
+      setShowTime(true);
+      setShowagts(false);
+    } else if (e.target.value == 3 || e.target.value == 4) {
+      setShowTime(false);
+      setRef(true);
+    } else if (e.target.value === 5 || e.target.value == 5) {
+      setRef(false);
+      setShowTime(false);
+    } else if (e.target.value == 7) {
+      setShowagts(true);
+      setRef(false);
+    } else {
+      setShowTime(false);
+    }
+  };
+  const timeFun = (e) => {
+    setTimeVal(e.target.value);
+    setTransationData([]);
+  };
+  // datepicker function
+  const dateFun = (e) => {
+    let a = e.format("YYYYMMDD");
+    setStartDate(a);
+  };
   const onSelectionChanged = (e) => {
     e.component.refresh(true);
   };
- 
- 
   return (
     <Layout
       mainLink="BP EQUTIES PVT. LTD >"
@@ -236,14 +268,38 @@ function Margin() {
     >
       <TopBox>
         <Box className={classes.boxRoot} style={{ marginLeft: "-22px" }}>
-          <div className={style.title}>Margin Status As On <span>{moment(String(20211224)).format("DD/MM/YYYY")}</span></div>
+          <div className={style.title}>Margin Status As On {marginDate}</div>
 
-         
+          {/* <div className={style.dates}>
+            <Box className={classes.boxRoot}>
+              <MyData style={{ marginLeft: "20px", fontWeight: "bold" }}>
+                <DatePicker
+                  defaultValue={moment(new Date(), "DD MMM, YYYY")}
+                  defaultPickerValue={moment(new Date(), "DD MMM, YYYY")}
+                  format={"DD/MM/YYYY"}
+                  onChange={(date) => dateFun(date)}
+                  bordered={false}
+                  allowClear={false}
+                  suffixIcon
+                  style={{
+                    height: "auto",
+                    width: "auto",
+                    border: "none",
+                    borderRadius: "0px",
+                    cursor: "pointer",
+                    fontSize: "17px",
+                    margin: "0px",
+                    padding: "0px",
+                    fontWeight: "bold",
+                  }}
+                />
+              </MyData>
+            </Box>
+          </div> */}
           <div className={style.butn}>
             <Box className={classes.boxRoot}>
               <MyButton
                 variant="contained"
-                onClick={pledgeData}
                 style={{ marginLeft: "5px", height: "60", width: "189px" }}
               >
                 Pledge For Margin
@@ -327,9 +383,35 @@ function Margin() {
       </TopBox>
       <Grid container>
         <Grid style={{ padding: "15px", marginLeft: "-30px" }}>
-       
+          {/* <DataGrid
+            id="dataGrid"
+            dataSource={data}
+            columnAutoWidth={true}
+            allowColumnReordering={true}
+            paging={{ pageSize: 6 }}
+            showColumnLines={false}
+            showBorders={false}
+            showRowLines={false}
+            wordWrapEnabled={true}
+            width="100%"
+            selection={{
+              mode: "multiple",
+              showCheckBoxesMode: "always",
+            }}
+            scrolling={{
+              columnRenderingMode: "standard",
+              mode: "standard",
+              preloadEnabled: false,
+              renderAsync: undefined,
+              rowRenderingMode: "virtual",
+              scrollByContent: true,
+              scrollByThumb: false,
+              showScrollbar: "onHover",
+              useNative: "auto",
+            }}
+          > */}
           <DataGrid
-            dataSource={marginData}
+            dataSource={data}
             // onRowPrepared={onRowPre}
             // onSelectionChanged={onSelectionHolding}
             alignment="center"
@@ -343,8 +425,6 @@ function Margin() {
             showColumnHeaders={true}
             columnResizingMode="nextColumn"
             showBorders={false}
-            ref={dataGridRef}
-            noData = ""
             scrolling={{
               columnRenderingMode: "standard",
               mode: "standard",
@@ -359,69 +439,71 @@ function Margin() {
           >
             <Selection mode="multiple" showCheckBoxesMode="always" />
             <Column
-              dataField="exchSeg"
+              dataField="ExchSegID"
               caption="ExchSeg"
-           
+              // cellRender={cellRender}
               alignment="center"
               headerCellRender={customHeaderCell}
             ></Column>
             <Column
-              dataField="eod_Margin_Required"
+              dataField="RequiredID"
               caption="EOD Margin Required "
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="eod_Margin_Available"
-              caption="EOD Margin Available"
+              dataField="AvailableID"
+              caption="EOD Margin "
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="eod_ShortFall_Amount"
+              dataField="ShortFallAmmID"
               caption="ShartFall Amount"
-             
+              // cellRender={securityRender}
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="eod_ShortFall_Percentage"
+              dataField="EODID"
               caption="EOD ShartFall%"
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
 
             <Column
-              dataField="peak_Margin_Required"
+              dataField="MarginReqID"
               caption="Peack Margin Required"
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="peak_Margin_To_Be_Collected"
+              dataField="PeackMarID"
               caption="Peack Margn Collected"
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="peak_Margin_Available"
+              dataField="marginAvailablID"
               caption="Peack Margin Available"
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="peak_Margin_Shortfall"
+              dataField="MarginShortFallID"
               caption="Peack Margin ShortFall"
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
             <Column
-              dataField="peak_Margin_Highest_Shortfall"
+              dataField="PeaMarginHighestID"
               caption="Peack Margin Highest ShaortFall"
               headerCellRender={customHeaderCell}
               alignment="center"
             ></Column>
-          
+            {/* <Selection mode="single" showCheckBoxesMode="always" />
+            <Grouping contextMenuEnabled={true} />
+            <GroupPanel visible={true} allowColumnDragging={true} /> */}
           </DataGrid>
         </Grid>
       </Grid>
@@ -431,3 +513,29 @@ function Margin() {
 
 export default Margin;
 
+const data = [
+  {
+    ExchSegID: "NSE-FO",
+    RequiredID: "268180.50",
+    AvailableID: "0.00",
+    ShortFallAmmID: "268180.50",
+    EODID: "100.00",
+    MarginReqID: "23874.00",
+    PeackMarID: "119392.00",
+    marginAvailablID: "0.00",
+    MarginShortFallID: "119392.00",
+    PeaMarginHighestID: "268180.50",
+  },
+  {
+    ExchSegID: "BSE-FO",
+    RequiredID: "268180.50",
+    AvailableID: "0.00",
+    ShortFallAmmID: "268180.50",
+    EODID: "100.00",
+    MarginReqID: "23874.00",
+    PeackMarID: "119392.00",
+    marginAvailablID: "0.00",
+    MarginShortFallID: "119392.00",
+    PeaMarginHighestID: "268180.50",
+  },
+];

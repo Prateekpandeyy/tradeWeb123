@@ -200,7 +200,7 @@ const MobileSidebar = () => {
           Logout
         </Button>
       </li>
-      <li
+       <li
         className={`${
           splitLocation[2] === "confirmation" ? "myMenuActive" : ""
         } ${classes.myMobileSidebar}`}
@@ -215,7 +215,7 @@ const MobileSidebar = () => {
           <p className={classes.MyMenuName}>confirmation</p>
         </Link>
       </li>
-      <li
+      {/* <li
         className={`${splitLocation[2] === "margin" ? "myMenuActive" : ""} ${
           classes.myMobileSidebar
         }`}
@@ -244,7 +244,7 @@ const MobileSidebar = () => {
 
           <p className={classes.MyMenuName}>Request</p>
         </Link>
-      </li>
+      </li>  */}
     </ul>
   );
 };

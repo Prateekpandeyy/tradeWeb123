@@ -81,13 +81,14 @@ const Sidebar = () => {
                        <img src={arrowImg} className={classes.myNav} />
                        </Link>
                     </li>
-                    <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
-                       <Link to = "/tradeweb/confirmation" title="Confirmation">
+                     <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/confirmation" title="Transaction">
                        <img src={confirmationImg} className={classes.myNav} />
                        </Link>
                     </li>
-                    <li className={splitLocation[2] === "margin" ? "myMenuActive" : ""}>
-                       <Link to = "/tradeweb/margin" title="Margin ShortFall">
+
+                   {/* <li className={splitLocation[2] === "margin" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/confirmation" title="Transaction">
                        <img src={marginImg} className={classes.myNav} />
                        </Link>
                     </li>
@@ -95,7 +96,7 @@ const Sidebar = () => {
                        <Link to = "/tradeweb/request" title="Request">
                        <img src={requestImg} className={classes.myNav} />
                        </Link>
-                    </li>
+               </li> */}
         </ul>
     )
 }
