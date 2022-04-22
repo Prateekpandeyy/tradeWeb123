@@ -4,20 +4,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import configureStore , { history } from "./Redux/store";
+import configureStore from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { ConnectedRouter } from "connected-react-router";
 
 export const {store,persistor} = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ConnectedRouter history={history}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
       </PersistGate>
-      </ConnectedRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

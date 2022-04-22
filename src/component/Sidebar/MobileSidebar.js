@@ -180,27 +180,6 @@ const MobileSidebar = () => {
         </Link>
       </li>
       <li
-        className={`${splitLocation[2] === "profile" ? "myMenuActive" : ""} ${
-          classes.myMobileSidebar
-        }`}
-      >
-        <Link to="/tradeweb/profile" className={classes.myNavMenu}>
-          <img src={margin} className={classes.myNav} />
-
-          <p className={classes.MyMenuName}>Profile</p>
-        </Link>
-      </li>
-      <li>
-        <img src={logout} className={classes.myNav} />
-        <Button
-          value={3}
-          style={{ marginTop: "-100px", marginLeft: "90px", color: "red",cursor:"pointer"}}
-          onClick={(e) => logedout(e.target.value)}
-        >
-          Logout
-        </Button>
-      </li>
-       <li
         className={`${
           splitLocation[2] === "confirmation" ? "myMenuActive" : ""
         } ${classes.myMobileSidebar}`}
@@ -215,7 +194,7 @@ const MobileSidebar = () => {
           <p className={classes.MyMenuName}>confirmation</p>
         </Link>
       </li>
-      {/* <li
+      <li
         className={`${splitLocation[2] === "margin" ? "myMenuActive" : ""} ${
           classes.myMobileSidebar
         }`}
@@ -231,20 +210,41 @@ const MobileSidebar = () => {
         </Link>
       </li>
       <li
+        className={`${splitLocation[2] === "profile" ? "myMenuActive" : ""} ${
+          classes.myMobileSidebar
+        }`}
+      >
+        <Link to="/tradeweb/profile" className={classes.myNavMenu}>
+          <img src={margin} className={classes.myNav} />
+
+          <p className={classes.MyMenuName}>Profile</p>
+        </Link>
+      </li>
+         <li
         className={`${splitLocation[2] === "request" ? "myMenuActive" : ""} ${
           classes.myMobileSidebar
         }`}
       >
         <Link
           to="/tradeweb/request"
-          title="Request"
+          title="Request" 
           className={classes.myNavMenu}
         >
           <img src={requestImg} className={classes.myNav} />
 
           <p className={classes.MyMenuName}>Request</p>
         </Link>
-      </li>  */}
+      </li> 
+      <li>
+        <img src={logout} className={classes.myNav} />
+        <Button
+          value={3}
+          style={{ marginTop: "-100px", marginLeft: "90px", color: "red",cursor:"pointer"}}
+          onClick={(e) => logedout(e.target.value)}
+        >
+          Logout
+        </Button>
+      </li>
     </ul>
   );
 };

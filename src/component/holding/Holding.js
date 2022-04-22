@@ -31,7 +31,6 @@ import axios from "axios";
 import moment from "moment";
 import { style } from "@mui/system";
 const data = [
-  
   { name: "", uv: 60, pv: 2000, amt: 2300 },
   { name: "", uv: 150, pv: 2000, amt: 2300 },
   { name: "", uv: 100, pv: 2000, amt: 2300 },
@@ -169,17 +168,16 @@ const Holding = () => {
   };
 
   const cellRender = (e) => {
-    kk = []
+    kk = [];
     e.data.graphDetails.map((i) => {
-    
       gObj = {
         name: "",
         uv: Number(i.rate),
         pv: Number(i.rateDt),
         amt: Number(i.rateDt),
       };
-     kk.push(gObj)
-    })
+      kk.push(gObj);
+    });
     return (
       <>
         <AreaChart
@@ -216,7 +214,7 @@ const Holding = () => {
     );
   };
   let gData = [];
-  let kk ;
+  let kk;
   let gObj = {};
   // onSelecton holding
   const onSelectionHolding = (e) => {
@@ -225,7 +223,7 @@ const Holding = () => {
       accountNumber = i.accountNumber;
     });
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       axios
         .get(
           `${baseUrl}/Holding/Holding_myDematAct_Current?dematActNo=${accountNumber}&graphDays=600`,
@@ -233,7 +231,7 @@ const Holding = () => {
         )
         .then((res) => {
           setHoldingData(res.data);
-         
+
           setIsLoading(false);
         });
     } catch (err) {
@@ -265,7 +263,7 @@ const Holding = () => {
       </span>
     );
   };
-  
+
   return (
     <Layout mainLink="Holdings" showNavigationButtons={false}>
       <BackDrop isLoading={isLoading} />
@@ -280,17 +278,15 @@ const Holding = () => {
               </select>
             </Box>
           </div>
-          {/* <Box
-            className={classes.boxRoot}
-          > */}
-          <div className="asOn">As On :</div>
-          <div className="asOncurrentHolding">
-            <select className={classes.MySelect22}>
-              <option value={1}>Current holding</option>
-              <option>{moment(date).format("DD/MM/YYYY")}</option>
-            </select>
-            {/* </Box> */}
-          </div>
+          <Box className={classes.boxRoot}>
+            <div className="asOn">As On:</div>
+            <div className="asOncurrentHolding">
+              <select className={classes.MySelect22}>
+                <option value={1}>Current holding</option>
+                <option>{moment(date).format("DD/MM/YYYY")}</option>
+              </select>
+            </div>
+          </Box>
           <div className="button">
             <Box className={classes.boxRoot}>
               <MyButton
@@ -341,8 +337,7 @@ const Holding = () => {
       </TopBox>
       {/* <MyContainer> */}
       <Grid container>
-        <Grid style={{ padding: "20px", marginLeft: "-15px" 
-      }}>
+        <Grid style={{ padding: "20px", marginLeft: "-15px" }}>
           {!isLoading && (
             <DataGrid
               dataSource={HoldingDatatop}
@@ -361,7 +356,7 @@ const Holding = () => {
             >
               <Selection mode="multiple" showCheckBoxesMode="always" />
               <Paging enabled={true} defaultPageSize={15} />
-            
+
               <Column
                 caption="Company Name"
                 dataField="companyName"

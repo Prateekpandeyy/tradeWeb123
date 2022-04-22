@@ -159,6 +159,7 @@ const Header = (props) => {
           />
 
           <Link to="/tradeweb/profile" className={classes.linkStyle}>
+          </Link>
             {/* <MySubHeading>
           {userName}
             </MySubHeading> */}
@@ -170,7 +171,6 @@ const Header = (props) => {
               <option value={2}> Profile</option>
               <option value={3}>Logout</option>
             </select>
-          </Link>
         </ProfileInfo>
         </div>
       ) : (

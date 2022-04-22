@@ -612,6 +612,7 @@ const Transaction = () => {
   return (
     <Layout mainLink="Transaction" noBreadcrumb={false}>
       <BackDrop isLoading={isLoading} />
+      <div className={style.mainTransaction}>
       <TopBox>
         <Box className={classes.boxRoot} style={{ marginLeft: "-22px" }}>
           <div className={style.tradMenu}>
@@ -632,143 +633,142 @@ const Transaction = () => {
           </div>
           {showTime === true || agts === true ? (
             <div className={style.itemMenu}>
-            <Box className={classes.boxRoot} style={{ marginLeft: "4px" }}>
-              <select
-                className={classes.MySelect}
-                value={timeVal}
-                onChange={(e) => timeFun(e)}
-              >
-                <option value={1}>Item Wise</option>
-                <option value={2}> Date Wise</option>
-              </select>
-            </Box>
+              <Box className={classes.boxRoot} style={{ marginLeft: "4px" }}>
+                <select
+                  className={classes.MySelect}
+                  value={timeVal}
+                  onChange={(e) => timeFun(e)}
+                >
+                  <option value={1}>Item Wise</option>
+                  <option value={2}> Date Wise</option>
+                </select>
+              </Box>
             </div>
           ) : (
             ""
           )}
           {agts === true ? (
             <div className={style.cashMenu}>
-            <Box className={classes.boxRoot}>
-              <select
-                className={classes.MySelect}
-                value={agtsVal}
-                onChange={(e) => setAgtsVal(e.target.value)}
-              >
-                <option value="C">Cash</option>
-                <option value="F"> Comm</option>
-                <option value="K">F &#38; O</option>
-                <option value="X"> FX</option>
-              </select>
-            </Box>
-           
+              <Box className={classes.boxRoot}>
+                <select
+                  className={classes.MySelect}
+                  value={agtsVal}
+                  onChange={(e) => setAgtsVal(e.target.value)}
+                >
+                  <option value="C">Cash</option>
+                  <option value="F"> Comm</option>
+                  <option value="K">F &#38; O</option>
+                  <option value="X"> FX</option>
+                </select>
+              </Box>
             </div>
           ) : (
             ""
           )}
           {/* <Box className={classes.boxRoot}> */}
           <div className={style.dates}>
-          <Space
-            direction="vertical"
-            size={12}
-            style={{ display: "flex", width: "300px", margin: "0 20px" }}
-          >
-            <RangePicker
-              defaultValue={[
-                moment("04/01/2020", dateFormat),
-                moment("31/03/2021", dateFormat),
-              ]}
-              format={dateFormat}
-              onChange={getValue}
-            />
-          </Space>
+            <Space
+              direction="vertical"
+              size={12}
+              style={{ display: "flex", width: "300px", margin: "0 20px" }}
+            >
+              <RangePicker
+                defaultValue={[
+                  moment("01/04/2020", dateFormat),
+                  moment("31/03/2021", dateFormat),
+                ]}
+                format={dateFormat}
+                onChange={getValue}
+              />
+            </Space>
           </div>
           {/* </Box> */}
           <div className={style.buttons}>
-          <Box className={classes.boxRoot}>
-            <MyButton
-              variant="contained"
-              onClick={getTransationShow}
-              style={{ marginLeft: "5px", height: "60", width: "135px" }}
-            >
-              Show
-            </MyButton>
-          </Box>
+            <Box className={classes.boxRoot}>
+              <MyButton
+                variant="contained"
+                onClick={getTransationShow}
+                style={{ marginLeft: "5px", height: "60", width: "135px" }}
+              >
+                Show
+              </MyButton>
+            </Box>
           </div>
         </Box>
 
-        <Box className={classes.boxRoot}>
         <div className={style.menus}>
-          <FaFileCsv
-            onClick={onExportingCsv}
-            style={{
-              color: "#80BB55",
-              margin: "2px 8px",
-              fontSize: "30px",
-              border: "1px solid #EBEBEB",
-              boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-              borderRadius: "10px",
-              padding: "5px",
-              width: "40px",
-              height: "40px",
-            }}
-          />
-          <img
-            src={htmlImg}
-            style={{
-              margin: "2px 8px",
-              border: "1px solid #EBEBEB",
-              boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-              borderRadius: "10px",
-              padding: "5px",
-              maxWidth: "40px",
-              maxHeight: "40px",
-            }}
-          />
-          <AiFillFilePdf
-            onClick={onExporting}
-            style={{
-              color: "#107C41",
-              margin: "2px 8px",
-              border: "1px solid #EBEBEB",
-              boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-              borderRadius: "10px",
-              padding: "5px",
-              width: "40px",
-              height: "40px",
-            }}
-          />
-          <AiFillPrinter
-            onClick={handlePrint}
-            style={{
-              color: "#424343",
-              margin: "2px 8px",
-              border: "1px solid #EBEBEB",
-              boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-              borderRadius: "10px",
-              padding: "5px",
-              width: "40px",
-              height: "40px",
-            }}
-          />
-          <GrDocumentText
-            onClick={exportGrid}
-            style={{
-              color: "#696D6E",
-              margin: "2px 8px",
-              border: "1px solid #EBEBEB",
-              boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-              borderRadius: "10px",
-              padding: "5px",
-              width: "40px",
-              height: "40px",
-            }}
-          />
-          </div>
-          <div className={style.hiLight}>
-          <MyData>High Light</MyData>
-          </div>
-        </Box>
-    
+          <Box className={classes.boxRoot}>
+            <FaFileCsv
+              onClick={onExportingCsv}
+              style={{
+                color: "#80BB55",
+                margin: "2px 8px",
+                fontSize: "30px",
+                border: "1px solid #EBEBEB",
+                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                borderRadius: "10px",
+                padding: "5px",
+                width: "40px",
+                height: "40px",
+              }}
+            />
+            <img
+              src={htmlImg}
+              style={{
+                margin: "2px 8px",
+                border: "1px solid #EBEBEB",
+                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                borderRadius: "10px",
+                padding: "5px",
+                maxWidth: "40px",
+                maxHeight: "40px",
+              }}
+            />
+            <AiFillFilePdf
+              onClick={onExporting}
+              style={{
+                color: "#107C41",
+                margin: "2px 8px",
+                border: "1px solid #EBEBEB",
+                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                borderRadius: "10px",
+                padding: "5px",
+                width: "40px",
+                height: "40px",
+              }}
+            />
+            <AiFillPrinter
+              onClick={handlePrint}
+              style={{
+                color: "#424343",
+                margin: "2px 8px",
+                border: "1px solid #EBEBEB",
+                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                borderRadius: "10px",
+                padding: "5px",
+                width: "40px",
+                height: "40px",
+              }}
+            />
+            <GrDocumentText
+              onClick={exportGrid}
+              style={{
+                color: "#696D6E",
+                margin: "2px 8px",
+                border: "1px solid #EBEBEB",
+                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                borderRadius: "10px",
+                padding: "5px",
+                width: "40px",
+                height: "40px",
+              }}
+            />
+
+            <div className={style.hiLight}>
+              <MyData>High Light</MyData>
+            </div>
+          </Box>
+        </div>
       </TopBox>
       {/* <MyContainer> */}
       <Grid container style={{ padding: "20px", marginLeft: "-20px" }}>
@@ -795,8 +795,8 @@ const Transaction = () => {
             >
               <Selection mode="multiple" showCheckBoxesMode="always" />
               <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
 
               <Column
                 dataField="ScripCode"
@@ -921,8 +921,8 @@ const Transaction = () => {
             >
               <Selection mode="multiple" showCheckBoxesMode="always" />
               <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
               <Column
                 dataField="TrxNo"
                 caption="Tax No"
@@ -989,8 +989,8 @@ const Transaction = () => {
             >
               <Selection mode="multiple" showCheckBoxesMode="always" />
               <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
 
               <Column
                 caption="Date"
@@ -1047,8 +1047,8 @@ const Transaction = () => {
             >
               <Selection mode="multiple" showCheckBoxesMode="always" />
               <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
 
               <Column
                 dataField="Date"
@@ -1071,7 +1071,7 @@ const Transaction = () => {
 
               <Column
                 dataField="BuyAmount"
-                caption="Buy Ammount"
+                caption="Buy Amount"
                 calculateCellValue={buyAmountFun}
                 customizeText={floatVal}
                 alignment="center"
@@ -1100,7 +1100,7 @@ const Transaction = () => {
               />
               <Column
                 dataField="NetAmount"
-                caption="Net Ammount"
+                caption="Net Amount"
                 calculateCellValue={netAmountFun}
                 customizeText={floatVal}
                 alignment="center"
@@ -1154,16 +1154,14 @@ const Transaction = () => {
               noDataText=""
               showBorders={false}
             >
-             
-
               <Selection
                 mode="multiple"
                 selectAllMode="allPages"
                 showCheckBoxesMode="always"
               />
- <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <Grouping expandMode="rowClick" />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
               <Column
                 dataField="DocumentNo"
                 caption="RefNo"
@@ -1191,7 +1189,7 @@ const Transaction = () => {
 
               <Column
                 dataField="Amount"
-                caption="Ammount"
+                caption="Amount"
                 calculateCellValue={amountValue}
                 customizeText={floatVal}
                 alignment="center"
@@ -1234,16 +1232,14 @@ const Transaction = () => {
               noDataText=""
               showBorders={false}
             >
-             
-
               <Selection
                 mode="multiple"
                 selectAllMode="allPages"
                 showCheckBoxesMode="always"
               />
- <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <Grouping expandMode="rowClick" />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
               <Column
                 dataField="DocumentNo"
                 caption="RefNo"
@@ -1324,16 +1320,14 @@ const Transaction = () => {
               noDataText=""
               showBorders={true}
             >
-             
-
               <Selection
                 mode="multiple"
                 selectAllMode="allPages"
                 showCheckBoxesMode="always"
               />
-               <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
+              <Grouping expandMode="rowClick" />
+              <GroupPanel visible={true} />
+              <Paging enabled={true} defaultPageSize={15} />
               <Column
                 dataField="Exchange"
                 caption="Exch"
@@ -1457,6 +1451,7 @@ const Transaction = () => {
         </Grid>
       </Grid>
       {/* </MyContainer> */}
+      </div>
     </Layout>
   );
 };

@@ -3,16 +3,11 @@ import { createBrowserHistory } from "history";
 import createRootReducer from "./reducers";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
- import { routerMiddleware, push } from "connected-react-router";
+import { routerMiddleware } from "connected-react-router";
 import createSagaMiddleware from "redux-saga";
 import createMigrate from "redux-persist/es/createMigrate";
 import sagas from "./Saga/sagas";
-// import { routerMiddleware, push } from 'react-router-redux'
-// const middleware = routerMiddleware(browserHistory)
-// const store = createStore(
-//   reducers,
-//   applyMiddleware(middleware)
-// )
+
 export const history = createBrowserHistory();
 const migrations = {
     0: (state) => state,
@@ -44,7 +39,6 @@ export default function configureStore(preloadedState) {
     const persistedReducer = persistReducer(persistConfig, rootReducer);
     const store = createStore(
       persistedReducer, // root reducer with router state
-      // applyMiddleware(middleware),
       preloadedState,
   
       composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history)))

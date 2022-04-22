@@ -128,7 +128,7 @@ const useStyle = makeStyles({
     boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
     borderRadius: "7px",
     padding: "0 10px",
-    fontSize: "18px",
+    fontSize: "15px",
   },
 });
 const Trading = () => {

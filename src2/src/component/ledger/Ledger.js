@@ -18,8 +18,7 @@ import axios from "axios";
 import Layout from "../Layout/Layout";
 import MyContainer from "../commonFunction/MyContainer";
 import "devextreme/dist/css/dx.light.css";
-import {fetchLedgerDetails} from "../../Redux/actions/action";
-import {useSelector, useDispatch} from "react-redux";
+import CustomTypography from "../commonFunction/CustomTypography";
 const useStyle = makeStyles({
   boxRoot: {
     display: "flex",
@@ -84,7 +83,7 @@ const Ledger = () => {
   const [selectValue, setSelectValue] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const classes = useStyle();
-  const dispatch = useDispatch();
+
   const customHeaderCell = (data) => {
     const { caption, name } = data?.column;
     return (
@@ -278,6 +277,7 @@ const Ledger = () => {
       a = 0;
     }
     setTradeValue(e.target.value);
+
     axios
       .get(
         `${baseUrl}/Main/Ledger_Summary?type=${e.target.value}&fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
@@ -295,6 +295,7 @@ const Ledger = () => {
             }
           });
         }
+
         setCheckValue(bb);
       });
   };
@@ -350,32 +351,31 @@ const Ledger = () => {
   };
   // get Data
   const getDate = () => {
- dispatch(fetchLedgerDetails(searchDate))
-    // let inc = 2;
-    // try {
-    //   axios
-    //     .get(
-    //       `${baseUrl}/Main/Ledger_Summary?fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
-    //       myConfig
-    //     )
-    //     .then((res) => {
-    //       if (res.status === 200) {
-    //         process(res.data);
+    let inc = 2;
+    try {
+      axios
+        .get(
+          `${baseUrl}/Main/Ledger_Summary?fromDate=${searchDate.fromDate}&toDate=${searchDate.toDate}`,
+          myConfig
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            process(res.data);
 
-    //         res.data.map((i) => {
-    //           if (i.Type === "Trading") {
-    //             inc++;
-    //             let p = String(inc);
-    //             tradeval.push(inc);
-    //           }
-    //         });
-    //         setCheckValue(tradeval);
-    //         setIsLoading(false);
-    //       }
-    //     });
-    // } catch (err) {
-    //   setIsLoading(false);
-    // }
+            res.data.map((i) => {
+              if (i.Type === "Trading") {
+                inc++;
+                let p = String(inc);
+                tradeval.push(inc);
+              }
+            });
+            setCheckValue(tradeval);
+            setIsLoading(false);
+          }
+        });
+    } catch (err) {
+      setIsLoading(false);
+    }
 
     getBottomData();
   };

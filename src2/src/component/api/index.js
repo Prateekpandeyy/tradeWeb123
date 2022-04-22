@@ -25,7 +25,7 @@ const validatePassword = (details) => {
   return axiosInstance.post(`Main/Login_validate_Password?userId=${details.userId}&password=${details.password}`);
 };
 const ledgerData = (details) => {
-  console.log("details", details)
+  
    return axiosInstance.get(`Main/Ledger_Summary?fromDate=${details.fromDate}&toDate=${details.toDate}`);
 }
 export default {

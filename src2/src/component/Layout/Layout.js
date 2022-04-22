@@ -20,8 +20,8 @@ const MySidebar = styled(Box)({
 const MyMobileSidebar = styled(Box)({
        
     display: "flex",
-  width: "100%",
-    height: "100%",
+  width: "1000%",
+    height: "100vh",
     position: "fixed",
     zIndex: 99
 })
@@ -74,12 +74,12 @@ const Layout = (props) => {
     }
     useEffect(() => {
        window.addEventListener("resize", getScWidth)
-     console.log("tokenExpire", tokenExpireTime)
-    //    if(tokenExpireTime?.split(" ")[1] < current_time || tokenExpireTime?.split(" ")[0] !== current_date || tokenExpireTime === null){
-    //        localStorage.clear()
-    //        dispatch(setOtpBoxOpen(false));
-    //        history("/")
-    //    }
+   
+       if(tokenExpireTime?.split(" ")[1] < current_time || tokenExpireTime?.split(" ")[0] !== current_date || tokenExpireTime === null){
+           localStorage.clear()
+           dispatch(setOtpBoxOpen(false));
+           history("/")
+       }
        return () => {
            window.removeEventListener("resize", getScWidth)
        }

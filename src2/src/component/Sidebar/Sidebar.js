@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logoImg from '../../images/PngImages/logo.png';
 import documentImg from '../../images/PngImages/document.png';
 import homeImg from '../../images/PngImages/home.png';
@@ -10,7 +10,20 @@ import requestImg from '../../images/PngImages/request.png';
 import cameraImg from '../../images/sideBarImages/Frame.svg';
 import { styled, makeStyles } from '@mui/styles';
 import {Link, useLocation } from 'react-router-dom';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import PaidIcon from '@mui/icons-material/Paid';
 const Sidebar = () => {
+    const [open2, setOpen2] = useState(false)
+    const handleClickOn2 = () => {
+
+        setOpen2(false);
+      };
+      const handleClickOff2 = () => {
+    console.log("header fixed")
+        setOpen2(true);
+      };
     const useStyle = makeStyles({
         myNav : {
             display: "flex",
@@ -23,10 +36,20 @@ const Sidebar = () => {
         },
         myNav : {
             display: "flex",
-            width: "40px",
-            height: "40px",
+            width: "35px",
+            height: "35px",
             margin: "15px 8px",
            padding: "5px", 
+           cursor: "pointer",
+  
+   
+        },
+        mySubNav : {
+            display: "flex",
+            width: "27px",
+            height: "27px",
+            margin: "5px 8px",
+           padding: "0px", 
            cursor: "pointer",
   
    
@@ -36,6 +59,14 @@ const Sidebar = () => {
             display: "flex",
             flexDirection: "column",
             padding: "10px 5px",
+            backgroundColor: "#ffffff",
+            boxShadow : "0px 2px 4px rgba(0, 0, 0, 0.12)",
+        }, 
+        mySubmnu : {
+            listStyle: "none",
+            display: "flex",
+            flexDirection: "column",
+            padding: "10px 30px",
             backgroundColor: "#ffffff",
             boxShadow : "0px 2px 4px rgba(0, 0, 0, 0.12)",
         }
@@ -81,21 +112,57 @@ const Sidebar = () => {
                        <img src={arrowImg} className={classes.myNav} />
                        </Link>
                     </li>
-                    {/* <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
-                       <Link to = "/tradeweb/confirmation" title="Transaction">
+                     <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/confirmation" title="Confirmation">
                        <img src={confirmationImg} className={classes.myNav} />
                        </Link>
                     </li>
+
                     <li className={splitLocation[2] === "margin" ? "myMenuActive" : ""}>
-                       <Link to = "/tradeweb/confirmation" title="Transaction">
+                       <Link to = "/tradeweb/margin" title="Margin">
                        <img src={marginImg} className={classes.myNav} />
                        </Link>
                     </li>
-                    <li className={splitLocation[2] === "request" ? "myMenuActive" : ""}>
-                       <Link to = "/tradeweb/confirmation" title="Transaction">
+                    <li  className={`${
+          classes.myMobileSidebar
+        }`}
+         onMouseLeave = {() => handleClickOn2()}>
+                 
+                 <ListItemButton style = {{padding : "0px", listStyle : "none"}}
+                 onMouseEnter={() => handleClickOff2()}>
+
+<img src={requestImg} className={classes.myNav} />
+
+
+               
+         </ListItemButton>  
+         <Collapse in={open2}  unmountOnExit>
+           <List component="div">
+           <ul className={classes.mySubmnu}>
+                
+               
+     <li className={splitLocation[2] === "request" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/request" title="Request">
+                       <img src={requestImg} className={classes.mySubNav} />
+                       </Link>
+               </li>
+   <li>
+   <Link to = "/tradeweb/pledge" title="Pledge">
+          <img src={confirmationImg} className={classes.mySubNav} /> 
+          </Link> </li>
+   <li>   <img src={confirmationImg} className={classes.mySubNav} /> </li>
+                   
+                    
+                   </ul>
+           </List>
+         </Collapse>
+                 </li>
+   
+                   {/* <li className={splitLocation[2] === "request" ? "myMenuActive" : ""}>
+                       <Link to = "/tradeweb/request" title="Request">
                        <img src={requestImg} className={classes.myNav} />
                        </Link>
-                    </li> */}
+               </li> */}
         </ul>
     )
 }

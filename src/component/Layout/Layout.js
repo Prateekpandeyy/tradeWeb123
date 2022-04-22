@@ -74,7 +74,7 @@ const Layout = (props) => {
     }
     useEffect(() => {
        window.addEventListener("resize", getScWidth)
-     console.log("tokenExpire", tokenExpireTime)
+  
        if(tokenExpireTime?.split(" ")[1] < current_time || tokenExpireTime?.split(" ")[0] !== current_date || tokenExpireTime === null){
            localStorage.clear()
            dispatch(setOtpBoxOpen(false));

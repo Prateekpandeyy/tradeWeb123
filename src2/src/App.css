@@ -140,3 +140,7 @@ body {
   border-radius: 5px;
   outline: none;
 }
+#fund,
+#share {
+  margin: 0 10px;
+}

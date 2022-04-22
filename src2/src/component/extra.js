@@ -2351,6 +2351,3 @@ const BottomLedger = ({ledgerReport}) => {
     )
 }
 export default BottomLedger;
-confirmat_transaction
-confirmat = 1
-commulitve = 0

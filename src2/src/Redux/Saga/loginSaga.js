@@ -64,7 +64,7 @@ const userLoginSuccess = function* userLoginSuccess({payload}) {
         html : "Login successfully",
         icon : "success"
       })
-      yield put(push('/wallets'));
+      yield put(push('/tradeweb/ledger'));
     }
   }
   catch (err) {}

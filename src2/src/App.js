@@ -18,6 +18,10 @@ import AddNoimee from './pages/profile/nominee/AddNoimee'
 import AddBank from './pages/profile/bank/AddBank';
 import AddDemat from './pages/profile/demat/AddDemat';
 import Confirmation from './pages/confirmation/confirmation/Confirmation';
+import Margin from './component/Margin/Margin';
+import Payout from './component/Request/Payout/Payout';
+import Request from './component/Request/Request';
+import Pledge from './pages/pledge/Pledge';
 function App() {
 
  
@@ -42,6 +46,9 @@ function App() {
       <Route exact path = "/tradeweb/addbank" element = {<AddBank />} />
       <Route exact path = "/tradeweb/dematcontent" element = {<AddDemat />} /> 
       <Route exact path = "/tradeweb/confirmation" element = {<Confirmation />} />
+      <Route exact path = "/tradeweb/margin" element = {<Margin />} />
+      <Route exact path = "/tradeweb/request" element = {<Request />} />
+      <Route exact path = "/tradeweb/pledge" element= {<Pledge />} />
       </Routes>
       </BrowserRouter>
     </>
