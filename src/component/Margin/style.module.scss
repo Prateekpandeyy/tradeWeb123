@@ -11,6 +11,9 @@ line-height: 33px;
 }
 
 @media (max-width: 800px) {
+    .responsiveDatagrid{
+        width: 400px;
+    }
     .title{
         margin-top: -150px;
         font-size: 14px;

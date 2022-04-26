@@ -2,13 +2,14 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 15px;
+    margin-left: 28px;
   }
   .selectDrop {
     display: flex;
     flex-wrap: wrap;
   }
   .submitBtn {
-    margin-left: auto;
+    margin-left: 35px;
     padding-right: 40px;
   }
   
@@ -21,7 +22,7 @@
   }
   .drpDown {
     display: flex;
-    max-width: 200px;
+    max-width: 235px;
     height: 40px;
     background: #ffffff;
     border: 1px solid #ebebeb;
@@ -31,14 +32,20 @@
     font-size: 18px;
     font-weight: bold;
   }
-  .mainBox {
-    background: #ffffff;
+  .mainBox{
+    position: absolute;
+    width: auto;
+    height: auto;
+    margin-top: 50px;
+    padding-right: 50px;
+    left: 130px;
+    background: #FFFFFF;
     margin-left: -50px;
-    border: 1px solid #ebebeb;
+    border: 1px solid #EBEBEB;
     box-sizing: border-box;
     box-shadow: 0px 2px 16px rgba(61, 61, 61, 0.06);
     border-radius: 10px;
-  }
+    }
   .header {
     width: auto;
     height: 33px;
@@ -54,4 +61,17 @@
   }
   ul.listView {
     list-style-type: circle;
+  }
+  @media (max-width: 800px) {
+    .mainBox{
+      width: 391px;
+      margin-left: -100px;
+    }
+    .selectDrop{
+      margin-left: 0px;
+      
+    }
+    .resGrid{
+      width: 340px;
+    }
   }

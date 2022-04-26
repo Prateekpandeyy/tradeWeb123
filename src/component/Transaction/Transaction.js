@@ -613,844 +613,965 @@ const Transaction = () => {
     <Layout mainLink="Transaction" noBreadcrumb={false}>
       <BackDrop isLoading={isLoading} />
       <div className={style.mainTransaction}>
-      <TopBox>
-        <Box className={classes.boxRoot} style={{ marginLeft: "-22px" }}>
-          <div className={style.tradMenu}>
-            <select
-              className={classes.MySelect}
-              value={test}
-              onChange={(e) => mySel(e)}
-            >
-              <option value={1}>Trades</option>
-              <option value={2}> Deliveries</option>
-              <option value={3}>Receipts</option>
-              <option value={4}>Payments</option>
-              <option value={5}>Journals</option>
-              <option value={6}>Bills</option>
-              <option value={7}>AGTS</option>
-              {/* <option value={8}>Mutual Funds</option> */}
-            </select>
-          </div>
-          {showTime === true || agts === true ? (
-            <div className={style.itemMenu}>
-              <Box className={classes.boxRoot} style={{ marginLeft: "4px" }}>
-                <select
-                  className={classes.MySelect}
-                  value={timeVal}
-                  onChange={(e) => timeFun(e)}
-                >
-                  <option value={1}>Item Wise</option>
-                  <option value={2}> Date Wise</option>
-                </select>
-              </Box>
-            </div>
-          ) : (
-            ""
-          )}
-          {agts === true ? (
-            <div className={style.cashMenu}>
-              <Box className={classes.boxRoot}>
-                <select
-                  className={classes.MySelect}
-                  value={agtsVal}
-                  onChange={(e) => setAgtsVal(e.target.value)}
-                >
-                  <option value="C">Cash</option>
-                  <option value="F"> Comm</option>
-                  <option value="K">F &#38; O</option>
-                  <option value="X"> FX</option>
-                </select>
-              </Box>
-            </div>
-          ) : (
-            ""
-          )}
-          {/* <Box className={classes.boxRoot}> */}
-          <div className={style.dates}>
-            <Space
-              direction="vertical"
-              size={12}
-              style={{ display: "flex", width: "300px", margin: "0 20px" }}
-            >
-              <RangePicker
-                defaultValue={[
-                  moment("01/04/2020", dateFormat),
-                  moment("31/03/2021", dateFormat),
-                ]}
-                format={dateFormat}
-                onChange={getValue}
-              />
-            </Space>
-          </div>
-          {/* </Box> */}
-          <div className={style.buttons}>
-            <Box className={classes.boxRoot}>
-              <MyButton
-                variant="contained"
-                onClick={getTransationShow}
-                style={{ marginLeft: "5px", height: "60", width: "135px" }}
+        <TopBox>
+          <Box className={classes.boxRoot} style={{ marginLeft: "-22px" }}>
+            <div className={style.tradMenu}>
+              <select
+                className={classes.MySelect}
+                value={test}
+                onChange={(e) => mySel(e)}
               >
-                Show
-              </MyButton>
-            </Box>
-          </div>
-        </Box>
-
-        <div className={style.menus}>
-          <Box className={classes.boxRoot}>
-            <FaFileCsv
-              onClick={onExportingCsv}
-              style={{
-                color: "#80BB55",
-                margin: "2px 8px",
-                fontSize: "30px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-            <img
-              src={htmlImg}
-              style={{
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                maxWidth: "40px",
-                maxHeight: "40px",
-              }}
-            />
-            <AiFillFilePdf
-              onClick={onExporting}
-              style={{
-                color: "#107C41",
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-            <AiFillPrinter
-              onClick={handlePrint}
-              style={{
-                color: "#424343",
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-            <GrDocumentText
-              onClick={exportGrid}
-              style={{
-                color: "#696D6E",
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-
-            <div className={style.hiLight}>
-              <MyData>High Light</MyData>
+                <option value={1}>Trades</option>
+                <option value={2}> Deliveries</option>
+                <option value={3}>Receipts</option>
+                <option value={4}>Payments</option>
+                <option value={5}>Journals</option>
+                <option value={6}>Bills</option>
+                <option value={7}>AGTS</option>
+                {/* <option value={8}>Mutual Funds</option> */}
+              </select>
+            </div>
+            {showTime === true || agts === true ? (
+              <div className={style.itemMenu}>
+                <Box className={classes.boxRoot} style={{ marginLeft: "4px" }}>
+                  <select
+                    className={classes.MySelect}
+                    value={timeVal}
+                    onChange={(e) => timeFun(e)}
+                  >
+                    <option value={1}>Item Wise</option>
+                    <option value={2}> Date Wise</option>
+                  </select>
+                </Box>
+              </div>
+            ) : (
+              ""
+            )}
+            {agts === true ? (
+              <div className={style.cashMenu}>
+                <Box className={classes.boxRoot}>
+                  <select
+                    className={classes.MySelect}
+                    value={agtsVal}
+                    onChange={(e) => setAgtsVal(e.target.value)}
+                  >
+                    <option value="C">Cash</option>
+                    <option value="F"> Comm</option>
+                    <option value="K">F &#38; O</option>
+                    <option value="X"> FX</option>
+                  </select>
+                </Box>
+              </div>
+            ) : (
+              ""
+            )}
+            {/* <Box className={classes.boxRoot}> */}
+            <div className={style.dates}>
+              <Space
+                direction="vertical"
+                size={12}
+                style={{ display: "flex", width: "300px", margin: "0 20px" }}
+              >
+                <RangePicker
+                  defaultValue={[
+                    moment("01/04/2020", dateFormat),
+                    moment("31/03/2021", dateFormat),
+                  ]}
+                  format={dateFormat}
+                  onChange={getValue}
+                />
+              </Space>
+            </div>
+            {/* </Box> */}
+            <div className={style.buttons}>
+              <Box className={classes.boxRoot}>
+                <MyButton
+                  variant="contained"
+                  onClick={getTransationShow}
+                  style={{ marginLeft: "5px", height: "60", width: "135px" }}
+                >
+                  Show
+                </MyButton>
+              </Box>
             </div>
           </Box>
-        </div>
-      </TopBox>
-      {/* <MyContainer> */}
-      <Grid container style={{ padding: "20px", marginLeft: "-20px" }}>
-        <Grid>
-          <ComponentToPrint ref={dataGridRef} />
-          {showTime === true &&
-          test === "1" &&
-          timeVal === "1" &&
-          agts === false ? (
-            <DataGrid
-              id="transactionDataGridtrade"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={transactionData}
-              keyExpr="ScripCode"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Selection mode="multiple" showCheckBoxesMode="always" />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
 
-              <Column
-                dataField="ScripCode"
-                caption="Script Code"
-                alignment="left"
-                headerCellRender={customHeaderCell}
+          <div className={style.menus}>
+            <Box className={classes.boxRoot}>
+              <FaFileCsv
+                onClick={onExportingCsv}
+                style={{
+                  color: "#80BB55",
+                  margin: "2px 8px",
+                  fontSize: "30px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
               />
-
-              <Column
-                dataField="ScripName"
-                caption="Name"
-                alignment="left"
-                headerCellRender={customHeaderCell}
+              <img
+                src={htmlImg}
+                style={{
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  maxWidth: "40px",
+                  maxHeight: "40px",
+                }}
               />
-
-              <Column
-                dataField="Buy"
-                caption="Buy Qty"
-                alignment="left"
-                headerCellRender={customHeaderCell}
+              <AiFillFilePdf
+                onClick={onExporting}
+                style={{
+                  color: "#107C41",
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
               />
-
-              <Column
-                dataField="BuyAmount"
-                caption="Buy Amount"
-                customizeText={floatVal}
-                alignment="left"
-                headerCellRender={customHeaderCell}
+              <AiFillPrinter
+                onClick={handlePrint}
+                style={{
+                  color: "#424343",
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
               />
-
-              <Column
-                dataField="Sell"
-                caption="Sales Qty"
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="SellAmount"
-                caption="Sales Amount"
-                calculateCellValue={sellAmountFun}
-                customizeText={floatVal}
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Net"
-                caption="Net Qty"
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="NetAmount"
-                caption="Net Amount"
-                calculateCellValue={netAmountFun}
-                customizeText={floatVal}
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="AvgRate"
-                caption="Avg.Rate"
-                alignment="left"
-                calculateCellValue={avgRate}
-                customizeText={floatVal}
-                headerCellRender={customHeaderCell}
+              <GrDocumentText
+                onClick={exportGrid}
+                style={{
+                  color: "#696D6E",
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
               />
 
-              <Summary calculateCustomSummary={calculateSelectedRow}>
-                <TotalItem
-                  name="SelectedRowsSummaryBuy"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"totalSummaryStyle"}
-                  customizeText={myBuyAmount}
-                  showInColumn="BuyAmount"
+              <div className={style.hiLight}>
+                <MyData>High Light</MyData>
+              </div>
+            </Box>
+          </div>
+        </TopBox>
+        {/* <MyContainer> */}
+        <Grid container style={{ padding: "20px", marginLeft: "-20px" }}>
+          <Grid>
+            <ComponentToPrint ref={dataGridRef} />
+            {showTime === true &&
+            test === "1" &&
+            timeVal === "1" &&
+            agts === false ? (
+              <div className={style.respDatagrid}>
+                <DataGrid
+                  id="transactionDataGridtrade"
+                  ref={dataGridRef}
+                  onSelectionChanged={onSelectionChanged}
+                  dataSource={transactionData}
+                  keyExpr="ScripCode"
+                  showRowLines={true}
+                  onRowPrepared={onRowPre}
+                  columnAutoWidth={true}
+                  paging={{ pageSize: 6 }}
+                  allowColumnReordering={true}
+                  showColumnLines={false}
+                  showBorders={false}
+                  wordWrapEnabled={true}
+                  selection={{
+                    mode: "multiple",
+                    showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                    columnRenderingMode: "standard",
+                    mode: "standard",
+                    preloadEnabled: false,
+                    renderAsync: undefined,
+                    rowRenderingMode: "virtual",
+                    scrollByContent: true,
+                    scrollByThumb: true,
+                    showScrollbar: "onHover",
+                    useNative: "auto",
+                  }}
+                  columnWidth="158px"
+                >
+                  <Selection mode="multiple" showCheckBoxesMode="always" />
+                  <Grouping expandMode="rowClick" />
+                  <GroupPanel visible={true} />
+                  <Paging enabled={true} defaultPageSize={15} />
+
+                  <Column
+                    dataField="ScripCode"
+                    caption="Script Code"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="ScripName"
+                    caption="Name"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="Buy"
+                    caption="Buy Qty"
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="BuyAmount"
+                    caption="Buy Amount"
+                    customizeText={floatVal}
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="Sell"
+                    caption="Sales Qty"
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="SellAmount"
+                    caption="Sales Amount"
+                    calculateCellValue={sellAmountFun}
+                    customizeText={floatVal}
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="Net"
+                    caption="Net Qty"
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="NetAmount"
+                    caption="Net Amount"
+                    calculateCellValue={netAmountFun}
+                    customizeText={floatVal}
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="AvgRate"
+                    caption="Avg.Rate"
+                    alignment="right"
+                    calculateCellValue={avgRate}
+                    customizeText={floatVal}
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Summary calculateCustomSummary={calculateSelectedRow}>
+                    <TotalItem
+                      name="SelectedRowsSummaryBuy"
+                      summaryType="custom"
+                      displayFormat="{0}"
+                      cssClass={"totalSummaryStyle"}
+                      customizeText={myBuyAmount}
+                      showInColumn="BuyAmount"
+                    />
+                    <TotalItem
+                      name="SelectedRowsSummarySell"
+                      summaryType="custom"
+                      displayFormat="{0}"
+                      cssClass={"totalSummaryStyle"}
+                      customizeText={myBuyAmount}
+                      showInColumn="SellAmount"
+                    />
+                    <TotalItem
+                      name="SelectedRowsSummaryNet"
+                      summaryType="custom"
+                      displayFormat="{0}"
+                      cssClass={"totalSummaryStyle"}
+                      customizeText={myBuyAmount}
+                      showInColumn="NetAmount"
+                    />
+                    <TotalItem
+                      cssClass={"totalSummaryStyle"}
+                      displayFormat="Total"
+                      showInColumn="ScripCode"
+                    />
+                  </Summary>
+                </DataGrid>
+              </div>
+            ) : (
+              ""
+            )}
+            {showTime === true &&
+            test === "2" &&
+            timeVal === "1" &&
+            agts === false ? (
+              <div className={style.respoDatagrid}>
+                <DataGrid
+                  id="transactionDataGrid"
+                  ref={dataGridRef}
+                  onSelectionChanged={onSelectionChanged}
+                  dataSource={transactionData}
+                  keyExpr="TrxNo"
+                  showRowLines={true}
+                  onRowPrepared={onRowPre}
+                  columnAutoWidth={true}
+                  paging={{ pageSize: 6 }}
+                  allowColumnReordering={true}
+                  showColumnLines={false}
+                  showBorders={false}
+                  wordWrapEnabled={true}
+                  selection={{
+                    mode: "multiple",
+                    showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                    columnRenderingMode: "standard",
+                    mode: "standard",
+                    preloadEnabled: false,
+                    renderAsync: undefined,
+                    rowRenderingMode: "virtual",
+                    scrollByContent: true,
+                    scrollByThumb: true,
+                    showScrollbar: "onHover",
+                    useNative: "auto",
+                  }}
+                  // columnWidth="178px"
+                >
+                  <Selection mode="multiple" showCheckBoxesMode="always" />
+                  <Grouping expandMode="rowClick" />
+                  <GroupPanel visible={true} />
+                  <Paging enabled={true} defaultPageSize={15} />
+                  <Column
+                    dataField="TrxNo"
+                    caption="Tax No"
+                    headerCellRender={customHeaderCell}
+                    alignment="center"
+                  />
+
+                  <Column
+                    caption="Date"
+                    type="date"
+                    calculateCellValue={dateRender}
+                    headerCellRender={customHeaderCell}
+                    alignment="center"
+                  />
+
+                  <Column
+                    dataField="Particulars"
+                    caption="Particulars"
+                    calculateCellValue={particularsFun}
+                    headerCellRender={customHeaderCell}
+                    alignment="center"
+                  />
+
+                  <Column
+                    dataField="Debit"
+                    caption="Debit"
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="Credit"
+                    caption="Credit"
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="finalbalance"
+                    caption="Balance"
+                    alignment="right"
+                    headerCellRender={customHeaderCell}
+                  />
+                </DataGrid>
+              </div>
+            ) : (
+              ""
+            )}
+            {showTime === true &&
+            test === "2" &&
+            timeVal === "2" &&
+            agts === false ? (
+              <DataGrid
+                id="transactionDataGrid"
+                ref={dataGridRef}
+                onSelectionChanged={onSelectionChanged}
+                dataSource={transactionData}
+                keyExpr="ISIN"
+                showRowLines={true}
+                onRowPrepared={onRowPre}
+                columnAutoWidth={true}
+                paging={{ pageSize: 6 }}
+                allowColumnReordering={true}
+                showColumnLines={false}
+                showBorders={false}
+                wordWrapEnabled={true}
+                selection={{
+                  mode: "multiple",
+                  showCheckBoxesMode: "always",
+                }}
+                width="100%"
+                scrolling={{
+                  columnRenderingMode: "standard",
+                  mode: "standard",
+                  preloadEnabled: false,
+                  renderAsync: undefined,
+                  rowRenderingMode: "virtual",
+                  scrollByContent: true,
+                  scrollByThumb: true,
+                  showScrollbar: "onHover",
+                  useNative: "auto",
+                }}
+              >
+                <Selection mode="multiple" showCheckBoxesMode="always" />
+                <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+                <Paging enabled={true} defaultPageSize={15} />
+
+                <Column
+                  caption="Date"
+                  type="date"
+                  calculateCellValue={dateRender}
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummarySell"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"totalSummaryStyle"}
-                  customizeText={myBuyAmount}
-                  showInColumn="SellAmount"
+
+                <Column
+                  dataField="ISIN"
+                  caption="ISIN"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummaryNet"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"totalSummaryStyle"}
-                  customizeText={myBuyAmount}
-                  showInColumn="NetAmount"
+                <Column
+                  dataField="SecurityDescription"
+                  caption="Security Description"
                 />
-                <TotalItem
-                  cssClass={"totalSummaryStyle"}
-                  displayFormat="Total"
-                  showInColumn="ScripCode"
+                <Column
+                  dataField="Debit"
+                  caption="Debit"
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-              </Summary>
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {showTime === true &&
-          test === "2" &&
-          timeVal === "1" &&
-          agts === false ? (
-            <DataGrid
-              id="transactionDataGrid"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={transactionData}
-              keyExpr="TrxNo"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              columnMinWidth={80}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Selection mode="multiple" showCheckBoxesMode="always" />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-              <Column
-                dataField="TrxNo"
-                caption="Tax No"
-                headerCellRender={customHeaderCell}
-              />
 
-              <Column
-                caption="Date"
-                type="date"
-                calculateCellValue={dateRender}
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Particulars"
-                caption="Particulars"
-                calculateCellValue={particularsFun}
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Debit"
-                caption="Debit"
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Credit"
-                caption="Credit"
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="finalbalance"
-                caption="Balance"
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              />
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {showTime === true &&
-          test === "2" &&
-          timeVal === "2" &&
-          agts === false ? (
-            <DataGrid
-              id="transactionDataGrid"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={transactionData}
-              keyExpr="ISIN"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              columnMinWidth={80}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Selection mode="multiple" showCheckBoxesMode="always" />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-
-              <Column
-                caption="Date"
-                type="date"
-                calculateCellValue={dateRender}
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="ISIN"
-                caption="ISIN"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="SecurityDescription"
-                caption="Security Description"
-              />
-              <Column
-                dataField="Debit"
-                caption="Debit"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Credit"
-                caption="Credit"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {showTime === true &&
-          test === "1" &&
-          timeVal === "2" &&
-          agts === false ? (
-            <DataGrid
-              id="transactionDataGrid"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={transactionData}
-              keyExpr="Stlmnt"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              columnMinWidth={80}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Selection mode="multiple" showCheckBoxesMode="always" />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-
-              <Column
-                dataField="Date"
-                caption="Date"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Stlmnt"
-                caption="Settlement"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Buy"
-                caption="Purchase Qty"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="BuyAmount"
-                caption="Buy Amount"
-                calculateCellValue={buyAmountFun}
-                customizeText={floatVal}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Sell"
-                caption="Sales Qty"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="SellAmount"
-                caption="Sales Amount"
-                calculateCellValue={sellAmountFun}
-                customizeText={floatVal}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Net"
-                caption="Net Qty"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="NetAmount"
-                caption="Net Amount"
-                calculateCellValue={netAmountFun}
-                customizeText={floatVal}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Summary calculateCustomSummary={calculateSelectedRow}>
-                <TotalItem
-                  name="SelectedRowsSummaryBuytime"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"totalSummaryStyle"}
-                  customizeText={myBuyAmount}
-                  showInColumn="BuyAmount"
+                <Column
+                  dataField="Credit"
+                  caption="Credit"
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummarySelltime"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"totalSummaryStyle"}
-                  customizeText={myBuyAmount}
-                  showInColumn="SellAmount"
+              </DataGrid>
+            ) : (
+              ""
+            )}
+            {showTime === true &&
+            test === "1" &&
+            timeVal === "2" &&
+            agts === false ? (
+              <DataGrid
+                id="transactionDataGrid"
+                ref={dataGridRef}
+                onSelectionChanged={onSelectionChanged}
+                dataSource={transactionData}
+                keyExpr="Stlmnt"
+                showRowLines={true}
+                onRowPrepared={onRowPre}
+                columnAutoWidth={true}
+                columnMinWidth={80}
+                paging={{ pageSize: 6 }}
+                allowColumnReordering={true}
+                showColumnLines={false}
+                showBorders={false}
+                wordWrapEnabled={true}
+                selection={{
+                  mode: "multiple",
+                  showCheckBoxesMode: "always",
+                }}
+                width="100%"
+                scrolling={{
+                  columnRenderingMode: "standard",
+                  mode: "standard",
+                  preloadEnabled: false,
+                  renderAsync: undefined,
+                  rowRenderingMode: "virtual",
+                  scrollByContent: true,
+                  scrollByThumb: true,
+                  showScrollbar: "onHover",
+                  useNative: "auto",
+                }}
+              >
+                <Selection mode="multiple" showCheckBoxesMode="always" />
+                <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+                <Paging enabled={true} defaultPageSize={15} />
+
+                <Column
+                  dataField="Date"
+                  caption="Date"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummaryNettime"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"totalSummaryStyle"}
-                  customizeText={myBuyAmount}
-                  showInColumn="NetAmount"
+
+                <Column
+                  dataField="Stlmnt"
+                  caption="Settlement"
+                  headerCellRender={customHeaderCell}
                 />
-              </Summary>
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {showTime === false && agts === false && ref === true ? (
-            <DataGrid
-              id="gridContainer"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={transactionAccount}
-              keyExpr="DocumentNo"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              columnMinWidth={80}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Selection
-                mode="multiple"
-                selectAllMode="allPages"
-                showCheckBoxesMode="always"
-              />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-              <Column
-                dataField="DocumentNo"
-                caption="RefNo"
-                alignment="left"
-                calculateCellValue={refNo}
-                headerCellRender={customHeaderCell}
-              />
 
-              <Column
-                dataField="Date"
-                caption="Date"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Particular"
-                caption="Particulars"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Chequeno"
-                caption="Instrument"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Amount"
-                caption="Amount"
-                calculateCellValue={amountValue}
-                customizeText={floatVal}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Summary calculateCustomSummary={calculateSelectedRow}>
-                <TotalItem
-                  cssClass={"warning4"}
-                  displayFormat="Total"
-                  showInColumn="DocumentNo"
+                <Column
+                  dataField="Buy"
+                  caption="Purchase Qty"
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummaryref"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"warning4"}
-                  customizeText={myBuyAmount}
-                  showInColumn="Amount"
+
+                <Column
+                  dataField="BuyAmount"
+                  caption="Buy Amount"
+                  calculateCellValue={buyAmountFun}
+                  customizeText={floatVal}
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-              </Summary>
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {showTime === false && agts === false && ref === false ? (
-            <DataGrid
-              id="gridContainer"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={transactionAccount}
-              keyExpr="DocumentNo"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              columnMinWidth={80}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Selection
-                mode="multiple"
-                selectAllMode="allPages"
-                showCheckBoxesMode="always"
-              />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-              <Column
-                dataField="DocumentNo"
-                caption="RefNo"
-                alignment="left"
-                calculateCellValue={refNo}
-                headerCellRender={customHeaderCell}
-              />
 
-              <Column
-                dataField="Date"
-                caption="Date"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Particular"
-                caption="Particulars"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Debit"
-                caption="Debit"
-                customizeText={mydebitAmount}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Credit"
-                caption="Credit"
-                customizeText={mycreditAmount}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Summary calculateCustomSummary={calculateSelectedRow}>
-                <TotalItem
-                  cssClass={"warning4"}
-                  displayFormat="Total"
-                  showInColumn="DocumentNo"
+                <Column
+                  dataField="Sell"
+                  caption="Sales Qty"
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummaryrefdebit"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"warning4"}
-                  showInColumn="Debit"
+                <Column
+                  dataField="SellAmount"
+                  caption="Sales Amount"
+                  calculateCellValue={sellAmountFun}
+                  customizeText={floatVal}
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummaryrefcredit"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"warning4"}
-                  showInColumn="Credit"
+                <Column
+                  dataField="Net"
+                  caption="Net Qty"
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-              </Summary>
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {/* <div className="loading-spinner"> */}
-
-          {/* {!isLoading && ( */}
-          {agts === true && !isLoading ? (
-            <DataGrid
-              id="gridContainer"
-              ref={dataGridRef}
-              onSelectionChanged={onSelectionChanged}
-              dataSource={agtsTransaction}
-              keyExpr="Brokerage"
-              showRowLines={true}
-              onRowPrepared={onRowPre}
-              columnAutoWidth={true}
-              columnMinWidth={30}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={true}
-            >
-              <Selection
-                mode="multiple"
-                selectAllMode="allPages"
-                showCheckBoxesMode="always"
-              />
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-              <Column
-                dataField="Exchange"
-                caption="Exch"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Date"
-                caption="Date"
-                calculateCellValue={dateRender}
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Stlmnt"
-                caption="Settlement"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="BSFlag"
-                caption="B/s"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="Quantity"
-                caption="Qty"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="MarketRate"
-                caption="Rate"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="NetRate"
-                caption="Net Rate"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Brokerage"
-                caption="Brokerage"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="ExchTRX_Chrg"
-                caption="Exch Trx"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Column
-                dataField="StampDuty"
-                caption="Stamp Duty"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="SEBITO"
-                caption="SEBI TO"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="Others"
-                caption="Others"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="STT"
-                caption="STT"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-              <Column
-                dataField="GST"
-                caption="GST"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              />
-
-              <Summary calculateCustomSummary={calculateSelectedRow}>
-                <TotalItem
-                  name="SelectedRowsSummary"
-                  summaryType="custom"
-                  id="myDataGrid"
-                  displayFormat="{0}"
-                  customizeText={myNetAmount}
-                  cssClass={"warning4"}
-                  showInColumn="NetAmount"
+                <Column
+                  dataField="NetAmount"
+                  caption="Net Amount"
+                  calculateCellValue={netAmountFun}
+                  customizeText={floatVal}
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
                 />
-                <TotalItem
-                  name="SelectedRowsSummaryBuy"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  cssClass={"warning4"}
-                  customizeText={myBuyAmount}
-                  showInColumn="BuyAmount"
+
+                <Summary calculateCustomSummary={calculateSelectedRow}>
+                  <TotalItem
+                    name="SelectedRowsSummaryBuytime"
+                    summaryType="custom"
+                    displayFormat="{0}"
+                    cssClass={"totalSummaryStyle"}
+                    customizeText={myBuyAmount}
+                    showInColumn="BuyAmount"
+                  />
+                  <TotalItem
+                    name="SelectedRowsSummarySelltime"
+                    summaryType="custom"
+                    displayFormat="{0}"
+                    cssClass={"totalSummaryStyle"}
+                    customizeText={myBuyAmount}
+                    showInColumn="SellAmount"
+                  />
+                  <TotalItem
+                    name="SelectedRowsSummaryNettime"
+                    summaryType="custom"
+                    displayFormat="{0}"
+                    cssClass={"totalSummaryStyle"}
+                    customizeText={myBuyAmount}
+                    showInColumn="NetAmount"
+                  />
+                </Summary>
+              </DataGrid>
+            ) : (
+              ""
+            )}
+            {showTime === false && agts === false && ref === true ? (
+              <DataGrid
+                id="gridContainer"
+                ref={dataGridRef}
+                onSelectionChanged={onSelectionChanged}
+                dataSource={transactionAccount}
+                keyExpr="DocumentNo"
+                showRowLines={true}
+                onRowPrepared={onRowPre}
+                columnAutoWidth={true}
+                columnMinWidth={80}
+                  paging={{ pageSize: 6 }}
+                  allowColumnReordering={true}
+                  showColumnLines={false}
+                  showBorders={false}
+                  wordWrapEnabled={true}
+                  selection={{
+                    mode: "multiple",
+                    showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                    columnRenderingMode: "standard",
+                    mode: "standard",
+                    preloadEnabled: false,
+                    renderAsync: undefined,
+                    rowRenderingMode: "virtual",
+                    scrollByContent: true,
+                    scrollByThumb: true,
+                    showScrollbar: "onHover",
+                    useNative: "auto",
+                  }}
+              >
+                <Selection
+                  mode="multiple"
+                  selectAllMode="allPages"
+                  showCheckBoxesMode="always"
                 />
-                <TotalItem
-                  cssClass={"warning4"}
-                  displayFormat="Total"
-                  showInColumn="ScripCode"
+                <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+                <Paging enabled={true} defaultPageSize={15} />
+                <Column
+                  dataField="DocumentNo"
+                  caption="RefNo"
+                  alignment="left"
+                  calculateCellValue={refNo}
+                  headerCellRender={customHeaderCell}
                 />
-              </Summary>
-            </DataGrid>
-          ) : (
-            ""
-          )}
-          {/* :Transaction */}
-          {/* )} */}
-          {/* </div> */}
+
+                <Column
+                  dataField="Date"
+                  caption="Date"
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Column
+                  dataField="Particular"
+                  caption="Particulars"
+                  headerCellRender={customHeaderCell}
+                />
+                <Column
+                  dataField="Chequeno"
+                  caption="Instrument"
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Column
+                  dataField="Amount"
+                  caption="Amount"
+                  calculateCellValue={amountValue}
+                  customizeText={floatVal}
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Summary calculateCustomSummary={calculateSelectedRow}>
+                  <TotalItem
+                    cssClass={"warning4"}
+                    displayFormat="Total"
+                    showInColumn="DocumentNo"
+                  />
+                  <TotalItem
+                    name="SelectedRowsSummaryref"
+                    summaryType="custom"
+                    displayFormat="{0}"
+                    cssClass={"warning4"}
+                    customizeText={myBuyAmount}
+                    showInColumn="Amount"
+                  />
+                </Summary>
+              </DataGrid>
+            ) : (
+              ""
+            )}
+            {showTime === false && agts === false && ref === false ? (
+              <DataGrid
+                id="gridContainer"
+                ref={dataGridRef}
+                onSelectionChanged={onSelectionChanged}
+                dataSource={transactionAccount}
+                keyExpr="DocumentNo"
+                showRowLines={true}
+                onRowPrepared={onRowPre}
+                columnAutoWidth={true}
+                columnMinWidth={80}
+                  paging={{ pageSize: 6 }}
+                  allowColumnReordering={true}
+                  showColumnLines={false}
+                  showBorders={false}
+                  wordWrapEnabled={true}
+                  selection={{
+                    mode: "multiple",
+                    showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                    columnRenderingMode: "standard",
+                    mode: "standard",
+                    preloadEnabled: false,
+                    renderAsync: undefined,
+                    rowRenderingMode: "virtual",
+                    scrollByContent: true,
+                    scrollByThumb: true,
+                    showScrollbar: "onHover",
+                    useNative: "auto",
+                  }}
+              >
+                <Selection
+                  mode="multiple"
+                  selectAllMode="allPages"
+                  showCheckBoxesMode="always"
+                />
+                <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+                <Paging enabled={true} defaultPageSize={15} />
+                <Column
+                  dataField="DocumentNo"
+                  caption="RefNo"
+                  alignment="left"
+                  calculateCellValue={refNo}
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Column
+                  dataField="Date"
+                  caption="Date"
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Column
+                  dataField="Particular"
+                  caption="Particulars"
+                  headerCellRender={customHeaderCell}
+                />
+                <Column
+                  dataField="Debit"
+                  caption="Debit"
+                  customizeText={mydebitAmount}
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Column
+                  dataField="Credit"
+                  caption="Credit"
+                  customizeText={mycreditAmount}
+                  alignment="center"
+                  headerCellRender={customHeaderCell}
+                />
+
+                <Summary calculateCustomSummary={calculateSelectedRow}>
+                  <TotalItem
+                    cssClass={"warning4"}
+                    displayFormat="Total"
+                    showInColumn="DocumentNo"
+                  />
+                  <TotalItem
+                    name="SelectedRowsSummaryrefdebit"
+                    summaryType="custom"
+                    displayFormat="{0}"
+                    cssClass={"warning4"}
+                    showInColumn="Debit"
+                  />
+                  <TotalItem
+                    name="SelectedRowsSummaryrefcredit"
+                    summaryType="custom"
+                    displayFormat="{0}"
+                    cssClass={"warning4"}
+                    showInColumn="Credit"
+                  />
+                </Summary>
+              </DataGrid>
+            ) : (
+              ""
+            )}
+            {/* <div className="loading-spinner"> */}
+
+            {/* {!isLoading && ( */}
+            {agts === true && !isLoading ? (
+              <div className={style.respondness}>
+                <DataGrid
+                  id="gridContainer"
+                  ref={dataGridRef}
+                  onSelectionChanged={onSelectionChanged}
+                  dataSource={agtsTransaction}
+                  keyExpr="Brokerage"
+                  showRowLines={true}
+                  onRowPrepared={onRowPre}
+                  columnAutoWidth={true}
+                  columnMinWidth={30}
+                  paging={{ pageSize: 6 }}
+                  allowColumnReordering={true}
+                  showColumnLines={false}
+                  showBorders={false}
+                  wordWrapEnabled={true}
+                  selection={{
+                    mode: "multiple",
+                    showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                    columnRenderingMode: "standard",
+                    mode: "standard",
+                    preloadEnabled: false,
+                    renderAsync: undefined,
+                    rowRenderingMode: "virtual",
+                    scrollByContent: true,
+                    scrollByThumb: true,
+                    showScrollbar: "onHover",
+                    useNative: "auto",
+                  }}
+                >
+                  <Selection
+                    mode="multiple"
+                    selectAllMode="allPages"
+                    showCheckBoxesMode="always"
+                  />
+                  <Grouping expandMode="rowClick" />
+                  <GroupPanel visible={true} />
+                  <Paging enabled={true} defaultPageSize={15} />
+                  <Column
+                    dataField="Exchange"
+                    caption="Exch"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="Date"
+                    caption="Date"
+                    calculateCellValue={dateRender}
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="Stlmnt"
+                    caption="Settlement"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="BSFlag"
+                    caption="B/s"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="Quantity"
+                    caption="Qty"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="MarketRate"
+                    caption="Rate"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="NetRate"
+                    caption="Net Rate"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="Brokerage"
+                    caption="Brokerage"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="ExchTRX_Chrg"
+                    caption="Exch Trx"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Column
+                    dataField="StampDuty"
+                    caption="Stamp Duty"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="SEBITO"
+                    caption="SEBI TO"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="Others"
+                    caption="Others"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="STT"
+                    caption="STT"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+                  <Column
+                    dataField="GST"
+                    caption="GST"
+                    alignment="center"
+                    headerCellRender={customHeaderCell}
+                  />
+
+                  <Summary calculateCustomSummary={calculateSelectedRow}>
+                    <TotalItem
+                      name="SelectedRowsSummary"
+                      summaryType="custom"
+                      id="myDataGrid"
+                      displayFormat="{0}"
+                      customizeText={myNetAmount}
+                      cssClass={"warning4"}
+                      showInColumn="NetAmount"
+                    />
+                    <TotalItem
+                      name="SelectedRowsSummaryBuy"
+                      summaryType="custom"
+                      displayFormat="{0}"
+                      cssClass={"warning4"}
+                      customizeText={myBuyAmount}
+                      showInColumn="BuyAmount"
+                    />
+                    <TotalItem
+                      cssClass={"warning4"}
+                      displayFormat="Total"
+                      showInColumn="ScripCode"
+                    />
+                  </Summary>
+                </DataGrid>
+              </div>
+            ) : (
+              ""
+            )}
+            {/* :Transaction */}
+            {/* )} */}
+            {/* </div> */}
+          </Grid>
         </Grid>
-      </Grid>
-      {/* </MyContainer> */}
+        {/* </MyContainer> */}
       </div>
     </Layout>
   );

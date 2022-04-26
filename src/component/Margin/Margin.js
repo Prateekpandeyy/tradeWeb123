@@ -71,6 +71,7 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    
   },
   MySelect: {
     display: "flex",
@@ -114,19 +115,19 @@ function Margin() {
   const [agtsVal, setAgtsVal] = useState("C");
   const [transactionAccount, setTransactionAccount] = useState([]);
   const [agtsTransaction, setAgtsTransaction] = useState([]);
-  const [marginDate,  setMarginDate] = useState("20212412")
+  const [marginDate, setMarginDate] = useState("20212412");
   const [bal, setBal] = useState(0);
   const [ref, setRef] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [marginData, setMarginData] = useState([])
+  const [marginData, setMarginData] = useState([]);
   const classes = useStyle();
   const dataGridRef = React.createRef();
   const componentRef = useRef();
   const token = localStorage.getItem("token");
-  let history = useNavigate()
+  let history = useNavigate();
   useEffect(() => {
-    pledgeData()
-  }, [])
+    pledgeData();
+  }, []);
   const myConfig = {
     headers: {
       Authorization: "Bearer " + token,
@@ -136,10 +137,7 @@ function Margin() {
     console.log("done");
     try {
       axios
-        .get(
-          `${baseUrl}/Margin/Margin?date=20211224`,
-          myConfig
-        )
+        .get(`${baseUrl}/Margin/Margin?date=20211224`, myConfig)
         .then((res) => {
           setMarginData(res.data);
           setIsLoading(false);
@@ -152,7 +150,7 @@ function Margin() {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet("Main sheet");
     const dataGrid = dataGridRef.current.instance;
-   
+
     exportDataGrid({
       component: dataGrid,
       worksheet: worksheet,
@@ -234,8 +232,8 @@ function Margin() {
     e.component.refresh(true);
   };
   const pledgePage = () => {
-    history("/tradeweb/pledge")
-  }
+    history("/tradeweb/pledge");
+  };
   return (
     <Layout
       mainLink="BP EQUTIES PVT. LTD >"
@@ -361,97 +359,103 @@ function Margin() {
       </TopBox>
       <Grid container>
         <Grid style={{ padding: "15px", marginLeft: "-30px" }}>
-          <DataGrid
-            dataSource={marginData}
-            // onRowPrepared={onRowPre}
-            // onSelectionChanged={onSelectionHolding}
-            alignment="center"
-            onRowPrepared={onRowPre}
-            ref={dataGridRef}
-            showRowLines={true}
-            columnAutoWidth={true}
-            showColumnLines={false}
-            columnHidingEnabled={true}
-            allowColumnReordering={true}
-            wordWrapEnabled={true}
-            showColumnHeaders={true}
-            columnResizingMode="nextColumn"
-            showBorders={false}
-            noData=""
-            scrolling={{
-              columnRenderingMode: "standard",
-              mode: "standard",
-              preloadEnabled: false,
-              renderAsync: undefined,
-              rowRenderingMode: "virtual",
-              scrollByContent: true,
-              scrollByThumb: false,
-              showScrollbar: "onHover",
-              useNative: "auto",
-            }}
-          >
-            <Selection mode="multiple" showCheckBoxesMode="always" />
-            <Column
-              dataField="exchSeg"
-              caption="ExchSeg"
+          <div className={style.responsiveDatagrid}>
+            <DataGrid
+              dataSource={marginData}
+              // onRowPrepared={onRowPre}
+              // onSelectionChanged={onSelectionHolding}
               alignment="center"
-              headerCellRender={customHeaderCell}
-            ></Column>
-            <Column
-              dataField="eod_Margin_Required"
-              caption="EOD Margin Required "
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="eod_Margin_Available"
-              caption="EOD Margin Available"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="eod_ShortFall_Amount"
-              caption="ShartFall Amount"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="eod_ShortFall_Percentage"
-              caption="EOD ShartFall%"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="peak_Margin_Required"
-              caption="Peack Margin Required"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="peak_Margin_To_Be_Collected"
-              caption="Peack Margn Collected"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="peak_Margin_Available"
-              caption="Peack Margin Available"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="peak_Margin_Shortfall"
-              caption="Peack Margin ShortFall"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-            <Column
-              dataField="peak_Margin_Highest_Shortfall"
-              caption="Peack Margin Highest ShaortFall"
-              headerCellRender={customHeaderCell}
-              alignment="center"
-            ></Column>
-          </DataGrid>
+              onRowPrepared={onRowPre}
+              ref={dataGridRef}
+              columnAutoWidth={true}
+              allowColumnReordering={true}
+              paging={{ pageSize: 6 }}
+              onExporting={exportGrid}
+              showColumnLines={false}
+              showBorders={false}
+              showRowLines={true}
+              wordWrapEnabled={true}
+              selection={{
+                mode: "multiple",
+                showCheckBoxesMode: "always",
+              }}
+              width="100%"
+              scrolling={{
+                columnRenderingMode: "standard",
+                mode: "standard",
+                preloadEnabled: false,
+                renderAsync: undefined,
+                rowRenderingMode: "virtual",
+                scrollByContent: true,
+                scrollByThumb: true,
+                showScrollbar: "onHover",
+                useNative: "auto",
+              }}
+              columnWidth="150"
+            >
+              <Selection mode="multiple" showCheckBoxesMode="always" />
+              <Column
+                dataField="exchSeg"
+                caption="ExchSeg"
+                alignment="center"
+                headerCellRender={customHeaderCell}
+              ></Column>
+              <Column
+                dataField="eod_Margin_Required"
+                caption="EOD Margin Required "
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="eod_Margin_Available"
+                caption="EOD Margin Available"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="eod_ShortFall_Amount"
+                caption="ShartFall Amount"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="eod_ShortFall_Percentage"
+                caption="EOD ShartFall%"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="peak_Margin_Required"
+                caption="Peak Margin Required"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="peak_Margin_To_Be_Collected"
+                caption="Peak Margn Collected"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="peak_Margin_Available"
+                caption="Peak Margin Available"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="peak_Margin_Shortfall"
+                caption="Peak Margin ShortFall"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+              <Column
+                dataField="peak_Margin_Highest_Shortfall"
+                caption="Peak Margin Highest ShaortFall"
+                headerCellRender={customHeaderCell}
+                alignment="center"
+              ></Column>
+            </DataGrid>
+          </div>
         </Grid>
       </Grid>
     </Layout>

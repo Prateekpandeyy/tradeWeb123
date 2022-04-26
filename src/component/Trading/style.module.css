@@ -1,6 +1,9 @@
 
 
 @media (max-width: 800px) {
+    .resposivenessgrid{
+        width: 360px;
+    }
     .exge{
         margin-top: -220px;
     }

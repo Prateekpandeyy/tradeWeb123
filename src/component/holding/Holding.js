@@ -317,12 +317,28 @@ const Holding = () => {
               onRowPrepared={onRowPre}
               onSelectionChanged={onSelectionHolding}
               alignment="center"
-              showRowLines={true}
               columnAutoWidth={true}
+              allowColumnReordering={true}
               showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
               showBorders={false}
+              showRowLines={true}
+              wordWrapEnabled={true}
+              selection={{
+                mode: "multiple",
+                showCheckBoxesMode: "always",
+              }}
+              width="100%"
+              scrolling={{
+                columnRenderingMode: "standard",
+                mode: "standard",
+                preloadEnabled: false,
+                renderAsync: undefined,
+                rowRenderingMode: "virtual",
+                scrollByContent: true,
+                scrollByThumb: true,
+                showScrollbar: "onHover",
+                useNative: "auto",
+              }}
             >
               <Selection mode="multiple" showCheckBoxesMode="always" />
               <Column
@@ -339,65 +355,84 @@ const Holding = () => {
       <Grid container>
         <Grid style={{ padding: "20px", marginLeft: "-15px" }}>
           {!isLoading && (
-            <DataGrid
-              dataSource={HoldingDatatop}
-              onRowPrepared={onRowPre}
-              keyExpr="isin"
-              noDataText=""
-              alignment="center"
-              showRowLines={true}
-              columnAutoWidth={true}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode={true}
-              id="holdingDataGird"
-              // noDataText=''
-              showBorders={false}
-            >
-              <Selection mode="multiple" showCheckBoxesMode="always" />
-              <Paging enabled={true} defaultPageSize={15} />
+            <div className="resgrid">
+              <DataGrid
+                dataSource={HoldingDatatop}
+                onRowPrepared={onRowPre}
+                keyExpr="isin"
+                id="holdingDataGird"
+                noDataText=""
+                alignment="center"
+                columnAutoWidth={true}
+                // paging={{ pageSize: 6 }}
+                allowColumnReordering={true}
+                showColumnLines={false}
+                showBorders={false}
+                showRowLines={true}
+                wordWrapEnabled={true}
+                selection={{
+                  mode: "multiple",
+                  showCheckBoxesMode: "always",
+                }}
+                width="100%"
+                // scrolling={{
+                //   columnRenderingMode: "standard",
+                //   mode: "standard",
+                //   preloadEnabled: false,
+                //   renderAsync: undefined,
+                //   rowRenderingMode: "virtual",
+                //   scrollByContent: true,
+                //   scrollByThumb: true,
+                //   showScrollbar: "onHover",
+                //   useNative: "auto",
+                // }}
+                // columnWidth="250px"
+              >
+                <Selection mode="multiple" showCheckBoxesMode="always" />
+                <Paging enabled={true} defaultPageSize={15} />
 
-              <Column
-                caption="Company Name"
-                dataField="companyName"
-                alignment="left"
-                headerCellRender={customHeaderCell}
-              ></Column>
-              <Column
-                caption="Graph"
-                cellRender={cellRender}
-                headerCellRender={customHeaderCell}
-                alignment="left"
-              ></Column>
-              <Column
-                caption="Quantity"
-                dataField="quantity"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              ></Column>
-              <Column
-                caption="Rate"
-                dataField="rate"
-                calculateCellValue={rateValue}
-                alignment="center"
-                customizeText={floatVal}
-                headerCellRender={customHeaderCell}
-              ></Column>
-              <Column
-                caption="Value"
-                calculateCellValue={valueFun}
-                dataField="value"
-                alignment="center"
-                customizeText={floatVal}
-                headerCellRender={customHeaderCell}
-              ></Column>
-              <Column
-                caption="Type"
-                dataField="balanceType"
-                alignment="center"
-                headerCellRender={customHeaderCell}
-              ></Column>
-            </DataGrid>
+                <Column
+                  caption="Company Name"
+                  dataField="companyName"
+                  alignment="left"
+                  headerCellRender={customHeaderCell}
+                ></Column>
+                <Column
+                  caption="Graph"
+                  cellRender={cellRender}
+                  headerCellRender={customHeaderCell}
+                  alignment="right"
+                ></Column>
+                <Column
+                  caption="Quantity"
+                  dataField="quantity"
+                  alignment="right"
+                  headerCellRender={customHeaderCell}
+                ></Column>
+                <Column
+                  caption="Rate"
+                  dataField="rate"
+                  calculateCellValue={rateValue}
+                  alignment="right"
+                  customizeText={floatVal}
+                  headerCellRender={customHeaderCell}
+                ></Column>
+                <Column
+                  caption="Value"
+                  calculateCellValue={valueFun}
+                  dataField="value"
+                  alignment="right"
+                  customizeText={floatVal}
+                  headerCellRender={customHeaderCell}
+                ></Column>
+                <Column
+                  caption="Type"
+                  dataField="balanceType"
+                  alignment="right"
+                  headerCellRender={customHeaderCell}
+                ></Column>
+              </DataGrid>
+            </div>
           )}
         </Grid>
       </Grid>

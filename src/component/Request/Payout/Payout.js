@@ -172,6 +172,7 @@ function Payout() {
           textAlign: "center",
           color: "steelblue",
           fontWeight: "bold",
+          
         }}
       >
         {insta.value}
@@ -232,7 +233,12 @@ function Payout() {
     >
       <div className={style.mainContainer}>
         <div className={style.radioButton}>
-          <input type="radio" name="same" defaultChecked style={{ cursor: "pointer" }} />
+          <input
+            type="radio"
+            name="same"
+            defaultChecked
+            style={{ cursor: "pointer" }}
+          />
           <Typography
             style={{
               fontWeight: "bold",

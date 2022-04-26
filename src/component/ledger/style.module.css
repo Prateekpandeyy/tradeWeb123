@@ -4,6 +4,12 @@
 }
 
 @media (max-width: 800px) {
+    .responsiveDatagrid{
+        width: 350px;
+    }
+    .responsGrid{
+        width: 300px;
+    }
     .ledger{
         margin-top: -80px;
         margin-left: 80px;

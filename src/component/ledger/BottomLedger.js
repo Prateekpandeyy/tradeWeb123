@@ -1,7 +1,15 @@
-import React, {useRef} from 'react';
-import { Container, Paper, Typography , Select, MenuItem, Box,  Grid } from '@mui/material';
-import { styled, makeStyles } from '@mui/styles';
-import axios from 'axios';
+import React, { useRef } from "react";
+import {
+  Container,
+  Paper,
+  Typography,
+  Select,
+  MenuItem,
+  Box,
+  Grid,
+} from "@mui/material";
+import { styled, makeStyles } from "@mui/styles";
+import axios from "axios";
 import style from "./style.module.css";
 import {
   Pager,
@@ -49,6 +57,7 @@ const BottomLedger = ({ ledgerReport }) => {
       doc.save("Customers.pdf");
     });
   });
+   console.log("ledgerReport", ledgerReport)
   const onRowPre = (e) => {
     if (e.rowType == "header") {
       e.rowElement.style.backgroundColor = "#E1F1FF";
@@ -177,161 +186,174 @@ const BottomLedger = ({ ledgerReport }) => {
   return (
     <>
       <MyContainer>
-      <Grid container>
-      <Grid item sm={12}>
-      <ComponentToPrint ref={dataGridRef} />
-      <div>
-      <Box sx={{ textAlign: "right" , display: "flex"}} p={2}>
-    <FaFileCsv
-      title="Csv File"
-      onClick={onExportingCsv}
-      style={{
-        color: "#80BB55",
-        cursor: "pointer",
-        margin: "2px 8px",
-        fontSize: "30px",
-        border: "1px solid #EBEBEB",
-        boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-        borderRadius: "10px",
-        padding: "5px",
-        width: "40px",
-        height: "40px",
-      }}
-    />
-    <img
-      src={htmlImg}
-      title="html"
-      style={{
-        margin: "2px 8px",
-        cursor: "pointer",
-        border: "1px solid #EBEBEB",
-        boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-        borderRadius: "10px",
-        padding: "5px",
-        maxWidth: "40px",
-        maxHeight: "40px",
-      }}
-    />
-    <RiFileExcel2Fill
-      title="Excel"
-      onClick={onExporting}
-      style={{
-        color: "#107C41",
-        cursor: "pointer",
-        margin: "2px 8px",
-        border: "1px solid #EBEBEB",
-        boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-        borderRadius: "10px",
-        padding: "5px",
-        width: "40px",
-        height: "40px",
-      }}
-    />
-    <AiFillPrinter
-      title="Print"
-      // onClick={handlePrint}
-      style={{
-        color: "#424343",
-        cursor: "pointer",
-        margin: "2px 8px",
-        border: "1px solid #EBEBEB",
-        boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-        borderRadius: "10px",
-        padding: "5px",
-        width: "40px",
-        height: "40px",
-      }}
-    />
-    <GrDocumentText
-      title="pdf"
-      onClick={exportGrid}
-      style={{
-        color: "#696D6E",
-        cursor: "pointer",
-        margin: "2px 8px",
-        border: "1px solid #EBEBEB",
-        boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-        borderRadius: "10px",
-        padding: "5px",
-        width: "40px",
-        height: "40px",
-      }}
-    />
-  </Box>
-  </div>
-        </Grid>
+        <Grid container>
+          <Grid item sm={12}>
+            <ComponentToPrint ref={dataGridRef} />
+            <div>
+              <Box sx={{ textAlign: "right", display: "flex" }} p={2}>
+                <FaFileCsv
+                  title="Csv File"
+                  onClick={onExportingCsv}
+                  style={{
+                    color: "#80BB55",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    fontSize: "30px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                />
+                {/* <img
+                  src={htmlImg}
+                  title="html"
+                  style={{
+                    margin: "2px 8px",
+                    cursor: "pointer",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    maxWidth: "40px",
+                    maxHeight: "40px",
+                  }}
+                /> */}
+                <RiFileExcel2Fill
+                  title="Excel"
+                  onClick={onExporting}
+                  style={{
+                    color: "#107C41",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                />
+                {/* <AiFillPrinter
+                  title="Print"
+                  // onClick={handlePrint}
+                  style={{
+                    color: "#424343",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                /> */}
+                <GrDocumentText
+                  title="pdf"
+                  onClick={exportGrid}
+                  style={{
+                    color: "#696D6E",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                />
+              </Box>
+            </div>
+          </Grid>
         </Grid>
         <Grid container>
-      <Grid item sm={12} style={{padding: "0 20px"}}>
-      <DataGrid
-    id="dataGrid"
-    ref={dataGridRef}
-    dataSource={ledgerReport}
-    showRowLines={true}
-    onRowPrepared={onRowPre}
-    onCellPrepared={onCellPre}
-    columnAutoWidth={true}
-    columnMinWidth={30}
-    showColumnLines={false}
-    columnHidingEnabled={true}
-    columnResizingMode="nextColumn"
-    noDataText=""
-    showBorders={false}
-  >
-     
-    <Grouping expandMode="rowClick" />
-    <GroupPanel visible={true} />
-    <Paging enabled={true} defaultPageSize={15} />
-    
-    
-    <Column
-      dataField="Date"
-      caption="Date"
-      dataType="date"
-      format="dd/MM/yyyy"
-      headerCellRender={customHeaderCell}
-      alignment="center">
-        </Column>
-     <Column
-      dataField="ExchSeg"
-      caption="Exchange"
-      headerCellRender={customHeaderCell}
-      alignment="center"
-    ></Column>
-    <Column
-      dataField="Particular"
-      caption="Particulars"
-       
-      headerCellRender={customHeaderCell}
-      alignment="center"
-    ></Column>
-        <Column
-      dataField="Debit"
-      caption="Debit"
-      customizeText={floatVal}
-      calculateCellValue={TemplateNameCell}
-      headerCellRender={customHeaderCell}
-      alignment="center"
-    ></Column>
-    <Column
-      dataField="Credit"
-      caption="Credit"
-      customizeText={floatVal}
-      calculateCellValue={TemplateNameCell2}
-      headerCellRender={customHeaderCell}
-      alignment="center"
-    ></Column>
-    <Column
-      dataField="finalBalance"
-      caption="Balance"
-      customizeText={floatVal}
-      calculateCellValue={finalBalance}
-      headerCellRender={customHeaderCell}
-      alignment="center"
-    ></Column>
-  </DataGrid>
+          <Grid item sm={12} style={{ padding: "0 20px" }}>
+            <div className={style.responsiveDatagrid}>
+              <DataGrid
+                id="dataGrid"
+                ref={dataGridRef}
+                dataSource={ledgerReport}
+                showRowLines={true}
+                onRowPrepared={onRowPre}
+                onCellPrepared={onCellPre}
+                columnAutoWidth={true}
+                allowColumnReordering={true}
+                showColumnLines={false}
+                showBorders={false}
+                wordWrapEnabled={true}
+                // selection={{
+                //   mode: "multiple",
+                //   showCheckBoxesMode: "always",
+                // }}
+                width="100%"
+                scrolling={{
+                  columnRenderingMode: "standard",
+                  mode: "standard",
+                  preloadEnabled: false,
+                  renderAsync: undefined,
+                  rowRenderingMode: "virtual",
+                  scrollByContent: true,
+                  scrollByThumb: true,
+                  showScrollbar: "onHover",
+                  useNative: "auto",
+                }}
+              >
+                <Grouping expandMode="rowClick" />
+                <GroupPanel visible={true} />
+                <Paging enabled={true} defaultPageSize={15} />
+
+                <Column
+                  dataField="Ldate"
+                  caption="Date"
+                  dataType="date"
+                  format="dd/MM/yyyy"
+                  headerCellRender={customHeaderCell}
+                  alignment="center"
+                ></Column>
+                <Column
+                  dataField="ExchSeg"
+                  caption="Exchange"
+                  headerCellRender={customHeaderCell}
+                  alignment="center"
+                ></Column>
+                <Column
+                  dataField="Particular"
+                  caption="Particulars"
+                  headerCellRender={customHeaderCell}
+                  alignment="center"
+                ></Column>
+                <Column
+                  dataField="Debit"
+                  caption="Debit"
+                  customizeText={floatVal}
+                  calculateCellValue={TemplateNameCell}
+                  headerCellRender={customHeaderCell}
+                  alignment="center"
+                ></Column>
+                <Column
+                  dataField="Credit"
+                  caption="Credit"
+                  customizeText={floatVal}
+                  calculateCellValue={TemplateNameCell2}
+                  headerCellRender={customHeaderCell}
+                  alignment="center"
+                ></Column>
+                <Column
+                  dataField="finalBalance"
+                  caption="Balance"
+                  customizeText={floatVal}
+                  calculateCellValue={finalBalance}
+                  headerCellRender={customHeaderCell}
+                  alignment="center"
+                ></Column>
+              </DataGrid>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
       </MyContainer>
     </>
   );

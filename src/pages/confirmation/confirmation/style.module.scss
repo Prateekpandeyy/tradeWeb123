@@ -1,4 +1,10 @@
+.dataGrid{
+    width: auto;
+}
 @media (max-width: 800px) {
+    .dataGrid{
+        width: 400px;
+    }
     .mainResponse{
          overflow-x: overlay;
     }

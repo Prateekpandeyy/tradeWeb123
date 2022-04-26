@@ -23,6 +23,9 @@
 }
 
 @media (max-width: 800px) {
+    .resgrid{
+        width: 360px;
+    }
     .holdingAccount{
         margin-top: -150px;
         width: 0px;

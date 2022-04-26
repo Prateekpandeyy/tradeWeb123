@@ -120,7 +120,6 @@ const Content = () => {
 
   const dateFun = (e) => {
     let a = e.format("YYYYMMDD");
-  
     setDate(a);
   };
 
@@ -284,7 +283,7 @@ const Content = () => {
   };
 
   const confirmationDropDown = (e) => {
-   setData([])
+    setData([]);
     setConfirmationDrop(e);
   };
   const handlePrint = useReactToPrint({
@@ -321,376 +320,415 @@ const Content = () => {
       </span>
     );
   };
-  
   return (
     <>
-     {/* <BackDrop isLoading={isLoading} /> */}
-     <div className={style.mainResponse}>
-      <TopBox>
-        <Box className={classes.boxRoot} style={{ marginLeft: "5px" }}>
-          <div className={style.selectConfirm}>
-            <select
-              className={classes.MySelect}
-              onChange={(e) => {
-                confirmationDropDown(e.target.value);
-              }}
-              value={confirmationDrop}
+      {/* <BackDrop isLoading={isLoading} /> */}
+      <div className={style.mainResponse}>
+        <TopBox>
+          <Box className={classes.boxRoot} style={{ marginLeft: "5px" }}>
+            <div className={style.selectConfirm}>
+              <select
+                className={classes.MySelect}
+                onChange={(e) => {
+                  confirmationDropDown(e.target.value);
+                }}
+                value={confirmationDrop}
+              >
+                <option value={0}>Cumulative</option>
+                <option value={1}>Confirmation</option>
+              </select>
+            </div>
+            <Space
+              direction="vertical"
+              size={12}
+              style={{ display: "flex", width: "300px", marginLeft: "0px" }}
             >
-              <option value={0}>Cumulative</option>
-              <option value={1}>Confirmation</option>
-            </select>
-          </div>
-          <Space
-            direction="vertical"
-            size={12}
-            style={{ display: "flex", width: "300px", marginLeft: "0px" }}
-          >
-            <div className={style.datePick}>
-              <Box className={classes.boxRoot} style={{ marginLeft: "-22px" }}>
-                <DatePicker
-                  defaultValue={moment(new Date(), "DD MMM, YYYY")}
-                  defaultPickerValue={moment(new Date(), "DD MMM, YYYY")}
-                  format={"DD/MM/YYYY"}
-                  onChange={(date) => dateFun(date)}
-                  allowClear={false}
-                  suffixIcon
-                  style={{
-                    display: "flex",
-                    maxWidth: "180px",
-                    height: "40px",
-                    background: "#ffffff",
-                    border: "1px solid #EBEBEB",
-                    fontFamily: "poppins",
-                    fontWeight: "bold",
-                    boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
-                    borderRadius: "7px",
-                    padding: "0 10px",
-                    margin: "0 010px 10 0",
-                    marginLeft: "50px",
-                    fontSize: "18px",
-                  }}
-                />
+              <div className={style.datePick}>
+                <Box
+                  className={classes.boxRoot}
+                  style={{ marginLeft: "-22px" }}
+                >
+                  <DatePicker
+                    defaultValue={moment(new Date(), "DD MMM, YYYY")}
+                    defaultPickerValue={moment(new Date(), "DD MMM, YYYY")}
+                    format={"DD/MM/YYYY"}
+                    onChange={(date) => dateFun(date)}
+                    allowClear={false}
+                    suffixIcon
+                    style={{
+                      display: "flex",
+                      maxWidth: "180px",
+                      height: "40px",
+                      background: "#ffffff",
+                      border: "1px solid #EBEBEB",
+                      fontFamily: "poppins",
+                      fontWeight: "bold",
+                      boxShadow: "0px 2px 16px rgb(61 61 61 / 6%)",
+                      borderRadius: "7px",
+                      padding: "0 10px",
+                      margin: "0 010px 10 0",
+                      marginLeft: "50px",
+                      fontSize: "18px",
+                    }}
+                  />
+                </Box>
+              </div>
+            </Space>
+            <div className={style.btn}>
+              <Box className={classes.boxRoot}>
+                <MyButton
+                  variant="contained"
+                  style={{ marginLeft: "-100px", height: "60", width: "135px" }}
+                  onClick={fetchData}
+                >
+                  Show
+                </MyButton>
               </Box>
             </div>
-          </Space>
-          <div className={style.btn}>
-            <Box className={classes.boxRoot}>
-              <MyButton
-                variant="contained"
-                style={{ marginLeft: "-100px", height: "60", width: "135px" }}
-                onClick={fetchData}
-              >
-                Show
-              </MyButton>
-            </Box>
-          </div>
-        </Box>
+          </Box>
 
-        <Box className={classes.boxRoot}>
-          <div className={style.docFiles}>
-            <FaFileCsv
-              onClick={onExportingCsv}
-              style={{
-                color: "#80BB55",
-                margin: "2px 8px",
-                fontSize: "30px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-            <img
-              src={htmlImg}
-              style={{
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                maxWidth: "40px",
-                maxHeight: "40px",
-              }}
-            />
-            <AiFillFilePdf
-              onClick={onExporting}
-              style={{
-                color: "#107C41",
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-            <AiFillPrinter
-              onClick={handlePrint}
-              style={{
-                color: "#424343",
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-            <GrDocumentText
-              onClick={exportGrid}
-              style={{
-                color: "#696D6E",
-                margin: "2px 8px",
-                border: "1px solid #EBEBEB",
-                boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
-                borderRadius: "10px",
-                padding: "5px",
-                width: "40px",
-                height: "40px",
-              }}
-            />
-          </div>
-         <div className={style.myHigh}> <MyData>High Light</MyData></div>
-        </Box>
-      </TopBox>
-      <MyContainer>
-        <Grid container>
-          <Grid item sm={12} style={{ padding: "0 20px" }}>
-            {
-              confirmationDrop == 0 ?
-              <DataGrid
-              id="dataGrid"
-              ref={dataGridRef}
-              dataSource={data}
-              keyExpr="scripname"
-              showRowLines={true}
-              columnAutoWidth={true}
-              onSelectionChanged={onSelectionChanged}
-              onRowPrepared={onRowPre}
-              columnMinWidth={30}
-              showColumnLines={false}
-              columnHidingEnabled={true}
-              columnResizingMode="nextColumn"
-              noDataText=""
-              showBorders={false}
-            >
-              <Grouping expandMode="rowClick" />
-              <GroupPanel visible={true} />
-              <Paging enabled={true} defaultPageSize={15} />
-              <Selection
-                mode="multiple"
-                allowSelectAll={true}
-                showCheckBoxesMode="always"
+          <Box className={classes.boxRoot}>
+            <div className={style.docFiles}>
+              <FaFileCsv
+                onClick={onExportingCsv}
+                style={{
+                  color: "#80BB55",
+                  margin: "2px 8px",
+                  fontSize: "30px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
               />
+              <img
+                src={htmlImg}
+                style={{
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  maxWidth: "40px",
+                  maxHeight: "40px",
+                }}
+              />
+              <AiFillFilePdf
+                onClick={onExporting}
+                style={{
+                  color: "#107C41",
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
+              />
+              <AiFillPrinter
+                onClick={handlePrint}
+                style={{
+                  color: "#424343",
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
+              />
+              <GrDocumentText
+                onClick={exportGrid}
+                style={{
+                  color: "#696D6E",
+                  margin: "2px 8px",
+                  border: "1px solid #EBEBEB",
+                  boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                  borderRadius: "10px",
+                  padding: "5px",
+                  width: "40px",
+                  height: "40px",
+                }}
+              />
+            </div>
+            <div className={style.myHigh}>
+              {" "}
+              <MyData>High Light</MyData>
+            </div>
+          </Box>
+         
+        </TopBox>
+        <div className={style.dataGrid}>
+        {/* <MyContainer>
+          <Grid container>
+            <Grid item sm={12} style={{ padding: "0 20px" }}> */}
+              {confirmationDrop == 0 ? (
+                <DataGrid
+                  id="dataGrid"
+                  ref={dataGridRef}
+                  dataSource={data}
+                  keyExpr="scripname"
+                  onRowPrepared={onRowPre}
+                  columnAutoWidth={true}
+                  allowColumnReordering={true}
+                  paging={{ pageSize: 6 }}
+                  onExporting={exportGrid}
+                  showColumnLines={false}
+                  showBorders={false}
+                  showRowLines={true}
+                  wordWrapEnabled={true}
+                  selection={{
+                  mode: "multiple",
+                  showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                  columnRenderingMode: "standard",
+                  mode: "standard",
+                  preloadEnabled: false,
+                  renderAsync: undefined,
+                  rowRenderingMode: "virtual",
+                  scrollByContent: true,
+                  scrollByThumb: true,
+                  showScrollbar: "onHover",
+                  useNative: "auto",
+                  }}
+                  columnWidth="150"
+                >
+                  <Grouping expandMode="rowClick" />
+                  <GroupPanel visible={true} />
+                  <Paging enabled={true} defaultPageSize={15} />
+                  <Selection
+                    mode="multiple"
+                    allowSelectAll={true}
+                    showCheckBoxesMode="always"
+                  />
 
-              <Column
-                dataField="scripname"
-                caption="Name"
-                alignment="left"
-              ></Column>
-              <Column
-                dataField="stlmnt"
-                caption="Settlement"
-                alignment="left"
-              ></Column>
-              <Column
-                dataField="Sell"
-                caption="Sales Qty"
-                alignment="left"
-              ></Column>
-              <Column
-                dataField="SellAmount"
-                caption="Sales Value"
-                customizeText={floatVal}
-                alignment="left"
-              ></Column>
-              <Column
-                dataField="Buy"
-                caption="Purchase Qty"
-                alignment="left"
-              ></Column>
-              <Column
-                dataField="BuyAmount"
-                caption="Purchase Value"
-                customizeText={floatVal}
-                alignment="right"
-              ></Column>
-              <Column
-                dataField="Brokerage"
-                caption="Brokerage"
-                alignment="right"
-              ></Column>
+                  <Column
+                    dataField="scripname"
+                    caption="Name"
+                    alignment="left"
+                  ></Column>
+                  <Column
+                    dataField="stlmnt"
+                    caption="Settlement"
+                    alignment="left"
+                  ></Column>
+                  <Column
+                    dataField="Sell"
+                    caption="Sales Qty"
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="SellAmount"
+                    caption="Sales Value"
+                    customizeText={floatVal}
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="Buy"
+                    caption="Purchase Qty"
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="BuyAmount"
+                    caption="Purchase Value"
+                    customizeText={floatVal}
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="Brokerage"
+                    caption="Brokerage"
+                    alignment="right"
+                  ></Column>
 
-              <Column
-                dataField="Net"
-                caption="Net Qty"
+                  <Column
+                    dataField="Net"
+                    caption="Net Qty"
+                    alignment="right"
+                  ></Column>
+
+                  <Column
+                    dataField="NetAmount"
+                    caption="Net Value"
+                    customizeText={floatVal}
+                  ></Column>
+                  <Column
+                    dataField="AvgRate"
+                    caption="Market Rate"
+                    customizeText={floatVal}
+                  ></Column>
+                  <Summary calculateCustomSummary={calculateSelectedRow}>
+                    <TotalItem
+                      cssClass={"openingBalance"}
+                      displayFormat="Total"
+                      showInColumn="scripname"
+                    />
+                    <TotalItem
+                      name="sellQty"
+                      summaryType="custom"
+                      customizeText={floatVal}
+                      displayFormat="{0}"
+                      cssClass={"openingBalance"}
+                      showInColumn="Sell"
+                    />
+                    <TotalItem
+                      name="BuyQty"
+                      summaryType="custom"
+                      customizeText={floatVal}
+                      displayFormat="{0}"
+                      cssClass={"openingBalance"}
+                      showInColumn="Buy"
+                    />
+                    <TotalItem
+                      name="BuyAmount"
+                      summaryType="custom"
+                      displayFormat="{0}"
+                      customizeText={floatVal}
+                      cssClass={"openingBalance"}
+                      showInColumn="BuyAmount"
+                    />
+                    <TotalItem
+                      name="NetAmount"
+                      summaryType="custom"
+                      customizeText={floatVal}
+                      displayFormat="{0}"
+                      cssClass={"openingBalance"}
+                      showInColumn="NetAmount"
+                    />
+                  </Summary>
+                </DataGrid>
                
-                alignment="center"
-              ></Column>
+              ) : (
+                <DataGrid
+                  id="dataGrid"
+                  ref={dataGridRef}
+                  dataSource={data}
+                  keyExpr="scripname"
+                  onRowPrepared={onRowPre}
+                  columnAutoWidth={true}
+                  allowColumnReordering={true}
+                  paging={{ pageSize: 6 }}
+                  onExporting={exportGrid}
+                  showColumnLines={false}
+                  showBorders={false}
+                  showRowLines={true}
+                  wordWrapEnabled={true}
+                  selection={{
+                  mode: "multiple",
+                  showCheckBoxesMode: "always",
+                  }}
+                  width="100%"
+                  scrolling={{
+                  columnRenderingMode: "standard",
+                  mode: "standard",
+                  preloadEnabled: false,
+                  renderAsync: undefined,
+                  rowRenderingMode: "virtual",
+                  scrollByContent: true,
+                  scrollByThumb: true,
+                  showScrollbar: "onHover",
+                  useNative: "auto",
+                  }}
+                  columnWidth="180"
+                >
+                  <Grouping expandMode="rowClick" />
+                  <GroupPanel visible={true} />
+                  <Paging enabled={true} defaultPageSize={15} />
+                  <Selection
+                    mode="multiple"
+                    allowSelectAll={true}
+                    showCheckBoxesMode="always"
+                  />
+                  <Column
+                    dataField="scripcode"
+                    caption="Code"
+                    alignment="left"
+                  ></Column>
+                  <Column
+                    dataField="scripname"
+                    caption="Name"
+                    alignment="left"
+                  ></Column>
 
-              <Column
-                dataField="NetAmount"
-                caption="Net Value"
-                customizeText={floatVal}
-              ></Column>
-              <Column
-                dataField="AvgRate"
-                caption="Market Rate"
-                customizeText={floatVal}
-               
-              ></Column>
-              <Summary calculateCustomSummary={calculateSelectedRow}>
-                <TotalItem
-                  cssClass={"openingBalance"}
-                  displayFormat="Total"
-                  showInColumn="scripname"
-                />
-                <TotalItem
-                  name="sellQty"
-                  summaryType="custom"
-                  customizeText={floatVal}
-                  displayFormat="{0}"
-                  cssClass={"openingBalance"}
-                  showInColumn="Sell"
-                />
-                <TotalItem
-                  name="BuyQty"
-                  summaryType="custom"
-                  customizeText={floatVal}
-                  displayFormat="{0}"
-                  cssClass={"openingBalance"}
-                  showInColumn="Buy"
-                />
-                <TotalItem
-                  name="BuyAmount"
-                  summaryType="custom"
-                  displayFormat="{0}"
-                  customizeText={floatVal}
-                  cssClass={"openingBalance"}
-                  showInColumn="BuyAmount"
-                />
-                <TotalItem
-                  name="NetAmount"
-                  summaryType="custom"
-                  customizeText={floatVal}
-                  displayFormat="{0}"
-                  cssClass={"openingBalance"}
-                  showInColumn="NetAmount"
-                />
-              </Summary>
-            </DataGrid> :
-            <DataGrid
-            id="dataGrid"
-            ref={dataGridRef}
-            dataSource={data}
-            keyExpr="scripname"
-            showRowLines={true}
-            columnAutoWidth={true}
-            onSelectionChanged={onSelectionChanged}
-            onRowPrepared={onRowPre}
-            columnMinWidth={30}
-            showColumnLines={false}
-            columnHidingEnabled={true}
-            columnResizingMode="nextColumn"
-            noDataText=""
-            showBorders={false}
-          >
-            <Grouping expandMode="rowClick" />
-            <GroupPanel visible={true} />
-            <Paging enabled={true} defaultPageSize={15} />
-            <Selection
-              mode="multiple"
-              allowSelectAll={true}
-              showCheckBoxesMode="always"
-            />
-  <Column
-              dataField="scripcode"
-              caption="Code"
-              alignment="left"
-            ></Column>
-            <Column
-              dataField="scripname"
-              caption="Name"
-              alignment="left"
-            ></Column>
-           
-            <Column
-              dataField="sell"
-              caption="Sales Qty"
-              alignment="left"
-            ></Column>
-             <Column
-              dataField="buy"
-              caption="Bought Qty"
-              alignment="left"
-            ></Column>
-              <Column
-              dataField="marketrate"
-              caption="Bought Qty"
-              customizeText={floatVal}
-              alignment="left"
-            ></Column>
-             <Column
-              dataField="netrate"
-              caption="Net Rate"
-              customizeText={floatVal}
-              alignment="left"
-            ></Column>
-            <Column
-              dataField="brokerage"
-              caption="Brokerage"
-              alignment="left"
-            ></Column>
-            
-            <Column
-              dataField="netamount"
-              caption="Amount"
-              customizeText={floatVal}
-              alignment="left"
-            ></Column>
-           
-            <Summary calculateCustomSummary={calculateSelectedRow}>
-              <TotalItem
-                cssClass={"openingBalance"}
-                displayFormat="Total"
-                showInColumn="scripname"
-              />
-              <TotalItem
-                name="sellQtyconfirm"
-                summaryType="custom"
-                customizeText={floatVal}
-                displayFormat="{0}"
-                cssClass={"openingBalance"}
-                showInColumn="sell"
-              />
-              <TotalItem
-                name="buyQtyconfirm"
-                summaryType="custom"
-                customizeText={floatVal}
-                displayFormat="{0}"
-                cssClass={"openingBalance"}
-                showInColumn="buy"
-              />
-             
-              <TotalItem
-                name="amountconfirm"
-                summaryType="custom"
-                customizeText={floatVal}
-                displayFormat="{0}"
-                cssClass={"openingBalance"}
-                showInColumn="netamount"
-              />
-            </Summary>
-          </DataGrid>
-            }
+                  <Column
+                    dataField="sell"
+                    caption="Sales Qty"
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="buy"
+                    caption="Bought Qty"
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="marketrate"
+                    caption="Bought Qty"
+                    customizeText={floatVal}
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="netrate"
+                    caption="Net Rate"
+                    customizeText={floatVal}
+                    alignment="right"
+                  ></Column>
+                  <Column
+                    dataField="brokerage"
+                    caption="Brokerage"
+                    alignment="right"
+                  ></Column>
+
+                  <Column
+                    dataField="netamount"
+                    caption="Amount"
+                    customizeText={floatVal}
+                    alignment="right"
+                  ></Column>
+
+                  <Summary calculateCustomSummary={calculateSelectedRow}>
+                    <TotalItem
+                      cssClass={"openingBalance"}
+                      displayFormat="Total"
+                      showInColumn="scripname"
+                    />
+                    <TotalItem
+                      name="sellQtyconfirm"
+                      summaryType="custom"
+                      customizeText={floatVal}
+                      displayFormat="{0}"
+                      cssClass={"openingBalance"}
+                      showInColumn="sell"
+                    />
+                    <TotalItem
+                      name="buyQtyconfirm"
+                      summaryType="custom"
+                      customizeText={floatVal}
+                      displayFormat="{0}"
+                      cssClass={"openingBalance"}
+                      showInColumn="buy"
+                    />
+
+                    <TotalItem
+                      name="amountconfirm"
+                      summaryType="custom"
+                      customizeText={floatVal}
+                      displayFormat="{0}"
+                      cssClass={"openingBalance"}
+                      showInColumn="netamount"
+                    />
+                  </Summary>
+                </DataGrid>
+              )}
+            {/* </Grid>
           </Grid>
-        </Grid>
-      </MyContainer>
-    </div>
+        </MyContainer> */}
+         </div>
+      </div>
     </>
   );
 };

@@ -600,152 +600,164 @@ const Ledger = () => {
             </div>
             <div className={style.profiles}>
               <Box className={classes.boxRoot}>
-              <div className={style.textFirst}>
-                <Typography
-                  variant="body1"
-                  mx={2}
-                  style={{
-                    fontSize: "18px",
-                    fontFamily: "poppins",
-                    fontWeight: "bold",
-                    marginRight: "-5px",
-                  }}
-                >
-                  Summary for the financial year :
-                 
-                </Typography>
+                <div className={style.textFirst}>
+                  <Typography
+                    variant="body1"
+                    mx={2}
+                    style={{
+                      fontSize: "18px",
+                      fontFamily: "poppins",
+                      fontWeight: "bold",
+                      marginRight: "-5px",
+                    }}
+                  >
+                    Summary for the financial year :
+                  </Typography>
                 </div>
                 <div className={style.selectFirst}>
-                <select
-                  className={classes.MySelect2}
-                  onChange={(e) => finincialYear(e)}
-                  value={selectValue}
-                >
-                  <option value="1">2021-2022</option>
-                  <option value="2">2020-2021</option>
-                  <option value="3">2019-2020</option>
-                </select>
+                  <select
+                    className={classes.MySelect2}
+                    onChange={(e) => finincialYear(e)}
+                    value={selectValue}
+                  >
+                    <option value="1">2021-2022</option>
+                    <option value="2">2020-2021</option>
+                    <option value="3">2019-2020</option>
+                  </select>
                 </div>
               </Box>
             </div>
           </TopBox>
-          <Grid container style={{ padding: "20px" , display: "flex", justifyContent: "center"}} columnSpacing={1}>
+          <Grid
+            container
+            style={{
+              padding: "20px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            columnSpacing={1}
+          >
             <Grid item lg={3} sm={12}>
               <ChartComp chartData={chartData} />
             </Grid>
             <Grid item lg={9} sm={12}>
               <Paper sx={{ padding: "0 10px" }}>
-                <DataGrid
-                  id="gridContainer"
-                  onCellPrepared={cellPrepered}
-                  onSelectionChanged={onSelectionChanged}
-                  dataSource={date.data}
-                  keyExpr="ExchSeg"
-                  showRowLines={true}
-                  onRowPrepared={onRowPre}
-                  columnAutoWidth={true}
-                  columnMinWidth={30}
-                  showColumnLines={false}
-                  columnHidingEnabled={true}
-                  columnResizingMode="nextColumn"
-                  noDataText=""
-                  showBorders={false}
-                >
-                  <Selection
-                    mode="multiple"
-                    allowSelectAll={false}
-                    showCheckBoxesMode="none"
-                  />
-                  <Column
-                    cellRender={TemplateNameCell}
-                    headerCellRender={RenderTitleHeader}
-                  ></Column>
-
-                  <Column
-                    dataField="ExchSeg"
-                    caption="ExchSeg"
-                    headerCellRender={customHeaderCell}
-                  ></Column>
-
-                  <Column
-                    dataField="OpeningBalance"
-                    caption="Opening Balance"
-                    customizeText={floatVal}
-                    alignment="center"
-                    headerCellRender={customHeaderCell}
-                  ></Column>
-
-                  <Column
-                    dataField="Debit"
-                    caption="Debit"
-                    customizeText={floatVal}
-                    alignment="center"
-                    headerCellRender={customHeaderCell}
-                  ></Column>
-
-                  <Column
-                    dataField="Credit"
-                    caption="Credit"
-                    customizeText={floatVal}
-                    alignment="center"
-                    headerCellRender={customHeaderCell}
-                  ></Column>
-
-                  <Column
-                    dataField="Balance"
-                    caption="Balance"
-                    customizeText={floatVal}
-                    alignment="center"
-                    headerCellRender={customHeaderCell}
-                  ></Column>
-
-                  <Summary calculateCustomSummary={calculateSelectedRow}>
-                    <TotalItem
-                      cssClass={"openingBalance"}
-                      displayFormat="Grand Total"
-                      showInColumn="ExchSeg"
+                <div className={style.responsGrid}>
+                  <DataGrid
+                    id="gridContainer"
+                    onCellPrepared={cellPrepered}
+                    onSelectionChanged={onSelectionChanged}
+                    dataSource={date.data}
+                    keyExpr="ExchSeg"
+                    showRowLines={true}
+                    onRowPrepared={onRowPre}
+                    columnAutoWidth={true}
+                    allowColumnReordering={true}
+                    paging={{ pageSize: 6 }}
+                    showColumnLines={false}
+                    showBorders={false}
+                    wordWrapEnabled={true}
+                    selection={{
+                      mode: "multiple",
+                      showCheckBoxesMode: "always",
+                    }}
+                    width="100%"
+                  >
+                    <Selection
+                      mode="multiple"
+                      allowSelectAll={false}
+                      showCheckBoxesMode="none"
                     />
-                    <TotalItem
-                      name="OpeningBalance"
-                      summaryType="custom"
-                      customizeText={myBuyAmount}
-                      displayFormat="{0}"
-                      cssClass={"openingBalance"}
-                      showInColumn="OpeningBalance"
-                    />
-                    <TotalItem
-                      name="Debit"
-                      summaryType="custom"
-                      customizeText={myBuyAmount3}
-                      displayFormat="{0}"
-                      cssClass={"debitBalance"}
-                      showInColumn="Debit"
-                    />
-                    <TotalItem
-                      name="Credit"
-                      summaryType="custom"
-                      customizeText={myBuyAmount4}
-                      displayFormat="{0}"
-                      cssClass={"creditBalance"}
-                      showInColumn="Credit"
-                    />
-                    <TotalItem
-                      name="Balance"
-                      summaryType="custom"
-                      customizeText={myBuyAmount2}
-                      displayFormat="{0}"
-                      cssClass={"totalBalance"}
-                      showInColumn="Balance"
-                    />
-                  </Summary>
-                </DataGrid>
+                    <Column
+                      cellRender={TemplateNameCell}
+                      headerCellRender={RenderTitleHeader}
+                    ></Column>
+
+                    <Column
+                      dataField="ExchSeg"
+                      caption="ExchSeg"
+                      headerCellRender={customHeaderCell}
+                    ></Column>
+
+                    <Column
+                      dataField="OpeningBalance"
+                      caption="Opening Balance"
+                      customizeText={floatVal}
+                      alignment="center"
+                      headerCellRender={customHeaderCell}
+                    ></Column>
+
+                    <Column
+                      dataField="Debit"
+                      caption="Debit"
+                      customizeText={floatVal}
+                      alignment="center"
+                      headerCellRender={customHeaderCell}
+                    ></Column>
+
+                    <Column
+                      dataField="Credit"
+                      caption="Credit"
+                      customizeText={floatVal}
+                      alignment="center"
+                      headerCellRender={customHeaderCell}
+                    ></Column>
+
+                    <Column
+                      dataField="Balance"
+                      caption="Balance"
+                      customizeText={floatVal}
+                      alignment="center"
+                      headerCellRender={customHeaderCell}
+                    ></Column>
+
+                    <Summary calculateCustomSummary={calculateSelectedRow}>
+                      <TotalItem
+                        cssClass={"openingBalance"}
+                        displayFormat="Grand Total"
+                        showInColumn="ExchSeg"
+                      />
+                      <TotalItem
+                        name="OpeningBalance"
+                        summaryType="custom"
+                        customizeText={myBuyAmount}
+                        displayFormat="{0}"
+                        cssClass={"openingBalance"}
+                        showInColumn="OpeningBalance"
+                      />
+                      <TotalItem
+                        name="Debit"
+                        summaryType="custom"
+                        customizeText={myBuyAmount3}
+                        displayFormat="{0}"
+                        cssClass={"debitBalance"}
+                        showInColumn="Debit"
+                      />
+                      <TotalItem
+                        name="Credit"
+                        summaryType="custom"
+                        customizeText={myBuyAmount4}
+                        displayFormat="{0}"
+                        cssClass={"creditBalance"}
+                        showInColumn="Credit"
+                      />
+                      <TotalItem
+                        name="Balance"
+                        summaryType="custom"
+                        customizeText={myBuyAmount2}
+                        displayFormat="{0}"
+                        cssClass={"totalBalance"}
+                        showInColumn="Balance"
+                      />
+                    </Summary>
+                  </DataGrid>
+                </div>
               </Paper>
             </Grid>
           </Grid>
         </MyContainer>
-        
-            <BottomLedger ledgerReport={detData} />
-        
+
+        <BottomLedger ledgerReport={detData} />
       </Layout>
     </>
   );
