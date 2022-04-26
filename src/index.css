@@ -34,3 +34,6 @@
 .ant-picker-next-icon {
   color: #fff;
 }
+input::placeholder {
+  color: #ff0000;
+}

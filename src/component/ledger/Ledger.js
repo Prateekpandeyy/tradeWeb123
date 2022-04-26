@@ -653,14 +653,10 @@ const Ledger = () => {
                     onRowPrepared={onRowPre}
                     columnAutoWidth={true}
                     allowColumnReordering={true}
-                    paging={{ pageSize: 6 }}
+                   
                     showColumnLines={false}
                     showBorders={false}
-                    wordWrapEnabled={true}
-                    selection={{
-                      mode: "multiple",
-                      showCheckBoxesMode: "always",
-                    }}
+                  
                     width="100%"
                   >
                     <Selection

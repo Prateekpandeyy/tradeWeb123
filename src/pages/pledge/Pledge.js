@@ -2,10 +2,11 @@ import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../apiServices";
 import Layout from "../../component/Layout/Layout";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid , Box} from "@mui/material";
 import { styled } from "@mui/styles";
 import styles from "./style.module.css";
 import BackDrop from "../../component/Loader/BackDrop";
+import { jsPDF } from "jspdf";
 import {
   DataGrid,
   Grouping,
@@ -17,7 +18,16 @@ import {
   TotalItem,
   Editing,
 } from "devextreme-react/data-grid";
+import "jspdf-autotable";
 import Swal from "sweetalert2";
+import { exportDataGrid as exportDataGridToPdf } from "devextreme/pdf_exporter";
+import { FaFileCsv } from "react-icons/fa";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import { AiFillPrinter } from "react-icons/ai";
+import { GrDocumentText } from "react-icons/gr";
+import { Workbook } from "exceljs";
+import saveAs from "file-saver";
+import { exportDataGrid } from "devextreme/excel_exporter";
 const MyButton = styled(Button)({
   borderRadius: "5px",
   backgroundColor: "#0364BE",
@@ -35,6 +45,61 @@ function Pledge() {
   const [isLoading, setIsLoading] = useState(true);
   let scData = [];
   // to fetch data according to demate no
+  const exportGrid = React.useCallback(() => {
+    const doc = new jsPDF();
+    const dataGrid = dataGridRef.current.instance;
+
+    exportDataGridToPdf({
+      jsPDFDocument: doc,
+      component: dataGrid,
+    }).then(() => {
+      doc.save("pledge_margin.pdf");
+    });
+  });
+  const onExporting = (e) => {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet("Main sheet");
+    const dataGrid = dataGridRef.current.instance;
+    exportDataGrid({
+      component: dataGrid,
+      worksheet: worksheet,
+      customizeCell: function (options) {
+        const excelCell = options;
+        excelCell.font = { name: "Arial", size: 12 };
+        excelCell.alignment = { horizontal: "left" };
+      },
+    }).then(function () {
+      workbook.xlsx.writeBuffer().then(function (buffer) {
+        saveAs(
+          new Blob([buffer], { type: "application/octet-stream" }),
+          "pledge_margin.xlsx"
+        );
+      });
+    });
+    e.cancel = true;
+  };
+  const onExportingCsv = (e) => {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet("Main sheet");
+    const dataGrid = dataGridRef.current.instance;
+    exportDataGrid({
+      component: dataGrid,
+      worksheet: worksheet,
+      customizeCell: function (options) {
+        const excelCell = options;
+        excelCell.font = { name: "Arial", size: 12 };
+        excelCell.alignment = { horizontal: "left" };
+      },
+    }).then(function () {
+      workbook.csv.writeBuffer().then(function (buffer) {
+        saveAs(
+          new Blob([buffer], { type: "application/octet-stream" }),
+          "pledge_margin.csv"
+        );
+      });
+    });
+    e.cancel = true;
+  };
   const fetchPledgeShareInfo = () => {
     setIsLoading(true);
     let resData = [];
@@ -306,6 +371,85 @@ function Pledge() {
               Submit
             </MyButton>
           </div>
+          <div>
+              <Box sx={{ textAlign: "right", display: "flex" }}>
+                <FaFileCsv
+                  title="Csv File"
+                  onClick={onExportingCsv}
+                  style={{
+                    color: "#80BB55",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    fontSize: "30px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                />
+                {/* <img
+                  src={htmlImg}
+                  title="html"
+                  style={{
+                    margin: "2px 8px",
+                    cursor: "pointer",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    maxWidth: "40px",
+                    maxHeight: "40px",
+                  }}
+                /> */}
+                <RiFileExcel2Fill
+                  title="Excel"
+                  onClick={onExporting}
+                  style={{
+                    color: "#107C41",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                />
+                {/* <AiFillPrinter
+                  title="Print"
+                  // onClick={handlePrint}
+                  style={{
+                    color: "#424343",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                /> */}
+                <GrDocumentText
+                  title="pdf"
+                  onClick={exportGrid}
+                  style={{
+                    color: "#696D6E",
+                    cursor: "pointer",
+                    margin: "2px 8px",
+                    border: "1px solid #EBEBEB",
+                    boxShadow: "0px 2px 16px rgba(61, 61, 61, 0.06)",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    width: "40px",
+                    height: "40px",
+                  }}
+                />
+              </Box>
+            </div>
         </div>
         <Grid container>
           <Grid item sm={12} style={{ padding: "0 20px" }}>

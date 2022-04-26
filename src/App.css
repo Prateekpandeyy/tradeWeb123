@@ -140,3 +140,11 @@ body {
   border-radius: 5px;
   outline: none;
 }
+.dx-texteditor-input-container .dx-texteditor-input {
+  font-family: Poppins !important;
+  font-style: normal !important;
+  font-size: 16px !important;
+  color: rgb(61, 61, 61) !important;
+  line-height: 35px !important;
+  font-weight: 400 !important;
+}

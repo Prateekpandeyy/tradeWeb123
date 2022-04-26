@@ -56,6 +56,17 @@ const Sidebar = () => {
       backgroundColor: "#ffffff",
       boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.12)",
     },
+    mainMenu: {
+      listStyle: "none",
+      display: "",
+      flexDirection: "column",
+      padding: "10px 5px",
+      backgroundColor: "#ffffff",
+      width: "100%",
+      height: "100%",
+      justifyContent: "space-between",
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.12)",
+    },
     mySubmnu: {
       listStyle: "none",
       display: "flex",
@@ -63,6 +74,44 @@ const Sidebar = () => {
       padding: "10px 30px",
       backgroundColor: "#ffffff",
       boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.12)",
+    },
+    myNavMenu: {
+      display: "flex",
+      width: "100%",
+      
+      alignItems: "center"
+    },
+    mySubNavMenu : {
+     
+        display: "flex",
+        width: "100%",
+        margin: "10px 0",
+        alignItems: "center"
+      
+    },
+    MyMenuName: {
+      fontFamily: "Poppins",
+      fontStyle: "normal",
+      fontWeight: "400",
+      fontSize: "18px",
+      lineHeight: "27px",
+      color: "#9B9B9B",
+      margin: "0px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    MyMenuLogo: {
+      fontFamily: "Poppins",
+      fontStyle: "normal",
+      fontWeight: "400",
+      fontSize: "25px",
+      lineHeight: "38px",
+      color: "#0085FF",
+      margin: "0px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
   });
 
@@ -75,46 +124,60 @@ const Sidebar = () => {
   return (
     <ul className={classes.mainMenu}>
       <li className={splitLocation[1] === "" ? "myMenuActive" : ""}>
-        <Link to="/">
+        <Link to="/" className={classes.myNavMenu}>
           <img src={logoImg} className={classes.myNav} />
+          <p className={classes.MyMenuLogo}>Logo</p>
         </Link>
+        
       </li>
 
       <li>
-        {/* <Link to = "/tradeweb/trading">
-                  <img src={homeImg} className={classes.myNav} />
-                  </Link> */}
+        <Link to = "/tradeweb/trading" className={classes.myNavMenu}>
         <img src={homeImg} className={classes.myNav} />
+        <p className={classes.MyMenuName}>Home</p>
+                  </Link>
+       
       </li>
       <li className={splitLocation[2] === "holding" ? "myMenuActive" : ""}>
-        <Link to="/tradeweb/holding" title="Holding">
+        <Link to="/tradeweb/holding" title="Holding" className={classes.myNavMenu}>
           <img src={cameraImg} className={classes.myNav} />
+          <p className={classes.MyMenuName}>Holding</p>
         </Link>
       </li>
       <li className={splitLocation[2] === "trading" ? "myMenuActive" : ""}>
-        <Link to="/tradeweb/trading" title="Trading">
+        
+         <Link  to="/tradeweb/trading" title="Trading" className={classes.myNavMenu}>
           <img src={documentImg} className={classes.myNav} />
+          <p className={classes.MyMenuName}>Trading</p>
         </Link>
       </li>
       <li className={splitLocation[2] === "ledger" ? "myMenuActive" : ""}>
-        <Link to="/tradeweb/ledger" title="Ledger">
+       
+           <Link to="/tradeweb/ledger" title="Ledger" className={classes.myNavMenu}>
           <img src={bookImg} className={classes.myNav} />
+          <p className={classes.MyMenuName}>Ledger</p>
         </Link>
       </li>
       <li className={splitLocation[2] === "transaction" ? "myMenuActive" : ""}>
-        <Link to="/tradeweb/transaction" title="Transaction">
+       
+         <Link to="/tradeweb/transaction" title="Transaction" className={classes.myNavMenu}>
           <img src={arrowImg} className={classes.myNav} />
+          <p className={classes.MyMenuName}>Transaction</p>
         </Link>
       </li>
       <li className={splitLocation[2] === "confirmation" ? "myMenuActive" : ""}>
-        <Link to="/tradeweb/confirmation" title="Confirmation">
-          <img src={confirmationImg} className={classes.myNav} />
+       
+               <Link  to="/tradeweb/confirmation" title="Confirmation" className={classes.myNavMenu}>
+          <img src={bookImg} className={classes.myNav} />
+          <p className={classes.MyMenuName}>Confirmation</p>
         </Link>
       </li>
 
       <li className={splitLocation[2] === "margin" ? "myMenuActive" : ""}>
-        <Link to="/tradeweb/margin" title="Margin">
-          <img src={marginImg} className={classes.myNav} />
+       
+         <Link to="/tradeweb/margin" title="Margin" className={classes.myNavMenu}>
+          <img src={marginImg}  className={classes.myNav} />
+          <p className={classes.MyMenuName}>Margin</p>
         </Link>
       </li>
       <li
@@ -126,6 +189,7 @@ const Sidebar = () => {
           onMouseEnter={() => handleClickOff2()}
         >
           <img src={requestImg} className={classes.myNav} />
+          <p className={classes.MyMenuName}>Request</p>
         </ListItemButton>
         <Collapse in={open2} unmountOnExit>
           <List component="div">
@@ -133,20 +197,23 @@ const Sidebar = () => {
               <li
                 className={splitLocation[2] === "request" ? "myMenuActive" : ""}
               >
-                <Link to="/tradeweb/request" title="Payout">
-                  <img src={requestImg} className={classes.mySubNav} />
+                <Link to="/tradeweb/request" title="Payout" className={classes.mySubNavMenu}>
+                  {/* <img src={requestImg} className={classes.mySubNav} /> */}
+                  <p className={classes.MyMenuName}>Payout</p>
                 </Link>
               </li>
               <li>
-                <Link to="/tradeweb/pledge" title="Pledge For Margin">
-                  <img src={confirmationImg} className={classes.mySubNav} />
+                <Link to="/tradeweb/pledge" title="Pledge For Margin" className={classes.mySubNavMenu}>
+                
+                  <p className={classes.MyMenuName}>Pledge For Margin</p>
                 </Link>{" "}
               </li>
-              <li>
-                <Link to="/tradeweb/report" title="Report">
-                  <img src={confirmationImg} className={classes.mySubNav} />
+              {/* <li>
+                <Link to="/tradeweb/report" title="Report" className={classes.mySubNavMenu}>
+                 
+                  <p className={`${classes.MyMenuName}`}>Report</p>
                 </Link>{" "}
-              </li>
+              </li> */}
             </ul>
           </List>
         </Collapse>

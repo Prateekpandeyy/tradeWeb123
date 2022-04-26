@@ -144,6 +144,8 @@ function Payout() {
   };
 
   const requestInput = (insta) => {
+
+    let a = Number(insta.data.request < Math.abs(insta.data.payOut))
     // const getRequestValue = (e, index) => {
     //   let data = [...requestValue];
     //   data[index] = e.target.value;
@@ -156,27 +158,51 @@ function Payout() {
     //   setRvalue(sum);
     //   console.log("bbb", sum);
     // };
+   
     return (
+    <>
+    {a === 1 ?
       <div
-        style={{
-          width: "auto",
-          height: "45px",
-          marginLeft: "1px",
-          marginTop: "1px",
-          background: "#FFFFFF",
-          border: "2px solid #1080E8",
-          boxSizing: "border-box",
-          borderRadius: "8px",
-          cursor: "pointer",
-          borderColor: "steelblue",
-          textAlign: "center",
-          color: "steelblue",
-          fontWeight: "bold",
-          
-        }}
-      >
-        {insta.value}
-      </div>
+      style={{
+        width: "auto",
+        height: "45px",
+        marginLeft: "1px",
+        marginTop: "1px",
+        background: "#FFFFFF",
+        border: "2px solid #1080E8",
+        boxSizing: "border-box",
+        borderRadius: "8px",
+        cursor: "pointer",
+        borderColor: "steelblue",
+        textAlign: "center",
+        color: "steelblue",
+        fontWeight: "bold",
+        
+      }}
+    >
+      {insta.value}
+    </div> :
+      <div
+      style={{
+        width: "auto",
+        height: "45px",
+        marginLeft: "1px",
+        marginTop: "1px",
+        background: "#FFFFFF",
+        border: "2px solid #1080E8",
+        boxSizing: "border-box",
+        borderRadius: "8px",
+        cursor: "pointer",
+        borderColor: "steelblue",
+        textAlign: "center",
+        color: "steelblue",
+        fontWeight: "bold",
+        
+      }}
+    >
+      {0}
+    </div>}
+    </>
     );
   };
   const calculateSelectedRow = (options) => {
@@ -194,7 +220,12 @@ function Payout() {
         options.totalValue = 0;
       } else if (options.summaryProcess === "calculate") {
         if (options.value.Type !== "Total") {
-          options.totalValue = rValue;
+          let a = Number(options.value.request < Math.abs(options.value.payOut))
+          console.log("aaaa", a)
+         if(a === 1){
+           console.log("done")
+          options.totalValue += Math.abs(options.value.request);
+         }
         }
       }
     }
@@ -217,7 +248,8 @@ function Payout() {
             icon: "success",
           });
         }
-        console.log(res);
+      
+
       });
   };
   const floatVal = (e) => {
@@ -344,13 +376,12 @@ function Payout() {
               />
               <TotalItem
                 name="request"
-                summaryType="sum"
+                summaryType="custom"
                 customizeText={myBuyAmount}
                 displayFormat="{0}"
                 cssClass={"openingBalance"}
                 showInColumn="request"
-                column="request"
-                alignment="center"
+              
               />
             </Summary>
           </DataGrid>

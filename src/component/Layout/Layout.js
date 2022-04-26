@@ -35,7 +35,7 @@ const MyHeader = styled(Box)({
     width: "100%",
     position: "fixed",
     zIndex:99999,
-    padding: "0 0 0 100px"
+    padding: "0 0 0 180px"
 })
 const MyHeaderMobile = styled(Box)({
     display: "flex",
@@ -48,7 +48,7 @@ const MainContent= styled(Box)({
     display: "flex",
     width: "100%",
     flexDirection: "column",
-    padding: "80px 0 0 100px"
+    padding: "80px 0 0 240px"
 })
 const MainContentMobile = styled(Box)({
     display: "flex",

@@ -54,7 +54,7 @@ const BottomLedger = ({ ledgerReport }) => {
       jsPDFDocument: doc,
       component: dataGrid,
     }).then(() => {
-      doc.save("Customers.pdf");
+      doc.save("ledger.pdf");
     });
   });
    console.log("ledgerReport", ledgerReport)
@@ -133,7 +133,7 @@ const BottomLedger = ({ ledgerReport }) => {
       workbook.xlsx.writeBuffer().then(function (buffer) {
         saveAs(
           new Blob([buffer], { type: "application/octet-stream" }),
-          "DataGrid.xlsx"
+          "ledger.xlsx"
         );
       });
     });
@@ -155,7 +155,7 @@ const BottomLedger = ({ ledgerReport }) => {
       workbook.csv.writeBuffer().then(function (buffer) {
         saveAs(
           new Blob([buffer], { type: "application/octet-stream" }),
-          "DataGrid.csv"
+          "ledger.csv"
         );
       });
     });
